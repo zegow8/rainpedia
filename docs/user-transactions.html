@@ -1,0 +1,314 @@
+﻿<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Riwayat Pembelian - User Area - Rainpedia</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="stylesheet" href="assets/css/demo-toolbar.css">
+    <style>
+        html, body { max-width: 100vw; overflow-x: hidden; }
+        body { display: flex; flex-direction: column; min-height: 100vh; background-color: var(--bg-main); }
+        .navbar-user { background: var(--white); border-bottom: 2px solid var(--primary); padding: 0; box-shadow: 0 1px 3px rgba(0,0,0,0.05); }
+        .navbar-user-top { display: flex; justify-content: space-between; align-items: center; padding: 14px 0; }
+        .navbar-user .brand { font-size: 1.25rem; font-weight: 800; color: var(--primary); text-decoration: none; display: flex; align-items: center; gap: 10px; }
+        .navbar-user .brand img { height: 36px; width: auto; }
+        .navbar-user-icons { display: flex; gap: 20px; align-items: center; }
+        .navbar-user-icons a { color: var(--text-main); font-size: 0.9rem; font-weight: 600; text-decoration: none; }
+        .navbar-user-icons a.active { color: var(--primary); }
+        .navbar-user-bottom { border-top: 1px solid var(--border); display: flex; gap: 24px; padding: 0; overflow-x: auto; white-space: nowrap; }
+        .navbar-user-bottom a { color: var(--text-muted); font-weight: 600; font-size: 0.9rem; text-decoration: none; padding: 14px 0; border-bottom: 3px solid transparent; }
+        .navbar-user-bottom a.active { color: var(--primary); border-bottom-color: var(--primary); }
+        .badge-notif { background: var(--danger); color: white; font-size: 0.65rem; padding: 2px 6px; border-radius: 10px; font-weight: 700; margin-left: 4px; vertical-align: middle; }
+        .page-wrap { max-width: 1200px; width: 100%; margin: 0 auto; padding: 32px 24px; flex: 1; }
+        .status-tabs { display: flex; gap: 8px; margin-bottom: 20px; flex-wrap: wrap; }
+        .status-tab { padding: 8px 16px; border-radius: 100px; font-size: 0.85rem; font-weight: 600; text-decoration: none; border: 1.5px solid var(--border-dark); color: var(--text-muted); background: var(--white); transition: all 0.2s; cursor: pointer; }
+        .status-tab:hover { border-color: var(--primary); color: var(--primary); text-decoration: none; }
+        .status-tab.active { background: var(--primary); color: white; border-color: var(--primary); }
+
+        @media (max-width: 768px) {
+            .navbar-user-top { flex-direction: column; gap: 12px; align-items: flex-start; }
+            .navbar-user-icons { width: 100%; justify-content: space-between; overflow-x: auto; font-size: 0.8rem; }
+            .navbar-user-bottom { gap: 14px; }
+            .page-wrap { padding: 16px 12px; }
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar-user">
+        <div class="container">
+            <div class="navbar-user-top">
+                <a href="user-dashboard.html" class="brand">
+                    <img src="assets/images/rainpedia.png" alt="Rainpedia" onerror="this.style.display='none'; this.nextElementSibling.style.display='inline';">
+                    <span style="display:none;">RAINPEDIA</span>
+                </a>
+                <div class="navbar-user-icons">
+                    <a href="user-catalog.html">📚 Katalog Buku</a>
+                    <a href="user-cart.html">🛒 Keranjang <span class="badge-notif" style="background:#2563eb;">1</span></a>
+                    <a href="user-profile.html">👤 Rain (User A)</a>
+                    <a href="index.html" style="color:var(--danger) !important; font-weight:700;">Logout</a>
+                </div>
+            </div>
+            <div class="navbar-user-bottom">
+                <a href="user-dashboard.html">Beranda</a>
+                <a href="user-catalog.html">Katalog Buku</a>
+                <a href="user-borrowings.html">Peminjaman Saya</a>
+                <a href="user-transactions.html" class="active">Riwayat Pembelian</a>
+                <a href="user-chat.html">💬 Tanya Admin <span class="badge-notif" style="background:#2563eb;">1</span></a>
+                <a href="user-profile.html">Pengaturan Profil</a>
+                <a href="user-notifications.html">Notifikasi <span class="badge-notif">3</span></a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="page-wrap">
+        <div class="flex-between mb-4">
+            <div>
+                <h1 style="margin-bottom:4px;">Riwayat Pembelian Buku</h1>
+                <p class="text-muted" style="margin:0;">Daftar seluruh pesanan pembelian buku Anda (User A: Rain)</p>
+            </div>
+            <a href="user-catalog.html" class="btn btn-primary btn-sm">+ Beli Buku Baru</a>
+        </div>
+
+        <!-- ============ STATUS TABS ============ -->
+        <div class="status-tabs">
+            <a href="javascript:void(0)" class="status-tab active" data-status="all">
+                Semua (15)
+            </a>
+            <a href="javascript:void(0)" class="status-tab" data-status="Waiting Confirmation" style="border-color:#f59e0b; color:#b45309; font-weight:700;">
+                ⏳ Menunggu ACC (2)
+            </a>
+            <a href="javascript:void(0)" class="status-tab" data-status="Processing">
+                Dikemas (6)
+            </a>
+            <a href="javascript:void(0)" class="status-tab" data-status="Shipped">
+                Dikirim (2)
+            </a>
+            <a href="javascript:void(0)" class="status-tab" data-status="Completed">
+                Selesai (3)
+            </a>
+            <a href="javascript:void(0)" class="status-tab" data-status="Cancelled">
+                Dibatalkan (1)
+            </a>
+            <a href="javascript:void(0)" class="status-tab" data-status="Rejected">
+                Ditolak (1)
+            </a>
+        </div>
+
+        <!-- ============ STATUS EXPLAINER BANNER (USER POV) ============ -->
+        <div id="statusExplainer" class="status-explainer-card">
+            <div class="explainer-icon">💡</div>
+            <div>
+                <div class="explainer-title">Semua Riwayat Pesanan Anda (15 Transaksi)</div>
+                <div class="explainer-desc">Klik tombol status di atas untuk melihat bagaimana tampilan dan rincian pesanan dari sudut pandang pembeli (User POV) pada setiap status.</div>
+            </div>
+        </div>
+
+        <!-- ============ DAFTAR KARTU PESANAN ============ -->
+        <div style="display:flex; flex-direction:column; gap:16px;">
+            <!-- Order 1: Waiting Confirmation -->
+            <div data-item-status="Waiting Confirmation" style="background:white; border:1px solid var(--border); border-radius:10px; padding:20px; box-shadow:0 2px 8px rgba(0,0,0,0.04);">
+                <div class="flex-between" style="border-bottom:1px solid var(--border); padding-bottom:12px; margin-bottom:14px; flex-wrap:wrap; gap:8px;">
+                    <div style="display:flex; align-items:center; gap:12px;">
+                        <code style="background:var(--primary-light); padding:4px 10px; border-radius:6px; font-weight:700; color:var(--primary); font-size:0.9rem;">RP-20261114-1E1A0F</code>
+                        <span style="font-size:0.85rem; color:var(--text-muted);">14 Nov 2026 09:15 WIB</span>
+                    </div>
+                    <div>
+                        <span class="status-badge" style="background:#ffedd5; color:#c2410c; font-weight:800; border:1px solid #fdba74;">
+                            ⏳ Menunggu Konfirmasi Admin
+                        </span>
+                    </div>
+                </div>
+                <div style="display:flex; align-items:center; gap:14px; margin-bottom:16px;">
+                    <img src="assets/covers/bumi_manusia.jpg" alt="Bumi Manusia" style="width:45px; height:62px; object-fit:cover; border-radius:4px; border:1px solid var(--border);">
+                    <div style="flex:1;">
+                        <div style="font-weight:700; font-size:0.95rem; color:var(--text-main);">Bumi Manusia</div>
+                        <div style="font-size:0.8rem; color:var(--text-muted); margin-top:2px;">1 barang x Rp 135.000</div>
+                    </div>
+                </div>
+                <div class="flex-between" style="border-top:1px solid #f1f5f9; padding-top:14px; align-items:center; flex-wrap:wrap; gap:10px;">
+                    <div>
+                        <span style="font-size:0.82rem; color:var(--text-muted);">Total Belanja: </span>
+                        <strong style="color:var(--primary); font-size:1.1rem;">Rp 155.000</strong>
+                    </div>
+                    <a href="user-transaction-detail.html" class="btn btn-outline btn-sm">Lihat Detail Pesanan &rarr;</a>
+                </div>
+            </div>
+
+            <!-- Order 2: Processing (Dikemas) -->
+            <div data-item-status="Processing" style="background:white; border:1px solid var(--border); border-radius:10px; padding:20px; box-shadow:0 2px 8px rgba(0,0,0,0.04);">
+                <div class="flex-between" style="border-bottom:1px solid var(--border); padding-bottom:12px; margin-bottom:14px; flex-wrap:wrap; gap:8px;">
+                    <div style="display:flex; align-items:center; gap:12px;">
+                        <code style="background:var(--primary-light); padding:4px 10px; border-radius:6px; font-weight:700; color:var(--primary); font-size:0.9rem;">RP-20261113-8B9C2D</code>
+                        <span style="font-size:0.85rem; color:var(--text-muted);">13 Nov 2026 14:20 WIB</span>
+                    </div>
+                    <div>
+                        <span class="status-badge" style="background:#fef3c7; color:#92400e; font-weight:700;">
+                            📦 Sedang Dikemas
+                        </span>
+                    </div>
+                </div>
+                <div style="display:flex; align-items:center; gap:14px; margin-bottom:16px;">
+                    <img src="assets/covers/sapiens.jpg" alt="Sapiens" style="width:45px; height:62px; object-fit:cover; border-radius:4px; border:1px solid var(--border);">
+                    <div style="flex:1;">
+                        <div style="font-weight:700; font-size:0.95rem; color:var(--text-main);">Sapiens: Riwayat Singkat Umat Manusia</div>
+                        <div style="font-size:0.8rem; color:var(--text-muted); margin-top:2px;">1 barang x Rp 125.000</div>
+                    </div>
+                </div>
+                <div class="flex-between" style="border-top:1px solid #f1f5f9; padding-top:14px; align-items:center; flex-wrap:wrap; gap:10px;">
+                    <div>
+                        <span style="font-size:0.82rem; color:var(--text-muted);">Total Belanja: </span>
+                        <strong style="color:var(--primary); font-size:1.1rem;">Rp 145.000</strong>
+                    </div>
+                    <a href="user-transaction-detail.html" class="btn btn-outline btn-sm">Lihat Detail Pesanan &rarr;</a>
+                </div>
+            </div>
+
+            <!-- Order 3: Shipped (Dikirim) -->
+            <div data-item-status="Shipped" style="background:white; border:1px solid var(--border); border-radius:10px; padding:20px; box-shadow:0 2px 8px rgba(0,0,0,0.04);">
+                <div class="flex-between" style="border-bottom:1px solid var(--border); padding-bottom:12px; margin-bottom:14px; flex-wrap:wrap; gap:8px;">
+                    <div style="display:flex; align-items:center; gap:12px;">
+                        <code style="background:var(--primary-light); padding:4px 10px; border-radius:6px; font-weight:700; color:var(--primary); font-size:0.9rem;">RP-20261112-9A1F44</code>
+                        <span style="font-size:0.85rem; color:var(--text-muted);">12 Nov 2026 10:00 WIB</span>
+                    </div>
+                    <div>
+                        <span class="status-badge" style="background:#e0e7ff; color:#3730a3; font-weight:700;">
+                            🚚 Sedang Dikirim (Resi: JNE1029384756)
+                        </span>
+                    </div>
+                </div>
+                <div style="display:flex; align-items:center; gap:14px; margin-bottom:16px;">
+                    <img src="assets/covers/cantik_itu_luka.jpg" alt="Cantik Itu Luka" style="width:45px; height:62px; object-fit:cover; border-radius:4px; border:1px solid var(--border);">
+                    <div style="flex:1;">
+                        <div style="font-weight:700; font-size:0.95rem; color:var(--text-main);">Cantik Itu Luka</div>
+                        <div style="font-size:0.8rem; color:var(--text-muted); margin-top:2px;">1 barang x Rp 98.000</div>
+                    </div>
+                </div>
+                <div class="flex-between" style="border-top:1px solid #f1f5f9; padding-top:14px; align-items:center; flex-wrap:wrap; gap:10px;">
+                    <div>
+                        <span style="font-size:0.82rem; color:var(--text-muted);">Total Belanja: </span>
+                        <strong style="color:var(--primary); font-size:1.1rem;">Rp 118.000</strong>
+                    </div>
+                    <div style="display:flex; gap:8px;">
+                        <button type="button" class="btn btn-success btn-sm" style="background:#10b981; color:white; border:none; font-weight:700;" onclick="alert('Terima kasih! Pesanan telah selesai.')">Paket Diterima</button>
+                        <a href="user-transaction-detail.html" class="btn btn-outline btn-sm">Lihat Detail &rarr;</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Order 4: Completed (Selesai) -->
+            <div data-item-status="Completed" style="background:white; border:1px solid var(--border); border-radius:10px; padding:20px; box-shadow:0 2px 8px rgba(0,0,0,0.04);">
+                <div class="flex-between" style="border-bottom:1px solid var(--border); padding-bottom:12px; margin-bottom:14px; flex-wrap:wrap; gap:8px;">
+                    <div style="display:flex; align-items:center; gap:12px;">
+                        <code style="background:var(--primary-light); padding:4px 10px; border-radius:6px; font-weight:700; color:var(--primary); font-size:0.9rem;">RP-20261110-7C2E19</code>
+                        <span style="font-size:0.85rem; color:var(--text-muted);">10 Nov 2026 09:00 WIB</span>
+                    </div>
+                    <div>
+                        <span class="status-badge" style="background:#dcfce7; color:#166534; font-weight:700;">
+                            ✅ Pesanan Selesai
+                        </span>
+                    </div>
+                </div>
+                <div style="display:flex; align-items:center; gap:14px; margin-bottom:16px;">
+                    <img src="assets/covers/bumi_manusia.jpg" alt="Bumi Manusia" style="width:45px; height:62px; object-fit:cover; border-radius:4px; border:1px solid var(--border);">
+                    <div style="flex:1;">
+                        <div style="font-weight:700; font-size:0.95rem; color:var(--text-main);">Bumi Manusia</div>
+                        <div style="font-size:0.8rem; color:var(--text-muted); margin-top:2px;">1 barang x Rp 135.000</div>
+                    </div>
+                </div>
+                <div class="flex-between" style="border-top:1px solid #f1f5f9; padding-top:14px; align-items:center;">
+                    <div>
+                        <span style="font-size:0.82rem; color:var(--text-muted);">Total Belanja: </span>
+                        <strong style="color:var(--success); font-size:1.1rem;">Rp 155.000</strong>
+                    </div>
+                    <a href="user-transaction-detail.html" class="btn btn-outline btn-sm">Lihat Detail &rarr;</a>
+                </div>
+            </div>
+
+            <!-- Order 5: Cancelled (Batal) -->
+            <div data-item-status="Cancelled" style="background:white; border:1px solid var(--border); border-radius:10px; padding:20px; box-shadow:0 2px 8px rgba(0,0,0,0.04);">
+                <div class="flex-between" style="border-bottom:1px solid var(--border); padding-bottom:12px; margin-bottom:14px; flex-wrap:wrap; gap:8px;">
+                    <div style="display:flex; align-items:center; gap:12px;">
+                        <code style="background:var(--primary-light); padding:4px 10px; border-radius:6px; font-weight:700; color:var(--primary); font-size:0.9rem;">RP-20261109-8F1E55</code>
+                        <span style="font-size:0.85rem; color:var(--text-muted);">09 Nov 2026 17:00 WIB</span>
+                    </div>
+                    <div>
+                        <span class="status-badge" style="background:#f1f5f9; color:#475569; font-weight:700;">
+                            🚫 Pesanan Dibatalkan
+                        </span>
+                    </div>
+                </div>
+                <div style="font-size:0.88rem; color:var(--text-muted); margin-bottom:14px;">
+                    Cantik Itu Luka (1 barang) • Rp 118.000
+                </div>
+                <div class="flex-between" style="border-top:1px solid #f1f5f9; padding-top:14px; align-items:center;">
+                    <span style="font-size:0.82rem; color:#64748b;">Dibatalkan atas permintaan pengguna</span>
+                    <a href="user-transaction-detail.html" class="btn btn-outline btn-sm">Lihat Detail &rarr;</a>
+                </div>
+            </div>
+
+            <!-- Order 6: Rejected (Ditolak) -->
+            <div data-item-status="Rejected" style="background:white; border:1px solid var(--border); border-radius:10px; padding:20px; box-shadow:0 2px 8px rgba(0,0,0,0.04);">
+                <div class="flex-between" style="border-bottom:1px solid var(--border); padding-bottom:12px; margin-bottom:14px; flex-wrap:wrap; gap:8px;">
+                    <div style="display:flex; align-items:center; gap:12px;">
+                        <code style="background:var(--primary-light); padding:4px 10px; border-radius:6px; font-weight:700; color:var(--primary); font-size:0.9rem;">RP-20261107-2E8D12</code>
+                        <span style="font-size:0.85rem; color:var(--text-muted);">07 Nov 2026 14:10 WIB</span>
+                    </div>
+                    <div>
+                        <span class="status-badge" style="background:#fee2e2; color:#991b1b; font-weight:700;">
+                            ❌ Pembayaran Ditolak Admin
+                        </span>
+                    </div>
+                </div>
+                <div style="font-size:0.88rem; color:var(--text-muted); margin-bottom:14px;">
+                    Laut Bercerita (1 barang) • Rp 125.000
+                </div>
+                <div class="flex-between" style="border-top:1px solid #f1f5f9; padding-top:14px; align-items:center; flex-wrap:wrap; gap:10px;">
+                    <span style="font-size:0.82rem; color:#dc2626;">Bukti transfer tidak terbaca / tidak valid. Silakan hubungi admin.</span>
+                    <a href="user-chat.html" class="btn btn-sm btn-outline" style="border-color:#3b82f6; color:#2563eb;">💬 Tanya Admin</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="assets/js/script.js"></script>
+    <script src="assets/js/demo-toolbar.js"></script>
+    <script>
+        window.STATUS_EXPLANATIONS = {
+            'Waiting Confirmation': {
+                icon: '⏳',
+                title: 'POV User: Menunggu Konfirmasi Admin',
+                description: 'Anda telah menyelesaikan pemesanan dan mengunggah bukti pembayaran. Admin Rainpedia sedang memeriksa transaksi Anda. Anda akan menerima notifikasi begitu pesanan disetujui untuk dikemas.'
+            },
+            'Processing': {
+                icon: '📦',
+                title: 'POV User: Pesanan Sedang Dikemas',
+                description: 'Pembayaran Anda sah dan diverifikasi! Buku Anda saat ini sedang disiapkan, diberi pelindung bubble wrap, dan dipacking rapi oleh staf gudang Rainpedia.'
+            },
+            'Shipped': {
+                icon: '🚚',
+                title: 'POV User: Paket Sedang Dalam Perjalanan',
+                description: 'Paket buku Anda sudah diserahkan kepada kurir ekspedisi. Anda dapat melacak posisi paket secara berkala. Klik tombol <strong>Paket Diterima</strong> begitu buku telah sampai di tangan Anda.'
+            },
+            'Completed': {
+                icon: '✅',
+                title: 'POV User: Pesanan Telah Selesai',
+                description: 'Buku telah berhasil Anda terima dengan baik. Transaksi telah tuntas dan buku menjadi koleksi pribadi Anda. Selamat membaca!'
+            },
+            'Cancelled': {
+                icon: '🚫',
+                title: 'POV User: Pesanan Dibatalkan',
+                description: 'Pesanan telah dibatalkan sebelum pembayaran dikonfirmasi. Anda dapat memesan kembali buku ini kapan saja melalui katalog.'
+            },
+            'Rejected': {
+                icon: '❌',
+                title: 'POV User: Pesanan Ditolak',
+                description: 'Pesanan ditolak oleh admin karena kendala verifikasi bukti pembayaran atau stok mendadak habis. Silakan gunakan fitur 💬 Tanya Admin untuk bantuan langsung.'
+            }
+        };
+    </script>
+</body>
+</html>

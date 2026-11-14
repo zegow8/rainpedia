@@ -1,0 +1,288 @@
+﻿<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Katalog Buku - User Area - Rainpedia</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="stylesheet" href="assets/css/demo-toolbar.css">
+    <style>
+        html, body { max-width: 100vw; overflow-x: hidden; }
+        body { display: flex; flex-direction: column; min-height: 100vh; background-color: var(--bg-main); }
+        .navbar-user { background: var(--white); border-bottom: 2px solid var(--primary); padding: 0; box-shadow: 0 1px 3px rgba(0,0,0,0.05); }
+        .navbar-user-top { display: flex; justify-content: space-between; align-items: center; padding: 14px 0; }
+        .navbar-user .brand { font-size: 1.25rem; font-weight: 800; color: var(--primary); text-decoration: none; display: flex; align-items: center; gap: 10px; }
+        .navbar-user .brand img { height: 36px !important; width: auto !important; max-height: 40px !important; }
+        .navbar-user-icons { display: flex; gap: 20px; align-items: center; }
+        .navbar-user-icons a { color: var(--text-main); font-size: 0.9rem; font-weight: 600; text-decoration: none; }
+        .navbar-user-bottom { border-top: 1px solid var(--border); display: flex; gap: 24px; padding: 0; overflow-x: auto; white-space: nowrap; }
+        .navbar-user-bottom a { color: var(--text-muted); font-weight: 600; font-size: 0.9rem; text-decoration: none; padding: 14px 0; border-bottom: 3px solid transparent; }
+        .navbar-user-bottom a.active { color: var(--primary); border-bottom-color: var(--primary); }
+        .badge-notif { background: var(--danger); color: white; font-size: 0.65rem; padding: 2px 6px; border-radius: 10px; font-weight: 700; margin-left: 4px; vertical-align: middle; }
+        .page-wrap { max-width: 1200px; width: 100%; margin: 0 auto; padding: 32px 24px; flex: 1; }
+        @media (max-width: 768px) {
+            .navbar-user-top { flex-direction: column; gap: 12px; align-items: flex-start; }
+            .navbar-user-icons { width: 100%; justify-content: space-between; overflow-x: auto; font-size: 0.8rem; }
+            .navbar-user-bottom { gap: 14px; }
+            .page-wrap { padding: 16px 12px; }
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar-user">
+        <div class="container">
+            <div class="navbar-user-top">
+                <a href="user-dashboard.html" class="brand">
+                    <img src="assets/images/rainpedia.png" alt="Rainpedia" onerror="this.style.display='none'; this.nextElementSibling.style.display='inline';">
+                    <span style="display:none;">RAINPEDIA</span>
+                </a>
+                <div class="navbar-user-icons">
+                    <a href="user-catalog.html" style="color:var(--primary);">📚 Katalog Buku</a>
+                    <a href="user-cart.html">🛒 Keranjang <span class="badge-notif" style="background:#2563eb;">1</span></a>
+                    <a href="user-profile.html">👤 Rain (User A)</a>
+                    <a href="index.html" style="color:var(--danger) !important; font-weight:700;">Logout</a>
+                </div>
+            </div>
+            <div class="navbar-user-bottom">
+                <a href="user-dashboard.html">Beranda</a>
+                <a href="user-catalog.html" class="active">Katalog Buku</a>
+                <a href="user-borrowings.html">Peminjaman Saya</a>
+                <a href="user-transactions.html">Riwayat Pembelian</a>
+                <a href="user-chat.html">💬 Tanya Admin <span class="badge-notif" style="background:#2563eb;">1</span></a>
+                <a href="user-profile.html">Pengaturan Profil</a>
+                <a href="user-notifications.html">Notifikasi <span class="badge-notif">3</span></a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="page-wrap">
+        <div class="flex-between mb-4">
+            <div>
+                <h1 style="margin-bottom:4px;">Katalog Buku Rainpedia</h1>
+                <p class="text-muted" style="margin:0;">Pilih buku favorit Anda untuk dibeli atau dipinjam secara gratis</p>
+            </div>
+            <a href="user-cart.html" class="btn btn-primary btn-sm">🛒 Buka Keranjang</a>
+        </div>
+
+        <!-- Search & Filter Bar -->
+        <div class="panel" style="margin-bottom:24px;">
+            <form id="catalogFilterForm" onsubmit="event.preventDefault(); applyCatalogFilter();">
+                <div style="display:flex; gap:12px; flex-wrap:wrap; align-items:flex-end;">
+                    <div style="flex:1; min-width:220px;">
+                        <label style="display:block; font-size:0.85rem; font-weight:600; margin-bottom:6px; color:var(--text-muted);">Cari Buku</label>
+                        <input type="text" id="searchInput" class="form-control" placeholder="Judul, penulis, atau ISBN..." oninput="applyCatalogFilter()">
+                    </div>
+                    <div style="width:200px;">
+                        <label style="display:block; font-size:0.85rem; font-weight:600; margin-bottom:6px; color:var(--text-muted);">Kategori</label>
+                        <select id="categorySelect" class="form-control" onchange="applyCatalogFilter()">
+                            <option value="all">Semua Kategori</option>
+                            <option value="Non-Fiksi">Non-Fiksi</option>
+                            <option value="Fiksi Sastra">Fiksi Sastra</option>
+                            <option value="Sejarah">Sejarah</option>
+                            <option value="Novel">Novel</option>
+                            <option value="Pengembangan Diri">Pengembangan Diri</option>
+                        </select>
+                    </div>
+                    <div style="width:180px;">
+                        <label style="display:block; font-size:0.85rem; font-weight:600; margin-bottom:6px; color:var(--text-muted);">Layanan</label>
+                        <select id="serviceSelect" class="form-control" onchange="applyCatalogFilter()">
+                            <option value="all">Semua (Beli &amp; Pinjam)</option>
+                            <option value="borrow">Bisa Dipinjam Gratis</option>
+                            <option value="buy">Bisa Dibeli</option>
+                        </select>
+                    </div>
+                    <div style="display:flex; gap:8px; align-items:flex-end;">
+                        <button type="button" class="btn btn-outline" onclick="resetFilter()">Reset</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+
+        <!-- Hasil Pencarian -->
+        <div class="flex-between mb-4" style="align-items:center;">
+            <div style="font-size:0.9rem; color:var(--text-muted);">
+                Menampilkan <strong id="catalogCount">8</strong> judul buku
+            </div>
+        </div>
+
+        <!-- Grid Buku -->
+        <div class="book-grid-5col" id="catalogBookGrid">
+            <!-- Buku 1: Sapiens -->
+            <div class="book-card" data-category="Non-Fiksi" data-borrow="true" data-buy="true" data-title="Sapiens: Riwayat Singkat Umat Manusia Yuval Noah Harari">
+                <a href="book-detail.html" class="book-cover">
+                    <img src="assets/covers/sapiens.jpg" alt="Sapiens">
+                    <span class="book-borrow-badge">Gratis Pinjam</span>
+                </a>
+                <div style="margin-bottom:4px;"><span class="book-badge">Non-Fiksi</span></div>
+                <a href="book-detail.html" class="book-title">Sapiens: Riwayat Singkat Umat Manusia</a>
+                <div class="book-author">Yuval Noah Harari</div>
+                <div class="book-price">Rp 125.000</div>
+                <div style="margin-top:10px; display:flex; gap:6px;">
+                    <a href="user-cart.html" class="btn btn-outline btn-sm" style="flex:1; padding:6px 0; text-align:center; font-size:0.75rem;">+ Keranjang</a>
+                    <a href="user-checkout.html" class="btn btn-primary btn-sm" style="flex:1; padding:6px 0; text-align:center; font-size:0.75rem;">Beli</a>
+                </div>
+            </div>
+
+            <!-- Buku 2: Cantik Itu Luka -->
+            <div class="book-card" data-category="Fiksi Sastra" data-borrow="true" data-buy="true" data-title="Cantik Itu Luka Eka Kurniawan">
+                <a href="book-detail.html" class="book-cover">
+                    <img src="assets/covers/cantik_itu_luka.jpg" alt="Cantik Itu Luka">
+                    <span class="book-borrow-badge">Gratis Pinjam</span>
+                </a>
+                <div style="margin-bottom:4px;"><span class="book-badge">Fiksi Sastra</span></div>
+                <a href="book-detail.html" class="book-title">Cantik Itu Luka</a>
+                <div class="book-author">Eka Kurniawan</div>
+                <div class="book-price">Rp 98.000</div>
+                <div style="margin-top:10px; display:flex; gap:6px;">
+                    <a href="user-cart.html" class="btn btn-outline btn-sm" style="flex:1; padding:6px 0; text-align:center; font-size:0.75rem;">+ Keranjang</a>
+                    <a href="user-checkout.html" class="btn btn-primary btn-sm" style="flex:1; padding:6px 0; text-align:center; font-size:0.75rem;">Beli</a>
+                </div>
+            </div>
+
+            <!-- Buku 3: Laut Bercerita -->
+            <div class="book-card" data-category="Novel" data-borrow="true" data-buy="true" data-title="Laut Bercerita Leila S. Chudori">
+                <a href="book-detail.html" class="book-cover">
+                    <img src="assets/covers/laut_bercerita.jpg" alt="Laut Bercerita">
+                    <span class="book-borrow-badge">Gratis Pinjam</span>
+                </a>
+                <div style="margin-bottom:4px;"><span class="book-badge">Novel</span></div>
+                <a href="book-detail.html" class="book-title">Laut Bercerita</a>
+                <div class="book-author">Leila S. Chudori</div>
+                <div class="book-price">Rp 105.000</div>
+                <div style="margin-top:10px; display:flex; gap:6px;">
+                    <a href="user-cart.html" class="btn btn-outline btn-sm" style="flex:1; padding:6px 0; text-align:center; font-size:0.75rem;">+ Keranjang</a>
+                    <a href="user-checkout.html" class="btn btn-primary btn-sm" style="flex:1; padding:6px 0; text-align:center; font-size:0.75rem;">Beli</a>
+                </div>
+            </div>
+
+            <!-- Buku 4: Bumi Manusia -->
+            <div class="book-card" data-category="Sejarah" data-borrow="true" data-buy="true" data-title="Bumi Manusia Pramoedya Ananta Toer">
+                <a href="book-detail.html" class="book-cover">
+                    <img src="assets/covers/bumi_manusia.jpg" alt="Bumi Manusia">
+                    <span class="book-borrow-badge">Gratis Pinjam</span>
+                </a>
+                <div style="margin-bottom:4px;"><span class="book-badge">Sejarah</span></div>
+                <a href="book-detail.html" class="book-title">Bumi Manusia</a>
+                <div class="book-author">Pramoedya Ananta Toer</div>
+                <div class="book-price">Rp 135.000</div>
+                <div style="margin-top:10px; display:flex; gap:6px;">
+                    <a href="user-cart.html" class="btn btn-outline btn-sm" style="flex:1; padding:6px 0; text-align:center; font-size:0.75rem;">+ Keranjang</a>
+                    <a href="user-checkout.html" class="btn btn-primary btn-sm" style="flex:1; padding:6px 0; text-align:center; font-size:0.75rem;">Beli</a>
+                </div>
+            </div>
+
+            <!-- Buku 5: Filosofi Teras -->
+            <div class="book-card" data-category="Pengembangan Diri" data-borrow="true" data-buy="true" data-title="Filosofi Teras Henry Manampiring">
+                <a href="book-detail.html" class="book-cover">
+                    <img src="assets/covers/filosofi_teras.jpg" alt="Filosofi Teras">
+                    <span class="book-borrow-badge">Gratis Pinjam</span>
+                </a>
+                <div style="margin-bottom:4px;"><span class="book-badge">Pengembangan Diri</span></div>
+                <a href="book-detail.html" class="book-title">Filosofi Teras</a>
+                <div class="book-author">Henry Manampiring</div>
+                <div class="book-price">Rp 98.000</div>
+                <div style="margin-top:10px; display:flex; gap:6px;">
+                    <a href="user-cart.html" class="btn btn-outline btn-sm" style="flex:1; padding:6px 0; text-align:center; font-size:0.75rem;">+ Keranjang</a>
+                    <a href="user-checkout.html" class="btn btn-primary btn-sm" style="flex:1; padding:6px 0; text-align:center; font-size:0.75rem;">Beli</a>
+                </div>
+            </div>
+
+            <!-- Buku 6: Child of All Nations -->
+            <div class="book-card" data-category="Sejarah" data-borrow="false" data-buy="true" data-title="Child of All Nations Buru Quartet Pramoedya Ananta Toer">
+                <a href="book-detail.html" class="book-cover">
+                    <img src="assets/covers/child_of_all_nations.jpg" alt="Child of All Nations">
+                </a>
+                <div style="margin-bottom:4px;"><span class="book-badge">Sejarah</span></div>
+                <a href="book-detail.html" class="book-title">Child of All Nations</a>
+                <div class="book-author">Pramoedya Ananta Toer</div>
+                <div class="book-price">Rp 145.000</div>
+                <div style="margin-top:10px; display:flex; gap:6px;">
+                    <a href="user-cart.html" class="btn btn-outline btn-sm" style="flex:1; padding:6px 0; text-align:center; font-size:0.75rem;">+ Keranjang</a>
+                    <a href="user-checkout.html" class="btn btn-primary btn-sm" style="flex:1; padding:6px 0; text-align:center; font-size:0.75rem;">Beli</a>
+                </div>
+            </div>
+
+            <!-- Buku 7: Mindset -->
+            <div class="book-card" data-category="Pengembangan Diri" data-borrow="false" data-buy="true" data-title="Mindset Dr Carol Dweck">
+                <a href="book-detail.html" class="book-cover">
+                    <img src="assets/covers/mindset.jpg" alt="Mindset">
+                </a>
+                <div style="margin-bottom:4px;"><span class="book-badge">Pengembangan Diri</span></div>
+                <a href="book-detail.html" class="book-title">Mindset: Changing The Way You think</a>
+                <div class="book-author">Dr. Carol S. Dweck</div>
+                <div class="book-price">Rp 115.000</div>
+                <div style="margin-top:10px; display:flex; gap:6px;">
+                    <a href="user-cart.html" class="btn btn-outline btn-sm" style="flex:1; padding:6px 0; text-align:center; font-size:0.75rem;">+ Keranjang</a>
+                    <a href="user-checkout.html" class="btn btn-primary btn-sm" style="flex:1; padding:6px 0; text-align:center; font-size:0.75rem;">Beli</a>
+                </div>
+            </div>
+
+            <!-- Buku 8: Pulang -->
+            <div class="book-card" data-category="Novel" data-borrow="true" data-buy="true" data-title="Pulang Leila S. Chudori">
+                <a href="book-detail.html" class="book-cover">
+                    <img src="assets/covers/pulang.jpg" alt="Pulang">
+                    <span class="book-borrow-badge">Gratis Pinjam</span>
+                </a>
+                <div style="margin-bottom:4px;"><span class="book-badge">Novel</span></div>
+                <a href="book-detail.html" class="book-title">Pulang</a>
+                <div class="book-author">Leila S. Chudori</div>
+                <div class="book-price">Rp 110.000</div>
+                <div style="margin-top:10px; display:flex; gap:6px;">
+                    <a href="user-cart.html" class="btn btn-outline btn-sm" style="flex:1; padding:6px 0; text-align:center; font-size:0.75rem;">+ Keranjang</a>
+                    <a href="user-checkout.html" class="btn btn-primary btn-sm" style="flex:1; padding:6px 0; text-align:center; font-size:0.75rem;">Beli</a>
+                </div>
+            </div>
+        </div>
+
+        <div id="catalogEmpty" style="display:none; text-align:center; padding:48px 20px;">
+            <div style="font-size:3rem; margin-bottom:12px;">🔍</div>
+            <h3>Buku tidak ditemukan</h3>
+            <p class="text-muted">Coba ubah kata kunci pencarian atau reset filter.</p>
+            <button type="button" class="btn btn-primary" onclick="resetFilter()">Reset Pencarian</button>
+        </div>
+    </div>
+
+    <script src="assets/js/script.js"></script>
+    <script src="assets/js/demo-toolbar.js"></script>
+    <script>
+        function applyCatalogFilter() {
+            const query = document.getElementById('searchInput').value.toLowerCase().trim();
+            const cat = document.getElementById('categorySelect').value;
+            const srv = document.getElementById('serviceSelect').value;
+            const cards = document.querySelectorAll('#catalogBookGrid .book-card');
+            let count = 0;
+
+            cards.forEach(card => {
+                const title = card.getAttribute('data-title').toLowerCase();
+                const cardCat = card.getAttribute('data-category');
+                const isBorrow = card.getAttribute('data-borrow') === 'true';
+                const isBuy = card.getAttribute('data-buy') === 'true';
+
+                let matchQuery = !query || title.includes(query);
+                let matchCat = cat === 'all' || cardCat === cat;
+                let matchSrv = srv === 'all' || (srv === 'borrow' && isBorrow) || (srv === 'buy' && isBuy);
+
+                if (matchQuery && matchCat && matchSrv) {
+                    card.style.display = '';
+                    count++;
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+
+            document.getElementById('catalogCount').innerText = count;
+            document.getElementById('catalogEmpty').style.display = count === 0 ? 'block' : 'none';
+        }
+
+        function resetFilter() {
+            document.getElementById('searchInput').value = '';
+            document.getElementById('categorySelect').value = 'all';
+            document.getElementById('serviceSelect').value = 'all';
+            applyCatalogFilter();
+        }
+    </script>
+</body>
+</html>

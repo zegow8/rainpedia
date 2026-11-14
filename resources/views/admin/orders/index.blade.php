@@ -17,27 +17,56 @@
 
 <!-- ============ TABS STATUS ============ -->
 <div class="status-tabs">
-    <a href="/admin/orders" class="status-tab {{ !request('status') ? 'active' : '' }}">
+    <a href="{{ request()->fullUrlWithQuery(['status' => '']) }}" class="status-tab {{ !request('status') ? 'active' : '' }}">
         Semua ({{ $counts['all'] }})
     </a>
-    <a href="/admin/orders?status=Waiting Confirmation" class="status-tab {{ request('status') === 'Waiting Confirmation' ? 'active' : '' }}" style="{{ $counts['Waiting Confirmation'] > 0 ? 'border-color:#f59e0b; color:#b45309; font-weight:700;' : '' }}">
+    <a href="{{ request()->fullUrlWithQuery(['status' => 'Waiting Confirmation']) }}" class="status-tab {{ request('status') === 'Waiting Confirmation' ? 'active' : '' }}" style="{{ $counts['Waiting Confirmation'] > 0 ? 'border-color:#f59e0b; color:#b45309; font-weight:700;' : '' }}">
         ⏳ Menunggu ACC ({{ $counts['Waiting Confirmation'] }})
     </a>
-    <a href="/admin/orders?status=Processing" class="status-tab {{ request('status') === 'Processing' ? 'active' : '' }}">
+    <a href="{{ request()->fullUrlWithQuery(['status' => 'Processing']) }}" class="status-tab {{ request('status') === 'Processing' ? 'active' : '' }}">
         Dikemas ({{ $counts['Processing'] }})
     </a>
-    <a href="/admin/orders?status=Shipped" class="status-tab {{ request('status') === 'Shipped' ? 'active' : '' }}">
+    <a href="{{ request()->fullUrlWithQuery(['status' => 'Shipped']) }}" class="status-tab {{ request('status') === 'Shipped' ? 'active' : '' }}">
         Dikirim ({{ $counts['Shipped'] }})
     </a>
-    <a href="/admin/orders?status=Completed" class="status-tab {{ request('status') === 'Completed' ? 'active' : '' }}">
+    <a href="{{ request()->fullUrlWithQuery(['status' => 'Completed']) }}" class="status-tab {{ request('status') === 'Completed' ? 'active' : '' }}">
         Selesai ({{ $counts['Completed'] }})
     </a>
-    <a href="/admin/orders?status=Cancelled" class="status-tab {{ request('status') === 'Cancelled' ? 'active' : '' }}">
+    <a href="{{ request()->fullUrlWithQuery(['status' => 'Cancelled']) }}" class="status-tab {{ request('status') === 'Cancelled' ? 'active' : '' }}">
         Dibatalkan ({{ $counts['Cancelled'] }})
     </a>
-    <a href="/admin/orders?status=Rejected" class="status-tab {{ request('status') === 'Rejected' ? 'active' : '' }}">
+    <a href="{{ request()->fullUrlWithQuery(['status' => 'Rejected']) }}" class="status-tab {{ request('status') === 'Rejected' ? 'active' : '' }}">
         Ditolak ({{ $counts['Rejected'] }})
     </a>
+</div>
+
+<!-- ============ FILTER TANGGAL & PENCARIAN ============ -->
+<div class="panel" style="margin-bottom:20px; padding:16px 20px;">
+    <form method="GET" action="/admin/orders">
+        @if(request('status'))
+            <input type="hidden" name="status" value="{{ request('status') }}">
+        @endif
+        <div style="display:flex; gap:12px; flex-wrap:wrap; align-items:flex-end;">
+            <div style="flex:1; min-width:180px;">
+                <label style="display:block; font-size:0.8rem; font-weight:700; margin-bottom:4px; color:var(--text-muted);">Mulai Tanggal</label>
+                <input type="date" name="start_date" class="form-control" value="{{ request('start_date') }}">
+            </div>
+            <div style="flex:1; min-width:180px;">
+                <label style="display:block; font-size:0.8rem; font-weight:700; margin-bottom:4px; color:var(--text-muted);">Sampai Tanggal</label>
+                <input type="date" name="end_date" class="form-control" value="{{ request('end_date') }}">
+            </div>
+            <div style="flex:1.5; min-width:200px;">
+                <label style="display:block; font-size:0.8rem; font-weight:700; margin-bottom:4px; color:var(--text-muted);">Cari No. Invoice / Nama / HP</label>
+                <input type="text" name="q" class="form-control" placeholder="No. invoice, nama, atau no. HP..." value="{{ request('q') }}">
+            </div>
+            <div style="display:flex; gap:8px;">
+                <button type="submit" class="btn btn-primary" style="font-weight:700;">🔍 Filter</button>
+                @if(request('start_date') || request('end_date') || request('q'))
+                    <a href="/admin/orders{{ request('status') ? '?status=' . request('status') : '' }}" class="btn btn-outline">Reset</a>
+                @endif
+            </div>
+        </div>
+    </form>
 </div>
 
 <!-- ============ TABEL DATA PEMBELIAN ============ -->
@@ -74,6 +103,13 @@
                         <strong>{{ $o->user->name ?? 'User Terhapus' }}</strong>
                         <div style="font-size:0.8rem; color:var(--text-muted);">{{ $o->user->email ?? '-' }}</div>
                         <div style="font-size:0.75rem; color:var(--text-muted);">HP: {{ $o->user->phone ?? '-' }}</div>
+                        @if($o->user)
+                            <div style="margin-top:6px;">
+                                <a href="/admin/chats?user_id={{ $o->user_id }}" class="btn btn-outline btn-sm" style="padding:2px 8px; font-size:0.72rem; text-decoration:none; display:inline-flex; align-items:center; gap:4px; font-weight:600;">
+                                    💬 Chat Pembeli
+                                </a>
+                            </div>
+                        @endif
                     </td>
 
                     <!-- Preview Cover & Judul Buku di Order -->

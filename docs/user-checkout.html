@@ -1,0 +1,130 @@
+﻿<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Checkout Pembelian - User Area - Rainpedia</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="stylesheet" href="assets/css/demo-toolbar.css">
+    <style>
+        html, body { max-width: 100vw; overflow-x: hidden; }
+        body { display: flex; flex-direction: column; min-height: 100vh; background-color: var(--bg-main); }
+        .navbar-user { background: var(--white); border-bottom: 2px solid var(--primary); padding: 0; }
+        .navbar-user-top { display: flex; justify-content: space-between; align-items: center; padding: 14px 0; }
+        .navbar-user .brand { font-size: 1.25rem; font-weight: 800; color: var(--primary); text-decoration: none; display: flex; align-items: center; gap: 10px; }
+        .navbar-user .brand img { height: 36px !important; width: auto !important; max-height: 40px !important; }
+        .navbar-user-icons { display: flex; gap: 20px; align-items: center; }
+        .page-wrap { max-width: 1000px; width: 100%; margin: 0 auto; padding: 32px 24px; flex: 1; }
+        @media (max-width: 768px) {
+            .page-wrap { padding: 16px 12px; }
+            .checkout-grid { grid-template-columns: 1fr !important; }
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar-user">
+        <div class="container">
+            <div class="navbar-user-top">
+                <a href="user-dashboard.html" class="brand">
+                    <img src="assets/images/rainpedia.png" alt="Rainpedia" onerror="this.style.display='none'; this.nextElementSibling.style.display='inline';">
+                    <span style="display:none;">RAINPEDIA</span>
+                </a>
+                <div class="navbar-user-icons">
+                    <a href="user-cart.html" style="font-size:0.9rem; font-weight:600; color:var(--text-muted);">&larr; Kembali ke Keranjang</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <div class="page-wrap">
+        <h1 style="margin-bottom: 6px;">Checkout Pembelian Buku</h1>
+        <p class="text-muted" style="margin-bottom: 24px;">Lengkapi alamat pengiriman dan pilih metode pembayaran</p>
+
+        <div style="display:grid; grid-template-columns: 1.6fr 1fr; gap:24px;" class="checkout-grid">
+            <!-- Form Pengiriman -->
+            <div style="display:flex; flex-direction:column; gap:20px;">
+                <div class="panel" style="margin:0;">
+                    <h3 class="panel-title" style="margin-bottom:14px;">📍 Alamat Pengiriman</h3>
+                    <div class="form-group">
+                        <label class="form-label">Nama Penerima</label>
+                        <input type="text" class="form-control" value="Rain (User A)" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Nomor WhatsApp / HP</label>
+                        <input type="text" class="form-control" value="081298765432" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Alamat Lengkap</label>
+                        <textarea class="form-control" rows="3" required>Jl. Kebon Sirih Barat No. 45, Menteng, Jakarta Pusat, DKI Jakarta, 10340</textarea>
+                    </div>
+                </div>
+
+                <div class="panel" style="margin:0;">
+                    <h3 class="panel-title" style="margin-bottom:14px;">🚚 Ekspedisi Pengiriman</h3>
+                    <div style="display:flex; flex-direction:column; gap:10px;">
+                        <label style="display:flex; justify-content:space-between; align-items:center; padding:12px; border:1.5px solid var(--primary); border-radius:8px; cursor:pointer; background:#eff6ff;">
+                            <div>
+                                <input type="radio" name="courier" checked> <strong>JNE Reguler (1-2 Hari)</strong>
+                            </div>
+                            <strong>Rp 20.000</strong>
+                        </label>
+                        <label style="display:flex; justify-content:space-between; align-items:center; padding:12px; border:1px solid #cbd5e1; border-radius:8px; cursor:pointer;">
+                            <div>
+                                <input type="radio" name="courier"> <strong>SiCepat Kilat (1 Hari)</strong>
+                            </div>
+                            <strong>Rp 22.000</strong>
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Ringkasan Order & Konfirmasi -->
+            <div class="panel" style="margin:0; height:fit-content;">
+                <h3 class="panel-title" style="margin-bottom:16px;">Ringkasan Pembelian</h3>
+                <div style="display:flex; gap:12px; align-items:center; padding-bottom:14px; border-bottom:1px solid #f1f5f9; margin-bottom:16px;">
+                    <img src="assets/covers/bumi_manusia.jpg" alt="Bumi Manusia" style="width:40px; height:58px; object-fit:cover; border-radius:4px;">
+                    <div style="flex:1;">
+                        <strong style="font-size:0.9rem;">Bumi Manusia</strong>
+                        <div style="font-size:0.75rem; color:var(--text-muted);">1 pcs x Rp 135.000</div>
+                    </div>
+                    <div style="font-weight:700;">Rp 135.000</div>
+                </div>
+
+                <div style="display:flex; flex-direction:column; gap:8px; font-size:0.88rem; margin-bottom:16px;">
+                    <div class="flex-between">
+                        <span class="text-muted">Subtotal Produk:</span>
+                        <strong>Rp 135.000</strong>
+                    </div>
+                    <div class="flex-between">
+                        <span class="text-muted">Ongkos Kirim:</span>
+                        <strong>Rp 20.000</strong>
+                    </div>
+                    <div class="flex-between" style="font-size:1.1rem; font-weight:800; border-top:2px solid #e2e8f0; padding-top:12px; margin-top:4px;">
+                        <span>Total Pembayaran:</span>
+                        <span style="color:var(--primary);">Rp 155.000</span>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Metode Pembayaran</label>
+                    <select class="form-control">
+                        <option>BCA Virtual Account (Otomatis)</option>
+                        <option>Mandiri / BRI / BNI Transfer</option>
+                        <option>QRIS / GoPay / ShopeePay</option>
+                    </select>
+                </div>
+
+                <button type="button" class="btn btn-primary btn-block" style="padding:12px; font-weight:800;" onclick="alert('Pesanan berhasil dibuat! Anda sekarang dialihkan ke riwayat pembelian dengan status: Menunggu ACC.'); window.location.href='user-transactions.html?status=Waiting Confirmation';">
+                    Konfirmasi Pembelian (Rp 155.000)
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script src="assets/js/script.js"></script>
+    <script src="assets/js/demo-toolbar.js"></script>
+</body>
+</html>

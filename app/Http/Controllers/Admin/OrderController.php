@@ -17,6 +17,27 @@ class OrderController extends Controller
             $query->where('status', $request->status);
         }
 
+        if ($request->filled('start_date')) {
+            $query->whereDate('created_at', '>=', $request->start_date);
+        }
+
+        if ($request->filled('end_date')) {
+            $query->whereDate('created_at', '<=', $request->end_date);
+        }
+
+        if ($request->filled('q')) {
+            $keyword = $request->q;
+            $query->where(function($q) use ($keyword) {
+                $q->where('invoice_code', 'like', "%{$keyword}%")
+                  ->orWhere('receiver_name', 'like', "%{$keyword}%")
+                  ->orWhere('receiver_phone', 'like', "%{$keyword}%")
+                  ->orWhereHas('user', function($uq) use ($keyword) {
+                      $uq->where('name', 'like', "%{$keyword}%")
+                         ->orWhere('email', 'like', "%{$keyword}%");
+                  });
+            });
+        }
+
         $orders = $query->paginate(10)->withQueryString();
 
         // Hitung count untuk tab

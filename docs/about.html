@@ -1,0 +1,120 @@
+﻿<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tentang Kami - Rainpedia</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="stylesheet" href="assets/css/demo-toolbar.css">
+    <style>
+        html, body { max-width: 100vw; overflow-x: hidden; }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="container navbar-inner">
+            <a href="index.html" class="navbar-brand">
+                <img src="assets/images/rainpedia.png" alt="Rainpedia" onerror="this.style.display='none'; this.nextElementSibling.style.display='inline';">
+                <span style="display:none;">RAINPEDIA</span>
+            </a>
+            <ul class="navbar-nav">
+                <li><a href="index.html">Beranda</a></li>
+                <li><a href="catalog.html">Katalog Buku</a></li>
+                <li><a href="about.html" class="active">Tentang Kami</a></li>
+            </ul>
+            <div class="navbar-actions">
+                <a href="login.html" class="btn btn-outline btn-sm">Login</a>
+                <a href="register.html" class="btn btn-primary btn-sm">Daftar</a>
+                <button class="navbar-hamburger" id="navbar-hamburger" aria-label="Menu" aria-expanded="false">
+                    <span></span><span></span><span></span>
+                </button>
+            </div>
+        </div>
+        <div class="navbar-mobile-menu" id="navbar-mobile-menu">
+            <a href="index.html">Beranda</a>
+            <a href="catalog.html">Katalog Buku</a>
+            <a href="about.html" class="active">Tentang Kami</a>
+            <a href="login.html">Login</a>
+            <a href="register.html" style="color:var(--primary);">Daftar Gratis</a>
+        </div>
+    </nav>
+
+    <main class="main-content">
+        <div class="container">
+            <div class="about-hero">
+                <h1>Tentang Rainpedia</h1>
+                <p>Platform buku independen untuk semua orang.</p>
+            </div>
+
+            <div style="max-width: 860px; margin: 0 auto;">
+                <div class="panel" style="margin-bottom:24px;">
+                    <h2 style="font-size:1.3rem;margin-bottom:12px;">Siapa Kami?</h2>
+                    <p>Rainpedia adalah platform buku independen yang didirikan dengan satu tujuan: membuat buku lebih mudah diakses oleh semua orang. Kami percaya bahwa membaca adalah jendela dunia, dan setiap orang berhak mendapatkan akses ke pengetahuan tanpa hambatan biaya.</p>
+                </div>
+
+                <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap:20px; margin-bottom:24px;">
+                    <div class="panel" style="margin-bottom:0;border-top:4px solid var(--primary);">
+                        <div style="font-size:2rem;margin-bottom:12px;">🛒</div>
+                        <h3 style="font-size:1.1rem;margin-bottom:8px;">Beli Buku</h3>
+                        <p style="font-size:0.95rem;color:var(--text-muted);margin:0;">Dapatkan buku fisik favorit Anda dengan pengiriman ke seluruh Indonesia. Koleksi lengkap dari berbagai genre dan penulis terbaik.</p>
+                    </div>
+                    <div class="panel" style="margin-bottom:0;border-top:4px solid var(--success);">
+                        <div style="font-size:2rem;margin-bottom:12px;">📗</div>
+                        <h3 style="font-size:1.1rem;margin-bottom:8px;">Pinjam Buku Gratis</h3>
+                        <p style="font-size:0.95rem;color:var(--text-muted);margin:0;">Layanan peminjaman 100% gratis dengan durasi maksimal 7 hari. Karena tidak semua orang harus membeli untuk bisa membaca.</p>
+                    </div>
+                </div>
+
+                <div class="panel" style="margin-bottom:24px;background:#f8fafc;">
+                    <h2 style="font-size:1.3rem;margin-bottom:20px;">📋 Aturan Peminjaman</h2>
+                    <div style="display:grid;gap:16px;">
+                        <div style="display:flex;gap:16px;align-items:flex-start;">
+                            <div style="width:36px;height:36px;background:var(--primary);color:white;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:800;flex-shrink:0;">1</div>
+                            <div>
+                                <strong>Maks 2 buku sekaligus</strong>
+                                <p style="margin:4px 0 0;font-size:0.9rem;color:var(--text-muted);">Setiap pengguna dapat meminjam maksimal 2 buku secara bersamaan.</p>
+                            </div>
+                        </div>
+                        <div style="display:flex;gap:16px;align-items:flex-start;">
+                            <div style="width:36px;height:36px;background:var(--primary);color:white;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:800;flex-shrink:0;">2</div>
+                            <div>
+                                <strong>Durasi maks 7 hari</strong>
+                                <p style="margin:4px 0 0;font-size:0.9rem;color:var(--text-muted);">Buku harus dikembalikan dalam 7 hari sejak peminjaman disetujui.</p>
+                            </div>
+                        </div>
+                        <div style="display:flex;gap:16px;align-items:flex-start;">
+                            <div style="width:36px;height:36px;background:var(--danger);color:white;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:800;flex-shrink:0;">!</div>
+                            <div>
+                                <strong>Denda keterlambatan</strong>
+                                <p style="margin:4px 0 0;font-size:0.9rem;color:var(--text-muted);">Keterlambatan pengembalian dikenakan denda Rp10.000 per hari.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="panel" style="text-align:center;background:linear-gradient(135deg,var(--primary),var(--primary-dark));color:white;border:none;">
+                    <h2 style="color:white;margin-bottom:12px;">Siap Mulai Membaca?</h2>
+                    <p style="color:rgba(255,255,255,0.85);margin-bottom:24px;">Daftar sekarang dan nikmati layanan peminjaman buku gratis.</p>
+                    <a href="register.html" class="btn btn-primary" style="background:white; color:var(--primary); font-weight:700;">Daftar Sekarang &rarr;</a>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <div class="container footer-bottom" style="border-top:1px solid #e2e8f0; padding-top:20px; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px;">
+            <div>&copy; 2026 <strong>Rainpedia</strong>. All rights reserved.</div>
+            <div style="display:flex; gap:16px;">
+                <a href="user-dashboard.html" style="color:var(--primary); font-weight:600;">POV Pengguna</a>
+                <a href="admin-dashboard.html" style="color:var(--primary); font-weight:600;">POV Admin</a>
+            </div>
+        </div>
+    </footer>
+
+    <script src="assets/js/script.js"></script>
+    <script src="assets/js/demo-toolbar.js"></script>
+</body>
+</html>

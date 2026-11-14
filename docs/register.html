@@ -1,0 +1,62 @@
+﻿<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Daftar Akun - Rainpedia</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="stylesheet" href="assets/css/demo-toolbar.css">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="container navbar-inner">
+            <a href="index.html" class="navbar-brand">
+                <img src="assets/images/rainpedia.png" alt="Rainpedia" onerror="this.style.display='none'; this.nextElementSibling.style.display='inline';">
+            </a>
+            <div class="navbar-actions">
+                <a href="login.html" class="btn btn-outline btn-sm">Sudah Punya Akun? Login</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="auth-wrapper">
+        <div class="auth-card">
+            <div class="auth-logo">
+                <img src="assets/images/rainpedia.png" alt="Rainpedia" onerror="this.style.display='none'; this.nextElementSibling.style.display='inline';">
+            </div>
+            <h1 class="auth-title">Daftar Akun Baru</h1>
+            <p class="auth-subtitle">Bergabunglah bersama ribuan pembaca setia Rainpedia.</p>
+
+            <form onsubmit="event.preventDefault(); alert('Pendaftaran berhasil! Silakan nikmati tur demo Rainpedia.'); window.location.href='user-dashboard.html';">
+                <div class="form-group">
+                    <label class="form-label">Nama Lengkap</label>
+                    <input type="text" class="form-control" required placeholder="Contoh: Rain" value="Rain">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Alamat Email</label>
+                    <input type="email" class="form-control" required placeholder="nama@email.com" value="rain@gmail.com">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Nomor WhatsApp / HP</label>
+                    <input type="text" class="form-control" placeholder="081234567890" value="081298765432">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Password</label>
+                    <input type="password" class="form-control" required placeholder="Minimal 8 karakter" value="password123">
+                </div>
+                <button type="submit" class="btn btn-primary btn-block">Daftar Sekarang</button>
+            </form>
+
+            <div class="auth-footer">
+                Sudah punya akun? <a href="login.html">Login di sini</a>
+            </div>
+        </div>
+    </div>
+
+    <script src="assets/js/script.js"></script>
+    <script src="assets/js/demo-toolbar.js"></script>
+</body>
+</html>

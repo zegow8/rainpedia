@@ -1,0 +1,153 @@
+﻿<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Notifikasi Saya - User Area - Rainpedia</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="stylesheet" href="assets/css/demo-toolbar.css">
+    <style>
+        html, body { max-width: 100vw; overflow-x: hidden; }
+        body { display: flex; flex-direction: column; min-height: 100vh; background-color: var(--bg-main); }
+        .navbar-user { background: var(--white); border-bottom: 2px solid var(--primary); padding: 0; box-shadow: 0 1px 3px rgba(0,0,0,0.05); }
+        .navbar-user-top { display: flex; justify-content: space-between; align-items: center; padding: 14px 0; }
+        .navbar-user .brand { font-size: 1.25rem; font-weight: 800; color: var(--primary); text-decoration: none; display: flex; align-items: center; gap: 10px; }
+        .navbar-user .brand img { height: 36px !important; width: auto !important; max-height: 40px !important; }
+        .navbar-user-icons { display: flex; gap: 20px; align-items: center; }
+        .navbar-user-icons a { color: var(--text-main); font-size: 0.9rem; font-weight: 600; text-decoration: none; }
+        .navbar-user-bottom { border-top: 1px solid var(--border); display: flex; gap: 24px; padding: 0; overflow-x: auto; white-space: nowrap; }
+        .navbar-user-bottom a { color: var(--text-muted); font-weight: 600; font-size: 0.9rem; text-decoration: none; padding: 14px 0; border-bottom: 3px solid transparent; }
+        .navbar-user-bottom a.active { color: var(--primary); border-bottom-color: var(--primary); }
+        .badge-notif { background: var(--danger); color: white; font-size: 0.65rem; padding: 2px 6px; border-radius: 10px; font-weight: 700; margin-left: 4px; vertical-align: middle; }
+        .page-wrap { max-width: 850px; width: 100%; margin: 0 auto; padding: 32px 24px; flex: 1; }
+        .notif-tab { padding: 10px 16px; font-size: 0.88rem; font-weight: 700; text-decoration: none; border-bottom: 3px solid transparent; color: var(--text-muted); cursor: pointer; display: flex; align-items: center; gap: 6px; white-space: nowrap; }
+        .notif-tab.active { border-bottom-color: var(--primary); color: var(--primary); }
+        @media (max-width: 768px) {
+            .navbar-user-top { flex-direction: column; gap: 12px; align-items: flex-start; }
+            .navbar-user-icons { width: 100%; justify-content: space-between; overflow-x: auto; font-size: 0.8rem; }
+            .navbar-user-bottom { gap: 14px; }
+            .page-wrap { padding: 16px 12px; }
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar-user">
+        <div class="container">
+            <div class="navbar-user-top">
+                <a href="user-dashboard.html" class="brand">
+                    <img src="assets/images/rainpedia.png" alt="Rainpedia" onerror="this.style.display='none'; this.nextElementSibling.style.display='inline';">
+                    <span style="display:none;">RAINPEDIA</span>
+                </a>
+                <div class="navbar-user-icons">
+                    <a href="user-catalog.html">📚 Katalog Buku</a>
+                    <a href="user-cart.html">🛒 Keranjang <span class="badge-notif" style="background:#2563eb;">1</span></a>
+                    <a href="user-profile.html">👤 Rain (User A)</a>
+                    <a href="index.html" style="color:var(--danger) !important; font-weight:700;">Logout</a>
+                </div>
+            </div>
+            <div class="navbar-user-bottom">
+                <a href="user-dashboard.html">Beranda</a>
+                <a href="user-catalog.html">Katalog Buku</a>
+                <a href="user-borrowings.html">Peminjaman Saya</a>
+                <a href="user-transactions.html">Riwayat Pembelian</a>
+                <a href="user-chat.html">💬 Tanya Admin <span class="badge-notif" style="background:#2563eb;">1</span></a>
+                <a href="user-profile.html">Pengaturan Profil</a>
+                <a href="user-notifications.html" class="active">Notifikasi <span class="badge-notif">3</span></a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="page-wrap">
+        <div style="margin-bottom: 24px;">
+            <h1 style="font-size: 1.6rem; font-weight: 800; color: var(--text-main); margin: 0 0 4px 0;">🔔 Notifikasi Akun</h1>
+            <p style="color: var(--text-muted); font-size: 0.9rem; margin: 0;">Pembaruan terkini terkait transaksi pembelian, aktivitas peminjaman buku, dan pesan dari admin.</p>
+        </div>
+
+        <!-- TABS KATEGORI NOTIFIKASI -->
+        <div style="display: flex; gap: 8px; margin-bottom: 20px; overflow-x: auto; border-bottom: 1px solid var(--border);">
+            <div class="notif-tab active" onclick="filterNotifs('all', this)">
+                <span>🔔 Semua</span> <span style="font-size:0.75rem; padding:2px 7px; border-radius:10px; background:#eff6ff; color:#2563eb;">3</span>
+            </div>
+            <div class="notif-tab" onclick="filterNotifs('order', this)">
+                <span>🛍️ Pembelian</span> <span style="font-size:0.75rem; padding:2px 7px; border-radius:10px; background:#f1f5f9; color:#64748b;">1</span>
+            </div>
+            <div class="notif-tab" onclick="filterNotifs('borrow', this)">
+                <span>📖 Pinjaman</span> <span style="font-size:0.75rem; padding:2px 7px; border-radius:10px; background:#f1f5f9; color:#64748b;">1</span>
+            </div>
+            <div class="notif-tab" onclick="filterNotifs('chat', this)">
+                <span>💬 Pesan dari Admin</span> <span style="font-size:0.75rem; padding:2px 7px; border-radius:10px; background:#f1f5f9; color:#64748b;">1</span>
+            </div>
+        </div>
+
+        <!-- DAFTAR NOTIFIKASI -->
+        <div class="panel" style="padding: 0; overflow: hidden; background: white; border: 1px solid var(--border); border-radius: 10px;">
+            <!-- Notif 1: Pembelian -->
+            <div class="notif-item" data-notif-cat="order" style="padding: 16px 20px; border-bottom: 1px solid #f1f5f9; display: flex; gap: 14px; align-items: flex-start; background: #faf5ff;">
+                <div style="width: 40px; height: 40px; border-radius: 50%; background: #f3e8ff; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; flex-shrink: 0;">🛍️</div>
+                <div style="flex: 1;">
+                    <div class="flex-between">
+                        <strong style="font-size: 0.95rem; color: #1e293b;">Pesanan Telah Dibuat!</strong>
+                        <span style="font-size: 0.75rem; color: #94a3b8;">14 Nov 2026 09:15</span>
+                    </div>
+                    <p style="font-size: 0.85rem; color: #475569; margin: 4px 0 8px 0; line-height: 1.5;">
+                        Pesanan buku <strong>Bumi Manusia</strong> (Invoice: RP-20261114-1E1A0F) berhasil dibuat dan sedang menunggu ACC admin.
+                    </p>
+                    <a href="user-transaction-detail.html" style="font-size: 0.8rem; font-weight: 700; color: var(--primary); text-decoration: none;">Lihat Pesanan &rarr;</a>
+                </div>
+            </div>
+
+            <!-- Notif 2: Pinjaman -->
+            <div class="notif-item" data-notif-cat="borrow" style="padding: 16px 20px; border-bottom: 1px solid #f1f5f9; display: flex; gap: 14px; align-items: flex-start; background: #fff7ed;">
+                <div style="width: 40px; height: 40px; border-radius: 50%; background: #ffedd5; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; flex-shrink: 0;">⚠️</div>
+                <div style="flex: 1;">
+                    <div class="flex-between">
+                        <strong style="font-size: 0.95rem; color: #9a3412;">Peringatan Denda Keterlambatan</strong>
+                        <span style="font-size: 0.75rem; color: #94a3b8;">13 Nov 2026 23:59</span>
+                    </div>
+                    <p style="font-size: 0.85rem; color: #475569; margin: 4px 0 8px 0; line-height: 1.5;">
+                        Peminjaman buku <strong>Cantik Itu Luka</strong> telah melampaui tenggat waktu. Tagihan denda saat ini adalah Rp 10.000.
+                    </p>
+                    <a href="user-borrowings.html?status=Overdue" style="font-size: 0.8rem; font-weight: 700; color: #ea580c; text-decoration: none;">Bayar Denda &rarr;</a>
+                </div>
+            </div>
+
+            <!-- Notif 3: Chat -->
+            <div class="notif-item" data-notif-cat="chat" style="padding: 16px 20px; display: flex; gap: 14px; align-items: flex-start; background: #eff6ff;">
+                <div style="width: 40px; height: 40px; border-radius: 50%; background: #dbeafe; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; flex-shrink: 0;">💬</div>
+                <div style="flex: 1;">
+                    <div class="flex-between">
+                        <strong style="font-size: 0.95rem; color: #1e40af;">Pesan Baru dari Admin</strong>
+                        <span style="font-size: 0.75rem; color: #94a3b8;">14 Nov 2026 14:00</span>
+                    </div>
+                    <p style="font-size: 0.85rem; color: #475569; margin: 4px 0 8px 0; line-height: 1.5;">
+                        "Halo kak Rain! Ada yang bisa kami bantu seputar peminjaman atau pembelian buku hari ini? 😊"
+                    </p>
+                    <a href="user-chat.html" style="font-size: 0.8rem; font-weight: 700; color: var(--primary); text-decoration: none;">Buka Percakapan &rarr;</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="assets/js/script.js"></script>
+    <script src="assets/js/demo-toolbar.js"></script>
+    <script>
+        function filterNotifs(cat, tabEl) {
+            document.querySelectorAll('.notif-tab').forEach(t => t.classList.remove('active'));
+            tabEl.classList.add('active');
+
+            const items = document.querySelectorAll('.notif-item');
+            items.forEach(it => {
+                const itemCat = it.getAttribute('data-notif-cat');
+                if (cat === 'all' || itemCat === cat) {
+                    it.style.display = 'flex';
+                } else {
+                    it.style.display = 'none';
+                }
+            });
+        }
+    </script>
+</body>
+</html>

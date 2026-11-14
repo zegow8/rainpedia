@@ -1,0 +1,495 @@
+﻿<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Data Peminjaman Buku - Admin Rainpedia</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="stylesheet" href="assets/css/demo-toolbar.css">
+    <style>
+        html, body { max-width: 100vw; overflow-x: hidden; }
+        .admin-layout { display: flex; min-height: 100vh; background: #f8fafc; max-width: 100vw; overflow-x: hidden; }
+        .sidebar { width: 260px; background: white; border-right: 1px solid #e2e8f0; flex-shrink: 0; display: flex; flex-direction: column; }
+        .sidebar-brand { padding: 24px; font-weight: 800; font-size: 1.15rem; color: var(--primary); border-bottom: 1px solid #e2e8f0; letter-spacing: 0.05em; }
+        .sidebar-menu { list-style: none; padding: 0; margin: 0; flex: 1; overflow-y: auto; }
+        .sidebar-menu a { display: block; padding: 11px 24px; color: #475569; font-weight: 600; font-size: 0.9rem; text-decoration: none; border-left: 4px solid transparent; transition: all 0.2s; }
+        .sidebar-menu a:hover, .sidebar-menu a.active { background: #eff6ff; color: var(--primary); border-left-color: var(--primary); }
+        .menu-header { padding: 18px 24px 6px; font-size: 0.7rem; font-weight: 800; color: #94a3b8; text-transform: uppercase; letter-spacing: 0.08em; }
+        .main-content { flex: 1; display: flex; flex-direction: column; min-width: 0; }
+        .topbar { background: white; padding: 16px 32px; border-bottom: 1px solid #e2e8f0; display: flex; justify-content: space-between; align-items: center; }
+        .content-wrapper { padding: 32px; flex: 1; overflow-y: auto; }
+        .status-tabs { display: flex; gap: 8px; margin-bottom: 20px; flex-wrap: wrap; }
+        .status-tab { padding: 8px 16px; border-radius: 100px; font-size: 0.85rem; font-weight: 600; text-decoration: none; border: 1.5px solid var(--border-dark); color: var(--text-muted); background: var(--white); transition: all 0.2s; cursor: pointer; }
+        .status-tab:hover { border-color: var(--primary); color: var(--primary); text-decoration: none; }
+        .status-tab.active { background: var(--primary); color: white; border-color: var(--primary); }
+
+        @media (max-width: 768px) {
+            .admin-layout { flex-direction: column; }
+            .sidebar { width: 100%; border-right: none; border-bottom: 1px solid #e2e8f0; }
+            .sidebar-menu { display: flex; overflow-x: auto; white-space: nowrap; -webkit-overflow-scrolling: touch; padding: 4px 0; }
+            .sidebar-menu a { border-left: none; border-bottom: 3px solid transparent; padding: 12px 14px; font-size: 0.85rem; }
+            .sidebar-menu a.active { border-left: none; border-bottom-color: var(--primary); }
+            .menu-header { display: none; }
+            .topbar { padding: 12px 16px; }
+            .content-wrapper { padding: 16px 12px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="admin-layout">
+        <!-- Sidebar Admin -->
+        <div class="sidebar">
+            <div class="sidebar-brand">RAINPEDIA ADMIN</div>
+            <ul class="sidebar-menu">
+                <li class="menu-header">Utama</li>
+                <li><a href="admin-dashboard.html">Dashboard</a></li>
+
+                <li class="menu-header">Manajemen Buku</li>
+                <li><a href="admin-books.html">Data Buku</a></li>
+                <li><a href="admin-categories.html">Kategori Buku</a></li>
+
+                <li class="menu-header">Transaksi</li>
+                <li><a href="admin-orders.html">Data Pembelian</a></li>
+                <li><a href="admin-borrowings.html" class="active">Data Peminjaman</a></li>
+                <li><a href="admin-returns.html">Pengembalian</a></li>
+                <li><a href="admin-payments.html">Pendapatan &amp; Denda</a></li>
+
+                <li class="menu-header">Layanan Pelanggan</li>
+                <li>
+                    <a href="admin-chats.html" style="display:flex; justify-content:space-between; align-items:center;">
+                        <span>💬 Chat Pelanggan</span>
+                        <span style="background:#ef4444; color:white; font-size:0.65rem; padding:2px 7px; border-radius:10px; font-weight:800;">1</span>
+                    </a>
+                </li>
+
+                <li class="menu-header">Sistem</li>
+                <li><a href="admin-users.html">Data User</a></li>
+                <li><a href="admin-profile.html">Profil Admin</a></li>
+                <li style="padding: 24px;">
+                    <a href="index.html" style="color: #ef4444; font-weight: 700;">Logout</a>
+                </li>
+            </ul>
+        </div>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <div class="topbar">
+                <strong style="color: var(--text-main);">Halo, Administrator</strong>
+                <a href="index.html" target="_blank" class="btn btn-outline btn-sm">Lihat Website</a>
+            </div>
+
+            <div class="content-wrapper">
+                <div class="flex-between mb-4" style="flex-wrap:wrap; gap:16px;">
+                    <div>
+                        <h1 style="margin-bottom:4px;">Data Peminjaman Buku</h1>
+                        <p class="text-muted" style="margin:0;">Kelola permohonan pinjam, tenggat waktu, dan status peminjaman buku</p>
+                    </div>
+                    <div>
+                        <a href="print-borrowings.html" target="_blank" class="btn btn-primary" style="display:inline-flex; align-items:center; gap:8px; font-weight:700; padding:10px 18px; background:#2563eb;">
+                            🖨️ Cetak Laporan Peminjaman
+                        </a>
+                    </div>
+                </div>
+
+                <!-- ============ STATUS TABS (PERSIS SESUAI SCREENSHOT USER: IMAGE 3) ============ -->
+                <div class="status-tabs">
+                    <a href="javascript:void(0)" class="status-tab active" data-status="all">
+                        Semua (13)
+                    </a>
+                    <a href="javascript:void(0)" class="status-tab" data-status="Pending">
+                        Pending (1)
+                    </a>
+                    <a href="javascript:void(0)" class="status-tab" data-status="Borrowed">
+                        Sedang Dipinjam (1)
+                    </a>
+                    <a href="javascript:void(0)" class="status-tab" data-status="Overdue">
+                        Terlambat (2)
+                    </a>
+                    <a href="javascript:void(0)" class="status-tab" data-status="Return Requested">
+                        Minta Kembali (3)
+                    </a>
+                    <a href="javascript:void(0)" class="status-tab" data-status="Returned">
+                        Sudah Kembali (3)
+                    </a>
+                    <a href="javascript:void(0)" class="status-tab" data-status="Rejected">
+                        Ditolak (3)
+                    </a>
+                </div>
+
+                <!-- ============ STATUS EXPLAINER BANNER ============ -->
+                <div id="statusExplainer" class="status-explainer-card">
+                    <div class="explainer-icon">💡</div>
+                    <div>
+                        <div class="explainer-title">Semua Peminjaman Buku (Total: 13)</div>
+                        <div class="explainer-desc">Klik tab status di atas untuk melihat tampilan detail masing-masing tahapan peminjaman buku beserta tombol aksi admin dan verifikasi bebas denda.</div>
+                    </div>
+                </div>
+
+                <!-- ============ FILTER TANGGAL & PENCARIAN ============ -->
+                <div class="panel" style="margin-bottom:20px; padding:16px 20px;">
+                    <div style="display:flex; gap:12px; flex-wrap:wrap; align-items:flex-end;">
+                        <div style="flex:1; min-width:180px;">
+                            <label style="display:block; font-size:0.8rem; font-weight:700; margin-bottom:4px; color:var(--text-muted);">Mulai Tanggal</label>
+                            <input type="date" class="form-control">
+                        </div>
+                        <div style="flex:1; min-width:180px;">
+                            <label style="display:block; font-size:0.8rem; font-weight:700; margin-bottom:4px; color:var(--text-muted);">Sampai Tanggal</label>
+                            <input type="date" class="form-control">
+                        </div>
+                        <div style="flex:1.5; min-width:200px;">
+                            <label style="display:block; font-size:0.8rem; font-weight:700; margin-bottom:4px; color:var(--text-muted);">Cari Nama Peminjam / Judul Buku</label>
+                            <input type="text" class="form-control" placeholder="Nama, email, atau judul buku...">
+                        </div>
+                        <div style="display:flex; gap:8px;">
+                            <button type="button" class="btn btn-primary" style="font-weight:700;">🔍 Filter</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ============ TABEL DATA PEMINJAMAN ============ -->
+                <div class="panel" style="padding:0; overflow:hidden;">
+                    <div style="padding:14px 20px; background:#f8fafc; border-bottom:1px solid var(--border); font-size:0.85rem; color:var(--text-muted);">
+                        Menampilkan <strong id="displayedItemCount">13</strong> peminjaman
+                    </div>
+                    <div style="overflow-x:auto;">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th style="width:70px;">Cover</th>
+                                    <th>Buku yang Dipinjam</th>
+                                    <th>Peminjam (User)</th>
+                                    <th>Periode Peminjaman (Waktu)</th>
+                                    <th>Status &amp; Denda</th>
+                                    <th style="text-align:right;">Aksi</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!-- Item 1: Sapiens - Return Requested (Paid fine -> CAN ACC!) -->
+                                <tr data-item-status="Return Requested">
+                                    <td style="vertical-align:top;">
+                                        <div style="width:50px; height:70px; border-radius:6px; overflow:hidden; border:1px solid var(--border);">
+                                            <img src="assets/covers/sapiens.jpg" alt="Sapiens" style="width:100%; height:100%; object-fit:cover;">
+                                        </div>
+                                    </td>
+                                    <td style="vertical-align:top;">
+                                        <strong>Sapiens: Riwayat Singkat Umat Manusia</strong>
+                                        <div style="font-size:0.75rem; color:var(--text-muted);">Penulis: Yuval Noah Harari</div>
+                                        <div style="font-size:0.75rem; color:var(--text-muted);">Sisa Stok Pinjam: 1</div>
+                                    </td>
+                                    <td style="vertical-align:top;">
+                                        <strong>Rain</strong>
+                                        <div style="font-size:0.75rem; color:var(--text-muted);">rain@gmail.com</div>
+                                        <div style="font-size:0.75rem; color:var(--text-muted);">HP: 081298765432</div>
+                                    </td>
+                                    <td style="vertical-align:top;">
+                                        <div style="font-size:0.78rem; line-height:1.5;">
+                                            <div>⏱️ Durasi Diajukan: <strong>7 Hari</strong></div>
+                                            <div>📅 Mulai: <strong>05 Nov 2026</strong></div>
+                                            <div style="color:#dc2626;">⏰ Tenggat: <strong>12 Nov 2026</strong></div>
+                                            <div>📦 Tgl Minta Kembali: <strong>14 Nov 2026</strong></div>
+                                        </div>
+                                    </td>
+                                    <td style="vertical-align:top;">
+                                        <span class="status-badge" style="background:#ffedd5; color:#9a3412; font-weight:700;">Pengajuan Kembali</span>
+                                        <div style="margin-top:6px; font-size:0.75rem; padding:4px 8px; border-radius:4px; background:#dcfce7; color:#166534; font-weight:700;">
+                                            Denda: Rp 20.000 (Paid)
+                                        </div>
+                                    </td>
+                                    <td style="vertical-align:top; text-align:right;">
+                                        <div style="display:inline-flex; flex-direction:column; align-items:flex-end; gap:6px;">
+                                            <button type="button" class="btn btn-sm" style="background:#10b981; color:white; border:none; font-weight:700; padding:7px 14px; border-radius:6px; cursor:pointer;" onclick="alert('Buku berhasil di-ACC dan diterima! Stok pinjam telah dikembalikan ke katalog.')">
+                                                ✓ ACC Terima Buku
+                                            </button>
+                                            <a href="admin-chats.html?user=rain" class="btn btn-sm" style="background:#eff6ff; color:#2563eb; border:1px solid #bfdbfe; font-size:0.75rem; font-weight:700;">💬 Chat Rain</a>
+                                        </div>
+                                    </td>
+                                </tr>
+
+                                <!-- Item 2: Cantik Itu Luka - Return Requested (Unpaid fine -> BLOCKED WITH WARNING) -->
+                                <tr data-item-status="Return Requested">
+                                    <td style="vertical-align:top;">
+                                        <div style="width:50px; height:70px; border-radius:6px; overflow:hidden; border:1px solid var(--border);">
+                                            <img src="assets/covers/cantik_itu_luka.jpg" alt="Cantik Itu Luka" style="width:100%; height:100%; object-fit:cover;">
+                                        </div>
+                                    </td>
+                                    <td style="vertical-align:top;">
+                                        <strong>Cantik Itu Luka</strong>
+                                        <div style="font-size:0.75rem; color:var(--text-muted);">Penulis: Eka Kurniawan</div>
+                                        <div style="font-size:0.75rem; color:var(--text-muted);">Sisa Stok Pinjam: 0</div>
+                                    </td>
+                                    <td style="vertical-align:top;">
+                                        <strong>Rain</strong>
+                                        <div style="font-size:0.75rem; color:var(--text-muted);">rain@gmail.com</div>
+                                        <div style="font-size:0.75rem; color:var(--text-muted);">HP: 081298765432</div>
+                                    </td>
+                                    <td style="vertical-align:top;">
+                                        <div style="font-size:0.78rem; line-height:1.5;">
+                                            <div>⏱️ Durasi Diajukan: <strong>7 Hari</strong></div>
+                                            <div>📅 Mulai: <strong>06 Nov 2026</strong></div>
+                                            <div style="color:#dc2626;">⏰ Tenggat: <strong>13 Nov 2026</strong></div>
+                                            <div>📦 Tgl Minta Kembali: <strong>14 Nov 2026</strong></div>
+                                        </div>
+                                    </td>
+                                    <td style="vertical-align:top;">
+                                        <span class="status-badge" style="background:#ffedd5; color:#9a3412; font-weight:700;">Pengajuan Kembali</span>
+                                        <div style="margin-top:6px; font-size:0.75rem; padding:4px 8px; border-radius:4px; background:#fee2e2; color:#991b1b; font-weight:700;">
+                                            Denda: Rp 10.000 (Unpaid)
+                                        </div>
+                                    </td>
+                                    <td style="vertical-align:top; text-align:right;">
+                                        <div style="display:inline-flex; flex-direction:column; align-items:flex-end; gap:4px;">
+                                            <button type="button" class="btn btn-sm" disabled style="background:#fee2e2; color:#991b1b; border:1px solid #fecaca; font-weight:700; cursor:not-allowed; opacity:0.85; padding:6px 10px;">
+                                                ⚠️ Denda Belum Lunas
+                                            </button>
+                                            <div style="font-size:0.72rem; color:#dc2626;">Harus bayar denda dulu</div>
+                                            <a href="admin-chats.html?user=rain" class="btn btn-sm" style="background:#eff6ff; color:#2563eb; border:1px solid #bfdbfe; font-size:0.75rem; font-weight:700; margin-top:2px;">💬 Ingatkan Denda</a>
+                                        </div>
+                                    </td>
+                                </tr>
+
+                                <!-- Item 3: Laut Bercerita - Return Requested (Bebas Denda -> CAN ACC!) -->
+                                <tr data-item-status="Return Requested">
+                                    <td style="vertical-align:top;">
+                                        <div style="width:50px; height:70px; border-radius:6px; overflow:hidden; border:1px solid var(--border);">
+                                            <img src="assets/covers/laut_bercerita.jpg" alt="Laut Bercerita" style="width:100%; height:100%; object-fit:cover;">
+                                        </div>
+                                    </td>
+                                    <td style="vertical-align:top;">
+                                        <strong>Laut Bercerita</strong>
+                                        <div style="font-size:0.75rem; color:var(--text-muted);">Penulis: Leila S. Chudori</div>
+                                        <div style="font-size:0.75rem; color:var(--text-muted);">Sisa Stok Pinjam: 1</div>
+                                    </td>
+                                    <td style="vertical-align:top;">
+                                        <strong>Rain</strong>
+                                        <div style="font-size:0.75rem; color:var(--text-muted);">rain@gmail.com</div>
+                                    </td>
+                                    <td style="vertical-align:top;">
+                                        <div style="font-size:0.78rem; line-height:1.5;">
+                                            <div>⏱️ Durasi Diajukan: <strong>3 Hari</strong></div>
+                                            <div>📅 Mulai: <strong>11 Nov 2026</strong></div>
+                                            <div>⏰ Tenggat: <strong>14 Nov 2026</strong></div>
+                                            <div>📦 Tgl Minta Kembali: <strong>14 Nov 2026</strong></div>
+                                        </div>
+                                    </td>
+                                    <td style="vertical-align:top;">
+                                        <span class="status-badge" style="background:#ffedd5; color:#9a3412; font-weight:700;">Pengajuan Kembali</span>
+                                        <div style="margin-top:6px; font-size:0.72rem; color:#15803d; font-weight:700;">
+                                            ✅ Tepat Waktu (Bebas Denda)
+                                        </div>
+                                    </td>
+                                    <td style="vertical-align:top; text-align:right;">
+                                        <button type="button" class="btn btn-sm" style="background:#10b981; color:white; border:none; font-weight:700; padding:7px 14px; border-radius:6px; cursor:pointer;" onclick="alert('Buku berhasil di-ACC dan stok kembali!')">
+                                            ✓ ACC Terima Buku
+                                        </button>
+                                    </td>
+                                </tr>
+
+                                <!-- Item 4: Bumi Manusia - Borrowed (Sedang Dipinjam) -->
+                                <tr data-item-status="Borrowed">
+                                    <td style="vertical-align:top;">
+                                        <div style="width:50px; height:70px; border-radius:6px; overflow:hidden; border:1px solid var(--border);">
+                                            <img src="assets/covers/bumi_manusia.jpg" alt="Bumi Manusia" style="width:100%; height:100%; object-fit:cover;">
+                                        </div>
+                                    </td>
+                                    <td style="vertical-align:top;">
+                                        <strong>Bumi Manusia</strong>
+                                        <div style="font-size:0.75rem; color:var(--text-muted);">Pramoedya Ananta Toer</div>
+                                    </td>
+                                    <td style="vertical-align:top;"><strong>Rain</strong></td>
+                                    <td style="vertical-align:top;">
+                                        <div style="font-size:0.78rem; line-height:1.5;">
+                                            <div>⏱️ Durasi: <strong>7 Hari</strong></div>
+                                            <div>📅 Mulai: <strong>10 Nov 2026</strong></div>
+                                            <div>⏰ Tenggat: <strong>17 Nov 2026</strong> (Sisa 3 Hari)</div>
+                                        </div>
+                                    </td>
+                                    <td style="vertical-align:top;">
+                                        <span class="status-badge" style="background:#dbeafe; color:#1e40af; font-weight:700;">Sedang Dipinjam</span>
+                                    </td>
+                                    <td style="vertical-align:top; text-align:right;">
+                                        <span class="text-muted" style="font-size:0.8rem;">Menunggu Pengembalian User</span>
+                                        <a href="admin-chats.html?user=rain" class="btn btn-sm" style="background:#eff6ff; color:#2563eb; border:1px solid #bfdbfe; font-size:0.75rem; font-weight:700; margin-left:6px;">💬 Chat</a>
+                                    </td>
+                                </tr>
+
+                                <!-- Item 5-6: Overdue (Terlambat) -->
+                                <tr data-item-status="Overdue">
+                                    <td style="vertical-align:top;">
+                                        <div style="width:50px; height:70px; border-radius:6px; overflow:hidden; border:1px solid var(--border);">
+                                            <img src="assets/covers/filosofi_teras.jpg" alt="Filosofi Teras" style="width:100%; height:100%; object-fit:cover;">
+                                        </div>
+                                    </td>
+                                    <td style="vertical-align:top;">
+                                        <strong>Filosofi Teras</strong>
+                                        <div style="font-size:0.75rem; color:var(--text-muted);">Henry Manampiring</div>
+                                    </td>
+                                    <td style="vertical-align:top;"><strong>Rain</strong></td>
+                                    <td style="vertical-align:top;">
+                                        <div style="font-size:0.78rem; line-height:1.5;">
+                                            <div>📅 Mulai: <strong>03 Nov 2026</strong></div>
+                                            <div style="color:#dc2626; font-weight:700;">⏰ Tenggat: <strong>10 Nov 2026 (Lewat 4 Hari)</strong></div>
+                                        </div>
+                                    </td>
+                                    <td style="vertical-align:top;">
+                                        <span class="status-badge" style="background:#fee2e2; color:#991b1b; font-weight:700;">Terlambat</span>
+                                        <div style="margin-top:6px; font-size:0.75rem; color:#dc2626; font-weight:700;">
+                                            Denda: Rp 40.000 (Unpaid)
+                                        </div>
+                                    </td>
+                                    <td style="vertical-align:top; text-align:right;">
+                                        <a href="admin-chats.html?user=rain" class="btn btn-sm" style="background:#eff6ff; color:#2563eb; border:1px solid #bfdbfe; font-size:0.75rem; font-weight:700;">💬 Ingatkan User</a>
+                                    </td>
+                                </tr>
+
+                                <tr data-item-status="Overdue">
+                                    <td style="vertical-align:top;">
+                                        <div style="width:50px; height:70px; border-radius:6px; overflow:hidden; border:1px solid var(--border);">
+                                            <img src="assets/covers/mindset.jpg" alt="Mindset" style="width:100%; height:100%; object-fit:cover;">
+                                        </div>
+                                    </td>
+                                    <td style="vertical-align:top;">
+                                        <strong>Mindset</strong>
+                                    </td>
+                                    <td style="vertical-align:top;"><strong>Rain</strong></td>
+                                    <td style="vertical-align:top;">
+                                        <div style="font-size:0.78rem; line-height:1.5;">
+                                            <div style="color:#dc2626; font-weight:700;">⏰ Tenggat: <strong>12 Nov 2026 (Lewat 2 Hari)</strong></div>
+                                        </div>
+                                    </td>
+                                    <td style="vertical-align:top;">
+                                        <span class="status-badge" style="background:#fee2e2; color:#991b1b; font-weight:700;">Terlambat</span>
+                                        <div style="margin-top:6px; font-size:0.75rem; color:#dc2626; font-weight:700;">
+                                            Denda: Rp 20.000 (Unpaid)
+                                        </div>
+                                    </td>
+                                    <td style="vertical-align:top; text-align:right;">
+                                        <a href="admin-chats.html?user=rain" class="btn btn-sm" style="background:#eff6ff; color:#2563eb; border:1px solid #bfdbfe; font-size:0.75rem; font-weight:700;">💬 Ingatkan User</a>
+                                    </td>
+                                </tr>
+
+                                <!-- Item 7: Pending (1) -->
+                                <tr data-item-status="Pending">
+                                    <td style="vertical-align:top;">
+                                        <div style="width:50px; height:70px; border-radius:6px; overflow:hidden; border:1px solid var(--border);">
+                                            <img src="assets/covers/pulang.jpg" alt="Pulang" style="width:100%; height:100%; object-fit:cover;">
+                                        </div>
+                                    </td>
+                                    <td style="vertical-align:top;">
+                                        <strong>Pulang</strong>
+                                        <div style="font-size:0.75rem; color:var(--text-muted);">Leila S. Chudori</div>
+                                    </td>
+                                    <td style="vertical-align:top;"><strong>Rain</strong></td>
+                                    <td style="vertical-align:top;">
+                                        <div style="font-size:0.78rem;">Durasi Diajukan: <strong>7 Hari</strong></div>
+                                    </td>
+                                    <td style="vertical-align:top;">
+                                        <span class="status-badge" style="background:#fef3c7; color:#92400e; font-weight:700;">Menunggu ACC</span>
+                                    </td>
+                                    <td style="vertical-align:top; text-align:right;">
+                                        <div style="display:inline-flex; gap:6px;">
+                                            <button type="button" class="btn btn-primary btn-sm" onclick="alert('Permohonan pinjam di-ACC!')">ACC Pinjam</button>
+                                            <button type="button" class="btn btn-danger btn-sm" onclick="alert('Permohonan pinjam ditolak.')">Tolak</button>
+                                        </div>
+                                    </td>
+                                </tr>
+
+                                <!-- Item 8-10: Returned (Sudah Kembali: 3) -->
+                                <tr data-item-status="Returned">
+                                    <td style="vertical-align:top;"><div style="width:50px; height:70px; border-radius:6px; overflow:hidden; border:1px solid var(--border);"><img src="assets/covers/sapiens.jpg" alt="Sapiens" style="width:100%; height:100%; object-fit:cover;"></div></td>
+                                    <td style="vertical-align:top;"><strong>Sapiens: Riwayat Singkat Umat Manusia</strong></td>
+                                    <td style="vertical-align:top;"><strong>Rain</strong></td>
+                                    <td style="vertical-align:top;"><div style="font-size:0.78rem;">Kembali: 01 Nov 2026</div></td>
+                                    <td style="vertical-align:top;"><span class="status-badge" style="background:#dcfce7; color:#166534; font-weight:700;">✓ Dikembalikan</span></td>
+                                    <td style="vertical-align:top; text-align:right;"><span style="color:#166534; font-weight:700; font-size:0.8rem;">✓ Selesai Dikembalikan</span></td>
+                                </tr>
+                                <tr data-item-status="Returned">
+                                    <td style="vertical-align:top;"><div style="width:50px; height:70px; border-radius:6px; overflow:hidden; border:1px solid var(--border);"><img src="assets/covers/cantik_itu_luka.jpg" alt="Cantik Itu Luka" style="width:100%; height:100%; object-fit:cover;"></div></td>
+                                    <td style="vertical-align:top;"><strong>Cantik Itu Luka</strong></td>
+                                    <td style="vertical-align:top;"><strong>Rain</strong></td>
+                                    <td style="vertical-align:top;"><div style="font-size:0.78rem;">Kembali: 28 Okt 2026</div></td>
+                                    <td style="vertical-align:top;"><span class="status-badge" style="background:#dcfce7; color:#166534; font-weight:700;">✓ Dikembalikan</span></td>
+                                    <td style="vertical-align:top; text-align:right;"><span style="color:#166534; font-weight:700; font-size:0.8rem;">✓ Selesai Dikembalikan</span></td>
+                                </tr>
+                                <tr data-item-status="Returned">
+                                    <td style="vertical-align:top;"><div style="width:50px; height:70px; border-radius:6px; overflow:hidden; border:1px solid var(--border);"><img src="assets/covers/laut_bercerita.jpg" alt="Laut Bercerita" style="width:100%; height:100%; object-fit:cover;"></div></td>
+                                    <td style="vertical-align:top;"><strong>Laut Bercerita</strong></td>
+                                    <td style="vertical-align:top;"><strong>Rain</strong></td>
+                                    <td style="vertical-align:top;"><div style="font-size:0.78rem;">Kembali: 20 Okt 2026</div></td>
+                                    <td style="vertical-align:top;"><span class="status-badge" style="background:#dcfce7; color:#166534; font-weight:700;">✓ Dikembalikan</span></td>
+                                    <td style="vertical-align:top; text-align:right;"><span style="color:#166534; font-weight:700; font-size:0.8rem;">✓ Selesai Dikembalikan</span></td>
+                                </tr>
+
+                                <!-- Item 11-13: Rejected (Ditolak: 3) -->
+                                <tr data-item-status="Rejected">
+                                    <td style="vertical-align:top;"><div style="width:50px; height:70px; border-radius:6px; overflow:hidden; border:1px solid var(--border);"><img src="assets/covers/child_of_all_nations.jpg" alt="Child of All Nations" style="width:100%; height:100%; object-fit:cover;"></div></td>
+                                    <td style="vertical-align:top;"><strong>Child of All Nations</strong></td>
+                                    <td style="vertical-align:top;"><strong>Rain</strong></td>
+                                    <td style="vertical-align:top;"><div style="font-size:0.78rem;">Diajukan: 15 Okt 2026</div></td>
+                                    <td style="vertical-align:top;"><span class="status-badge" style="background:#f1f5f9; color:#475569; font-weight:700;">Ditolak</span></td>
+                                    <td style="vertical-align:top; text-align:right;"><span class="text-muted" style="font-size:0.8rem;">Peminjaman Ditolak</span></td>
+                                </tr>
+                                <tr data-item-status="Rejected">
+                                    <td style="vertical-align:top;"><div style="width:50px; height:70px; border-radius:6px; overflow:hidden; border:1px solid var(--border);"><img src="assets/covers/rumah_kaca.jpg" alt="Rumah Kaca" style="width:100%; height:100%; object-fit:cover;"></div></td>
+                                    <td style="vertical-align:top;"><strong>Rumah Kaca</strong></td>
+                                    <td style="vertical-align:top;"><strong>Rain</strong></td>
+                                    <td style="vertical-align:top;"><div style="font-size:0.78rem;">Diajukan: 10 Okt 2026</div></td>
+                                    <td style="vertical-align:top;"><span class="status-badge" style="background:#f1f5f9; color:#475569; font-weight:700;">Ditolak</span></td>
+                                    <td style="vertical-align:top; text-align:right;"><span class="text-muted" style="font-size:0.8rem;">Peminjaman Ditolak</span></td>
+                                </tr>
+                                <tr data-item-status="Rejected">
+                                    <td style="vertical-align:top;"><div style="width:50px; height:70px; border-radius:6px; overflow:hidden; border:1px solid var(--border);"><img src="assets/covers/1793939230_7_Books_About_Making_Time_for_What_Matters.jpg" alt="Making Time" style="width:100%; height:100%; object-fit:cover;"></div></td>
+                                    <td style="vertical-align:top;"><strong>Making Time for What Matters</strong></td>
+                                    <td style="vertical-align:top;"><strong>Rain</strong></td>
+                                    <td style="vertical-align:top;"><div style="font-size:0.78rem;">Diajukan: 05 Okt 2026</div></td>
+                                    <td style="vertical-align:top;"><span class="status-badge" style="background:#f1f5f9; color:#475569; font-weight:700;">Ditolak</span></td>
+                                    <td style="vertical-align:top; text-align:right;"><span class="text-muted" style="font-size:0.8rem;">Peminjaman Ditolak</span></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="assets/js/script.js"></script>
+    <script src="assets/js/demo-toolbar.js"></script>
+    <script>
+        window.STATUS_EXPLANATIONS = {
+            'Pending': {
+                icon: '⏳',
+                title: 'Status: Pending (Menunggu ACC)',
+                description: 'Pengguna mengajukan permohonan peminjaman buku. Admin bertugas mengecek ketersediaan stok pinjam dan memastikan user belum melebihi limit peminjaman (maksimal 2 buku). Klik tombol <strong>ACC Pinjam</strong> atau <strong>Tolak</strong>.'
+            },
+            'Borrowed': {
+                icon: '📖',
+                title: 'Status: Sedang Dipinjam (Borrowed)',
+                description: 'Buku fisik sedang aktif dipinjam oleh pembaca. Tenggat peminjaman adalah 7 hari. Admin dapat memantau sisa hari pinjam dan menghubungi user jika diperlukan via tombol 💬 Chat.'
+            },
+            'Overdue': {
+                icon: '⚠️',
+                title: 'Status: Terlambat (Overdue)',
+                description: 'Masa pinjam telah melampaui tenggat 7 hari. Sistem secara otomatis mengenakan denda keterlambatan sebesar <strong>Rp 10.000 per hari</strong>. Pembaca tidak dapat meminjam buku lain selama masih memiliki denda aktif.'
+            },
+            'Return Requested': {
+                icon: '📦',
+                title: 'Status: Pengajuan Kembali (Return Requested) - Denda Check Active!',
+                description: 'Pengguna telah menyerahkan buku fisik ke perpustakaan. <strong>LOGIKA VALIDASI:</strong> Jika masih ada denda belum dibayar (Unpaid), tombol konfirmasi terkunci bertuliskan <em>⚠️ Denda Belum Lunas</em>. Hanya ketika denda lunas (Paid) atau buku bebas denda, tombol hijau <em>✓ ACC Terima Buku</em> aktif untuk menambah stok kembali.'
+            },
+            'Returned': {
+                icon: '✅',
+                title: 'Status: Sudah Kembali (Returned)',
+                description: 'Buku telah selesai diterima oleh admin, stok buku kembali terisi di katalog, dan status riwayat peminjaman user telah ditutup dengan tuntas.'
+            },
+            'Rejected': {
+                icon: '❌',
+                title: 'Status: Ditolak (Rejected)',
+                description: 'Permohonan pinjam ditolak karena kuota maksimal 2 buku telah tercapai, stok pinjam habis, atau akun pengguna sedang dalam peninjauan.'
+            }
+        };
+    </script>
+</body>
+</html>

@@ -1,0 +1,123 @@
+﻿<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Laporan Pendapatan & Denda - Rainpedia</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="assets/css/demo-toolbar.css">
+    <style>
+        * { box-sizing: border-box; }
+        body { font-family: 'Inter', sans-serif; margin: 0; padding: 30px; color: #1e293b; background: #fff; font-size: 11px; line-height: 1.5; }
+        .header { border-bottom: 2.5px solid #0f172a; padding-bottom: 12px; margin-bottom: 20px; display: flex; justify-content: space-between; align-items: flex-end; }
+        .brand-title { font-size: 20px; font-weight: 800; color: #1e40af; margin: 0 0 4px 0; }
+        .brand-sub { font-size: 11px; color: #64748b; margin: 0; }
+        .doc-title { text-align: right; }
+        .doc-title h2 { margin: 0 0 4px 0; font-size: 16px; font-weight: 800; color: #0f172a; text-transform: uppercase; }
+        .meta-box { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 6px; padding: 12px 16px; margin-bottom: 20px; display: flex; justify-content: space-between; gap: 20px; }
+        .meta-item { font-size: 11px; }
+        .meta-label { color: #64748b; text-transform: uppercase; font-size: 9px; font-weight: 700; }
+        .meta-value { font-weight: 700; color: #0f172a; margin-top: 2px; }
+        table { width: 100%; border-collapse: collapse; margin-bottom: 24px; }
+        th, td { border: 1px solid #cbd5e1; padding: 8px 10px; text-align: left; }
+        th { background: #0f172a; color: #fff; font-weight: 700; font-size: 10px; text-transform: uppercase; }
+        tr:nth-child(even) td { background: #f8fafc; }
+        .print-btn-bar { position: fixed; bottom: 20px; right: 20px; background: #0f172a; padding: 10px 16px; border-radius: 8px; display: flex; gap: 10px; z-index: 999; }
+        .print-btn { background: #2563eb; color: white; border: none; padding: 8px 16px; border-radius: 6px; font-weight: 700; font-size: 12px; cursor: pointer; }
+        .print-btn-outline { background: transparent; color: white; border: 1px solid rgba(255,255,255,0.3); padding: 8px 14px; border-radius: 6px; font-size: 12px; text-decoration: none; }
+        @media print { .print-btn-bar, .demo-top-bar, .demo-toggle-btn { display: none !important; } body { padding: 0; } }
+    </style>
+</head>
+<body>
+    <div class="print-btn-bar">
+        <a href="admin-payments.html" class="print-btn-outline">&larr; Kembali</a>
+        <button onclick="window.print()" class="print-btn">🖨️ Cetak Dokumen</button>
+    </div>
+
+    <div class="header">
+        <div>
+            <div class="brand-title">RAINPEDIA KEUANGAN</div>
+            <p class="brand-sub">Platform Toko &amp; Perpustakaan Digital Indonesia • Jl. Merdeka No. 45, Jakarta Pusat</p>
+        </div>
+        <div class="doc-title">
+            <h2>Laporan Pemasukan &amp; Kas</h2>
+            <div style="font-size: 10px; color: #64748b;">Dicetak: 14 Nov 2026 15:00 WIB</div>
+        </div>
+    </div>
+
+    <div class="meta-box">
+        <div class="meta-item">
+            <div class="meta-label">Total Pemasukan</div>
+            <div class="meta-value" style="color: #16a34a; font-size: 14px;">Rp 2.450.000</div>
+        </div>
+        <div class="meta-item">
+            <div class="meta-label">Penjualan Buku</div>
+            <div class="meta-value">Rp 2.370.000</div>
+        </div>
+        <div class="meta-item">
+            <div class="meta-label">Denda Lunas</div>
+            <div class="meta-value">Rp 80.000</div>
+        </div>
+    </div>
+
+    <table>
+        <thead>
+            <tr>
+                <th style="width: 30px; text-align: center;">No</th>
+                <th>Tanggal</th>
+                <th>Sumber</th>
+                <th>No. Referensi / Keterangan</th>
+                <th>Pembayar (User A)</th>
+                <th style="text-align: right;">Nominal</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td style="text-align: center;">1</td>
+                <td>10 Nov 2026</td>
+                <td>Pembelian Buku</td>
+                <td>RP-20261110-7C2E19 (Bumi Manusia)</td>
+                <td>Rain (rain@gmail.com)</td>
+                <td style="text-align: right; font-weight: 700;">Rp 155.000</td>
+            </tr>
+            <tr>
+                <td style="text-align: center;">2</td>
+                <td>08 Nov 2026</td>
+                <td>Denda Peminjaman</td>
+                <td>Denda Terlambat 2 Hari (Sapiens)</td>
+                <td>Rain (rain@gmail.com)</td>
+                <td style="text-align: right; font-weight: 700;">Rp 20.000</td>
+            </tr>
+            <tr>
+                <td style="text-align: center;">3</td>
+                <td>08 Nov 2026</td>
+                <td>Pembelian Buku</td>
+                <td>RP-20261108-1B4F33 (Sapiens)</td>
+                <td>Rain (rain@gmail.com)</td>
+                <td style="text-align: right; font-weight: 700;">Rp 145.000</td>
+            </tr>
+            <tr>
+                <td style="text-align: center;">4</td>
+                <td>05 Nov 2026</td>
+                <td>Pembelian Buku</td>
+                <td>RP-20261105-9D2A77 (Pulang)</td>
+                <td>Rain (rain@gmail.com)</td>
+                <td style="text-align: right; font-weight: 700;">Rp 135.000</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <div style="display: flex; justify-content: space-between; margin-top: 40px;">
+        <div style="text-align: center; width: 200px;">
+            <div style="margin-bottom: 50px;">Disetujui Oleh,<br><strong>Manajer Operasional</strong></div>
+            <div style="border-top: 1px solid #94a3b8; padding-top: 4px;"><strong>( ..................................... )</strong></div>
+        </div>
+        <div style="text-align: center; width: 200px;">
+            <div style="margin-bottom: 50px;">Jakarta, 14 Nov 2026<br><strong>Bagian Keuangan</strong></div>
+            <div style="border-top: 1px solid #94a3b8; padding-top: 4px;"><strong>Administrator Rainpedia</strong></div>
+        </div>
+    </div>
+
+    <script src="assets/js/demo-toolbar.js"></script>
+</body>
+</html>

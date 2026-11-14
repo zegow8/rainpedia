@@ -1,18 +1,26 @@
 @extends('layouts.admin')
 @section('title', 'Data Buku')
 @section('content')
-<div class="flex-between mb-4">
+<style>
+    @media (max-width: 992px) {
+        .admin-books-filter-grid { grid-template-columns: 1fr 1fr !important; }
+    }
+    @media (max-width: 540px) {
+        .admin-books-filter-grid { grid-template-columns: 1fr !important; }
+    }
+</style>
+<div class="flex-between mb-4" style="flex-wrap:wrap; gap:12px;">
     <div>
-        <h1 style="margin-bottom:4px;">Data Buku</h1>
-        <p class="text-muted" style="margin:0;">Kelola katalog buku, stok, harga, dan pantau peminjaman aktif</p>
+        <h1 style="margin-bottom:4px; font-size:clamp(1.3rem, 4vw, 1.8rem);">Data Buku</h1>
+        <p class="text-muted" style="margin:0; font-size:0.88rem;">Kelola katalog buku, stok, harga, dan pantau peminjaman aktif</p>
     </div>
-    <a href="/admin/books/create" class="btn btn-primary">+ Tambah Buku Baru</a>
+    <a href="/admin/books/create" class="btn btn-primary btn-sm">+ Tambah Buku Baru</a>
 </div>
 
 <!-- ============ FILTER & SEARCH ============ -->
 <div class="panel" style="margin-bottom:20px; padding:18px;">
     <form method="GET" action="/admin/books">
-        <div style="display:grid; grid-template-columns: 2fr 1.5fr 1fr 1fr 1.5fr auto; gap:12px; align-items:flex-end;">
+        <div style="display:grid; grid-template-columns: 2fr 1.5fr 1fr 1fr 1.5fr auto; gap:12px; align-items:flex-end;" class="admin-books-filter-grid">
             <div>
                 <label class="form-label" style="font-size:0.8rem; margin-bottom:4px;">Cari Buku</label>
                 <input type="text" name="q" class="form-control" placeholder="Judul, penulis, ISBN..." value="{{ request('q') }}">

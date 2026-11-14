@@ -28,7 +28,7 @@ class AuthController extends Controller
         $user = User::where('email', $request->email)->first();
 
         if ($user && $user->is_active == 0) {
-            return back()->with('error', 'Akun Anda dinonaktifkan. Hubungi admin.');
+            return back()->with('error', 'Akun Anda telah dinonaktifkan oleh Administrator. Akses ke sistem Rainpedia dibatasi.');
         }
 
         if (Auth::attempt(['email' => $request->email, 'password' => $request->password])) {

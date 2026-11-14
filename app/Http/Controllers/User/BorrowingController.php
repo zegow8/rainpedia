@@ -76,6 +76,15 @@ class BorrowingController extends Controller
         if (Fine::where('user_id', $userId)->where('status', 'Unpaid')->exists()) return back()->with('error', 'Anda memiliki denda yang belum lunas.');
         if ($book->stock_borrow <= 0) return back()->with('error', 'Stok pinjam habis.');
 
+        // Cegah peminjaman buku yang sama jika masih ada pengajuan atau pinjaman aktif
+        $hasThisBook = Borrowing::where('user_id', $userId)
+            ->where('book_id', $book->id)
+            ->whereIn('status', ['Pending', 'Borrowed', 'Overdue', 'Return Requested'])
+            ->exists();
+        if ($hasThisBook) {
+            return back()->with('error', 'Anda sudah mengajukan atau sedang meminjam buku ini. Harap selesaikan peminjaman sebelumnya terlebih dahulu.');
+        }
+
         Borrowing::create([
             'user_id' => $userId,
             'book_id' => $book->id,

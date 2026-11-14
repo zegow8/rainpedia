@@ -32,6 +32,19 @@
         
         <!-- Header & Pencarian Kontak -->
         <div style="padding: 16px; border-bottom: 1px solid #e2e8f0; background: #fafafa;">
+            <!-- Pilihan Mulai Chat Baru -->
+            <div style="margin-bottom: 12px;">
+                <select onchange="if(this.value) window.location.href='/admin/chats?user_id=' + this.value;" 
+                        style="width: 100%; border: 1.5px solid #3b82f6; border-radius: 8px; padding: 7px 10px; font-size: 0.82rem; font-weight: 700; color: #1e40af; background: #eff6ff; outline: none; cursor: pointer;">
+                    <option value="">➕ Mulai Chat ke Pengguna...</option>
+                    @foreach($allUserOptions as $opt)
+                        <option value="{{ $opt->id }}" {{ $activeUser && $activeUser->id === $opt->id ? 'selected' : '' }}>
+                            👤 {{ $opt->name }} ({{ $opt->email }})
+                        </option>
+                    @endforeach
+                </select>
+            </div>
+
             <form action="/admin/chats" method="GET" style="margin-bottom: 12px;">
                 <input type="hidden" name="status" value="{{ $statusFilter }}">
                 <div style="position: relative;">
@@ -154,8 +167,12 @@
             <!-- Daftar Riwayat Pesan (Scrollable) -->
             <div id="adminChatMessages" style="flex: 1; padding: 20px; overflow-y: auto; display: flex; flex-direction: column; gap: 14px; background: #fdfdfd;">
                 @if($messages->isEmpty())
-                    <div style="text-align: center; margin: auto; color: #94a3b8; font-size: 0.85rem;">
-                        Belum ada riwayat pesan dengan pengguna ini.
+                    <div style="text-align: center; margin: auto; padding: 40px 20px; color: #94a3b8;">
+                        <div style="font-size: 2.5rem; margin-bottom: 8px;">👋</div>
+                        <strong style="color: #1e293b; font-size: 0.95rem; display: block; margin-bottom: 4px;">Mulai Percakapan dengan {{ $activeUser->name }}</strong>
+                        <p style="font-size: 0.82rem; margin: 0; max-width: 360px; line-height: 1.4;">
+                            Belum ada riwayat pesan dengan pengguna ini. Ketik pesan Anda di bawah atau pilih template cepat di atas untuk menyapa pelanggan.
+                        </p>
                     </div>
                 @else
                     @php $lastDate = null; @endphp

@@ -1,0 +1,291 @@
+﻿<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Katalog Buku - Rainpedia</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="stylesheet" href="assets/css/demo-toolbar.css">
+    <style>
+        html, body { max-width: 100vw; overflow-x: hidden; }
+        .book-grid-5col { display: grid; grid-template-columns: repeat(5, 1fr); gap: 20px; margin-top: 20px; }
+        @media (max-width: 1100px) { .book-grid-5col { grid-template-columns: repeat(4, 1fr); } }
+        @media (max-width: 768px)  { .book-grid-5col { grid-template-columns: repeat(3, 1fr); } }
+        @media (max-width: 480px)  { .book-grid-5col { grid-template-columns: repeat(2, 1fr); } }
+        .pagination { display:flex; gap:6px; justify-content:center; margin-top:32px; align-items:center; }
+        .page-btn { display:inline-flex; align-items:center; justify-content:center; width:38px; height:38px; border-radius:8px; border:1.5px solid var(--border-dark); font-weight:600; font-size:0.875rem; color:var(--text-muted); text-decoration:none; transition:all 0.2s; }
+        .page-btn:hover { border-color:var(--primary); color:var(--primary); text-decoration:none; }
+        .page-btn.active { background:var(--primary); color:white; border-color:var(--primary); }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="container navbar-inner">
+            <a href="index.html" class="navbar-brand">
+                <img src="assets/images/rainpedia.png" alt="Rainpedia" onerror="this.style.display='none'; this.nextElementSibling.style.display='inline';">
+                <span style="display:none;">RAINPEDIA</span>
+            </a>
+            <ul class="navbar-nav">
+                <li><a href="index.html">Beranda</a></li>
+                <li><a href="catalog.html" class="active">Katalog Buku</a></li>
+                <li><a href="about.html">Tentang Kami</a></li>
+            </ul>
+            <div class="navbar-actions">
+                <a href="login.html" class="btn btn-outline btn-sm">Login</a>
+                <a href="register.html" class="btn btn-primary btn-sm">Daftar</a>
+                <button class="navbar-hamburger" id="navbar-hamburger" aria-label="Menu" aria-expanded="false">
+                    <span></span><span></span><span></span>
+                </button>
+            </div>
+        </div>
+        <div class="navbar-mobile-menu" id="navbar-mobile-menu">
+            <a href="index.html">Beranda</a>
+            <a href="catalog.html" class="active">Katalog Buku</a>
+            <a href="about.html">Tentang Kami</a>
+            <a href="login.html">Login</a>
+            <a href="register.html" style="color:var(--primary);">Daftar Gratis</a>
+        </div>
+    </nav>
+
+    <main class="main-content">
+        <div class="container">
+            <div class="flex-between mb-4">
+                <div>
+                    <h1 style="margin-bottom:4px;">Katalog Buku</h1>
+                    <p class="text-muted" style="font-size:0.9rem;margin:0;">Temukan buku favoritmu dari koleksi lengkap kami</p>
+                </div>
+            </div>
+
+            <!-- Search & Filter -->
+            <div class="panel" style="margin-bottom:24px;">
+                <form id="catalogFilterForm" onsubmit="event.preventDefault(); applyCatalogFilter();">
+                    <div style="display:flex;gap:12px;flex-wrap:wrap;align-items:flex-end;">
+                        <div style="flex:1;min-width:220px;">
+                            <label style="display:block;font-size:0.85rem;font-weight:600;margin-bottom:6px;color:var(--text-muted);">Cari Buku</label>
+                            <input type="text" id="searchInput" class="form-control" placeholder="Judul, penulis, atau ISBN..." oninput="applyCatalogFilter()">
+                        </div>
+                        <div style="width:200px;">
+                            <label style="display:block;font-size:0.85rem;font-weight:600;margin-bottom:6px;color:var(--text-muted);">Kategori</label>
+                            <select id="categorySelect" class="form-control" onchange="applyCatalogFilter()">
+                                <option value="all">Semua Kategori</option>
+                                <option value="Non-Fiksi">Non-Fiksi</option>
+                                <option value="Fiksi Sastra">Fiksi Sastra</option>
+                                <option value="Sejarah">Sejarah</option>
+                                <option value="Novel">Novel</option>
+                                <option value="Pengembangan Diri">Pengembangan Diri</option>
+                            </select>
+                        </div>
+                        <div style="width:180px;">
+                            <label style="display:block;font-size:0.85rem;font-weight:600;margin-bottom:6px;color:var(--text-muted);">Layanan</label>
+                            <select id="serviceSelect" class="form-control" onchange="applyCatalogFilter()">
+                                <option value="all">Semua (Beli &amp; Pinjam)</option>
+                                <option value="borrow">Bisa Dipinjam Gratis</option>
+                                <option value="buy">Bisa Dibeli</option>
+                            </select>
+                        </div>
+                        <div style="display:flex;gap:8px;align-items:flex-end;">
+                            <button type="button" class="btn btn-outline" onclick="resetFilter()">Reset</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Hasil -->
+            <div class="flex-between mb-4" style="align-items:center;">
+                <div style="font-size:0.9rem;color:var(--text-muted);">
+                    Menampilkan <strong id="catalogCount">8</strong> judul buku
+                </div>
+            </div>
+
+            <!-- Grid Buku 5 Kolom -->
+            <div class="book-grid-5col" id="catalogBookGrid">
+                <!-- Buku 1: Sapiens -->
+                <div class="book-card" data-category="Non-Fiksi" data-borrow="true" data-buy="true" data-title="Sapiens: Riwayat Singkat Umat Manusia Yuval Noah Harari">
+                    <a href="book-detail.html" class="book-cover">
+                        <img src="assets/covers/sapiens.jpg" alt="Sapiens">
+                        <span class="book-borrow-badge">Gratis Pinjam</span>
+                    </a>
+                    <div style="margin-bottom:4px;">
+                        <span class="book-badge">Non-Fiksi</span>
+                    </div>
+                    <a href="book-detail.html" class="book-title">Sapiens: Riwayat Singkat Umat Manusia</a>
+                    <div class="book-author">Yuval Noah Harari</div>
+                    <div class="book-price">Rp 125.000</div>
+                    <div style="font-size:0.75rem; color:#15803d; margin-top:4px;">Tersedia 3 Stok Pinjam</div>
+                </div>
+
+                <!-- Buku 2: Cantik Itu Luka -->
+                <div class="book-card" data-category="Fiksi Sastra" data-borrow="true" data-buy="true" data-title="Cantik Itu Luka Eka Kurniawan">
+                    <a href="book-detail.html" class="book-cover">
+                        <img src="assets/covers/cantik_itu_luka.jpg" alt="Cantik Itu Luka">
+                        <span class="book-borrow-badge">Gratis Pinjam</span>
+                    </a>
+                    <div style="margin-bottom:4px;">
+                        <span class="book-badge">Fiksi Sastra</span>
+                    </div>
+                    <a href="book-detail.html" class="book-title">Cantik Itu Luka</a>
+                    <div class="book-author">Eka Kurniawan</div>
+                    <div class="book-price">Rp 98.000</div>
+                    <div style="font-size:0.75rem; color:#15803d; margin-top:4px;">Tersedia 2 Stok Pinjam</div>
+                </div>
+
+                <!-- Buku 3: Laut Bercerita -->
+                <div class="book-card" data-category="Novel" data-borrow="true" data-buy="true" data-title="Laut Bercerita Leila S. Chudori">
+                    <a href="book-detail.html" class="book-cover">
+                        <img src="assets/covers/laut_bercerita.jpg" alt="Laut Bercerita">
+                        <span class="book-borrow-badge">Gratis Pinjam</span>
+                    </a>
+                    <div style="margin-bottom:4px;">
+                        <span class="book-badge">Novel</span>
+                    </div>
+                    <a href="book-detail.html" class="book-title">Laut Bercerita</a>
+                    <div class="book-author">Leila S. Chudori</div>
+                    <div class="book-price">Rp 105.000</div>
+                    <div style="font-size:0.75rem; color:#15803d; margin-top:4px;">Tersedia 4 Stok Pinjam</div>
+                </div>
+
+                <!-- Buku 4: Bumi Manusia -->
+                <div class="book-card" data-category="Sejarah" data-borrow="true" data-buy="true" data-title="Bumi Manusia Pramoedya Ananta Toer">
+                    <a href="book-detail.html" class="book-cover">
+                        <img src="assets/covers/bumi_manusia.jpg" alt="Bumi Manusia">
+                        <span class="book-borrow-badge">Gratis Pinjam</span>
+                    </a>
+                    <div style="margin-bottom:4px;">
+                        <span class="book-badge">Sejarah</span>
+                    </div>
+                    <a href="book-detail.html" class="book-title">Bumi Manusia</a>
+                    <div class="book-author">Pramoedya Ananta Toer</div>
+                    <div class="book-price">Rp 135.000</div>
+                    <div style="font-size:0.75rem; color:#15803d; margin-top:4px;">Tersedia 1 Stok Pinjam</div>
+                </div>
+
+                <!-- Buku 5: Filosofi Teras -->
+                <div class="book-card" data-category="Pengembangan Diri" data-borrow="true" data-buy="true" data-title="Filosofi Teras Henry Manampiring">
+                    <a href="book-detail.html" class="book-cover">
+                        <img src="assets/covers/filosofi_teras.jpg" alt="Filosofi Teras">
+                        <span class="book-borrow-badge">Gratis Pinjam</span>
+                    </a>
+                    <div style="margin-bottom:4px;">
+                        <span class="book-badge">Pengembangan Diri</span>
+                    </div>
+                    <a href="book-detail.html" class="book-title">Filosofi Teras</a>
+                    <div class="book-author">Henry Manampiring</div>
+                    <div class="book-price">Rp 98.000</div>
+                    <div style="font-size:0.75rem; color:#15803d; margin-top:4px;">Tersedia 5 Stok Pinjam</div>
+                </div>
+
+                <!-- Buku 6: Child of All Nations -->
+                <div class="book-card" data-category="Sejarah" data-borrow="false" data-buy="true" data-title="Child of All Nations Pramoedya Ananta Toer">
+                    <a href="book-detail.html" class="book-cover">
+                        <img src="assets/covers/child_of_all_nations.jpg" alt="Child of All Nations">
+                    </a>
+                    <div style="margin-bottom:4px;">
+                        <span class="book-badge">Sejarah</span>
+                    </div>
+                    <a href="book-detail.html" class="book-title">Child of All Nations</a>
+                    <div class="book-author">Pramoedya Ananta Toer</div>
+                    <div class="book-price">Rp 140.000</div>
+                    <div style="font-size:0.75rem; color:#b45309; margin-top:4px;">Khusus Beli (Stok Pinjam Habis)</div>
+                </div>
+
+                <!-- Buku 7: Mindset -->
+                <div class="book-card" data-category="Pengembangan Diri" data-borrow="true" data-buy="true" data-title="Mindset Carol Dweck">
+                    <a href="book-detail.html" class="book-cover">
+                        <img src="assets/covers/mindset.jpg" alt="Mindset">
+                        <span class="book-borrow-badge">Gratis Pinjam</span>
+                    </a>
+                    <div style="margin-bottom:4px;">
+                        <span class="book-badge">Pengembangan Diri</span>
+                    </div>
+                    <a href="book-detail.html" class="book-title">Mindset: The New Psychology of Success</a>
+                    <div class="book-author">Dr. Carol S. Dweck</div>
+                    <div class="book-price">Rp 110.000</div>
+                    <div style="font-size:0.75rem; color:#15803d; margin-top:4px;">Tersedia 2 Stok Pinjam</div>
+                </div>
+
+                <!-- Buku 8: Pulang -->
+                <div class="book-card" data-category="Novel" data-borrow="true" data-buy="true" data-title="Pulang Leila S. Chudori">
+                    <a href="book-detail.html" class="book-cover">
+                        <img src="assets/covers/pulang.jpg" alt="Pulang">
+                        <span class="book-borrow-badge">Gratis Pinjam</span>
+                    </a>
+                    <div style="margin-bottom:4px;">
+                        <span class="book-badge">Novel</span>
+                    </div>
+                    <a href="book-detail.html" class="book-title">Pulang</a>
+                    <div class="book-author">Leila S. Chudori</div>
+                    <div class="book-price">Rp 115.000</div>
+                    <div style="font-size:0.75rem; color:#15803d; margin-top:4px;">Tersedia 3 Stok Pinjam</div>
+                </div>
+            </div>
+
+            <!-- Empty State -->
+            <div id="catalogEmpty" class="panel text-center" style="display:none; padding:56px 32px; margin-top:20px;">
+                <div style="font-size:3rem;margin-bottom:16px;">📭</div>
+                <h3>Buku Tidak Ditemukan</h3>
+                <p class="text-muted">Tidak ada buku yang cocok dengan kata kunci atau filter Anda.</p>
+                <button type="button" class="btn btn-outline" onclick="resetFilter()" style="margin-top:8px;">Reset Filter</button>
+            </div>
+
+            <div class="pagination">
+                <span class="page-btn active">1</span>
+                <span class="page-btn">2</span>
+                <span class="page-btn">&rarr;</span>
+            </div>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <div class="container footer-bottom" style="border-top:1px solid #e2e8f0; padding-top:20px; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px;">
+            <div>&copy; 2026 <strong>Rainpedia</strong>. All rights reserved.</div>
+            <div style="display:flex; gap:16px;">
+                <a href="user-dashboard.html" style="color:var(--primary); font-weight:600;">POV Pengguna</a>
+                <a href="admin-dashboard.html" style="color:var(--primary); font-weight:600;">POV Admin</a>
+            </div>
+        </div>
+    </footer>
+
+    <script src="assets/js/script.js"></script>
+    <script src="assets/js/demo-toolbar.js"></script>
+    <script>
+        function applyCatalogFilter() {
+            const query = document.getElementById('searchInput').value.toLowerCase().trim();
+            const cat = document.getElementById('categorySelect').value;
+            const srv = document.getElementById('serviceSelect').value;
+            const cards = document.querySelectorAll('#catalogBookGrid .book-card');
+            let count = 0;
+
+            cards.forEach(card => {
+                const title = card.getAttribute('data-title').toLowerCase();
+                const cardCat = card.getAttribute('data-category');
+                const isBorrow = card.getAttribute('data-borrow') === 'true';
+                const isBuy = card.getAttribute('data-buy') === 'true';
+
+                let matchQuery = !query || title.includes(query);
+                let matchCat = cat === 'all' || cardCat === cat;
+                let matchSrv = srv === 'all' || (srv === 'borrow' && isBorrow) || (srv === 'buy' && isBuy);
+
+                if (matchQuery && matchCat && matchSrv) {
+                    card.style.display = '';
+                    count++;
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+
+            document.getElementById('catalogCount').innerText = count;
+            document.getElementById('catalogEmpty').style.display = count === 0 ? 'block' : 'none';
+        }
+
+        function resetFilter() {
+            document.getElementById('searchInput').value = '';
+            document.getElementById('categorySelect').value = 'all';
+            document.getElementById('serviceSelect').value = 'all';
+            applyCatalogFilter();
+        }
+    </script>
+</body>
+</html>

@@ -101,14 +101,14 @@
 
                     <!-- Detail Notifikasi -->
                     <div style="flex: 1; min-width: 0;">
-                        <div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 10px; margin-bottom: 4px;">
+                        <div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 8px; margin-bottom: 6px; flex-wrap: wrap;">
                             <div style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap;">
                                 <span style="background: {{ $badgeBg }}; color: {{ $badgeColor }}; font-size: 0.72rem; font-weight: 700; padding: 2px 8px; border-radius: 6px;">
                                     {{ $badgeText }}
                                 </span>
-                                <strong style="font-size: 0.95rem; color: var(--text-main);">{{ $n->title }}</strong>
+                                <strong style="font-size: 0.95rem; color: var(--text-main); word-break: break-word;">{{ $n->title }}</strong>
                             </div>
-                            <span style="font-size: 0.78rem; color: var(--text-muted); white-space: nowrap;">
+                            <span style="font-size: 0.75rem; color: var(--text-muted); white-space: nowrap;">
                                 {{ date('d M Y, H:i', strtotime($n->created_at)) }}
                             </span>
                         </div>

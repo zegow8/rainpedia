@@ -1,8 +1,13 @@
 @extends('layouts.admin')
 @section('title', 'Kategori')
 @section('content')
+<style>
+    @media (max-width: 768px) {
+        .admin-category-grid { grid-template-columns: 1fr !important; }
+    }
+</style>
 <h1 class="mb-4">Kategori Buku</h1>
-<div style="display:grid; grid-template-columns:1fr 2fr; gap:20px;">
+<div style="display:grid; grid-template-columns:1fr 2fr; gap:20px;" class="admin-category-grid">
     <div class="panel">
         <h3>Tambah Kategori</h3>
         <form action="/admin/categories" method="POST">
@@ -11,15 +16,18 @@
             <button type="submit" class="btn btn-primary">Simpan</button>
         </form>
     </div>
-    <div class="panel" style="padding:0;">
-        <table class="table">
-            <thead><tr><th>Nama</th><th>Aksi</th></tr></thead>
+    <div class="panel" style="padding:0; overflow:hidden;">
+        <table class="table" style="margin:0;">
+            <thead><tr><th>Nama</th><th style="text-align:right;">Aksi</th></tr></thead>
             <tbody>
                 @foreach($categories as $c)
                 <tr>
-                    <td>{{ $c->name }}</td>
-                    <td>
-                        <form action="/admin/categories/delete/{{ $c->id }}" method="POST">@csrf <button class="btn btn-danger btn-sm">Hapus</button></form>
+                    <td><strong>{{ $c->name }}</strong></td>
+                    <td style="text-align:right;">
+                        <form action="/admin/categories/delete/{{ $c->id }}" method="POST" onsubmit="return confirm('Apakah Anda yakin ingin menghapus kategori ini?')" style="display:inline;">
+                            @csrf 
+                            <button type="submit" class="btn btn-danger btn-sm">Hapus</button>
+                        </form>
                     </td>
                 </tr>
                 @endforeach

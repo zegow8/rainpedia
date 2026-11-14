@@ -34,10 +34,11 @@
             .admin-layout { flex-direction: column; }
             .sidebar { width: 100%; border-right: none; border-bottom: 1px solid #e2e8f0; }
             .sidebar-menu { display: flex; overflow-x: auto; white-space: nowrap; -webkit-overflow-scrolling: touch; padding: 4px 0; }
-            .sidebar-menu a { border-left: none; border-bottom: 3px solid transparent; padding: 14px 16px; }
+            .sidebar-menu a { border-left: none; border-bottom: 3px solid transparent; padding: 12px 14px; font-size: 0.85rem; }
             .sidebar-menu a.active { border-left: none; border-bottom-color: var(--primary); }
             .menu-header { display: none; }
-            .content-wrapper { padding: 20px 16px; }
+            .topbar { padding: 12px 16px; }
+            .content-wrapper { padding: 16px 12px; }
         }
     </style>
 </head>

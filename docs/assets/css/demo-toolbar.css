@@ -1,0 +1,157 @@
+/* Rainpedia GitHub Pages Demo Toolbar */
+.demo-top-bar {
+    background: #0f172a;
+    color: #f8fafc;
+    padding: 8px 16px;
+    font-size: 0.82rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: sticky;
+    top: 0;
+    z-index: 99999;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.25);
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    transition: transform 0.3s ease;
+}
+
+.demo-top-bar.collapsed {
+    transform: translateY(-100%);
+}
+
+.demo-top-bar a {
+    color: inherit;
+    text-decoration: none;
+}
+
+.demo-badge {
+    background: #2563eb;
+    color: white;
+    font-size: 0.7rem;
+    font-weight: 800;
+    padding: 2px 8px;
+    border-radius: 4px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.demo-roles {
+    display: flex;
+    gap: 6px;
+    align-items: center;
+}
+
+.demo-role-btn {
+    padding: 4px 10px;
+    border-radius: 6px;
+    font-weight: 600;
+    font-size: 0.78rem;
+    cursor: pointer;
+    text-decoration: none;
+    transition: all 0.2s;
+    border: 1px solid rgba(255,255,255,0.15);
+    color: #cbd5e1;
+    background: rgba(255,255,255,0.05);
+}
+
+.demo-role-btn:hover {
+    background: rgba(255,255,255,0.15);
+    color: white;
+}
+
+.demo-role-btn.active {
+    background: #2563eb;
+    border-color: #3b82f6;
+    color: white;
+    box-shadow: 0 0 10px rgba(37,99,235,0.5);
+}
+
+.demo-page-select {
+    background: #1e293b;
+    color: #e2e8f0;
+    border: 1px solid rgba(255,255,255,0.2);
+    border-radius: 6px;
+    padding: 3px 8px;
+    font-size: 0.78rem;
+    outline: none;
+    cursor: pointer;
+}
+
+.demo-toggle-btn {
+    position: fixed;
+    top: 4px;
+    right: 12px;
+    background: #0f172a;
+    color: #94a3b8;
+    border: 1px solid rgba(255,255,255,0.2);
+    border-radius: 6px;
+    padding: 4px 8px;
+    font-size: 0.72rem;
+    cursor: pointer;
+    z-index: 100000;
+    transition: all 0.2s;
+}
+
+.demo-toggle-btn:hover {
+    color: white;
+    background: #1e293b;
+}
+
+/* Status Explainer Card */
+.status-explainer-card {
+    background: #eff6ff;
+    border: 1px solid #bfdbfe;
+    border-left: 4px solid #2563eb;
+    border-radius: 8px;
+    padding: 14px 18px;
+    margin-bottom: 20px;
+    font-size: 0.88rem;
+    color: #1e3a8a;
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.03);
+    animation: fadeIn 0.25s ease-in-out;
+}
+
+.status-explainer-card .explainer-icon {
+    font-size: 1.3rem;
+    line-height: 1;
+}
+
+.status-explainer-card .explainer-title {
+    font-weight: 800;
+    margin-bottom: 2px;
+    color: #1e40af;
+}
+
+.status-explainer-card .explainer-desc {
+    color: #334155;
+    font-size: 0.85rem;
+    line-height: 1.45;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-4px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+@media (max-width: 768px) {
+    .demo-top-bar {
+        flex-direction: column;
+        gap: 6px;
+        align-items: stretch;
+        padding: 8px 12px;
+    }
+    .demo-roles {
+        justify-content: space-between;
+        overflow-x: auto;
+    }
+    .demo-page-select {
+        width: 100%;
+    }
+}

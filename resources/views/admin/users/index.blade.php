@@ -84,14 +84,19 @@
                     </td>
 
                     <td style="vertical-align:top; text-align:right;">
-                        <form action="/admin/users/toggle" method="POST">
-                            @csrf
-                            <input type="hidden" name="id" value="{{ $u->id }}">
-                            <input type="hidden" name="is_active" value="{{ $u->is_active ? 0 : 1 }}">
-                            <button type="submit" class="btn btn-outline btn-sm" onclick="return confirm('Ubah status aktif akun ini?')">
-                                {{ $u->is_active ? 'Nonaktifkan' : 'Aktifkan' }}
-                            </button>
-                        </form>
+                        <div style="display:inline-flex; gap:6px;">
+                            <a href="/admin/chats?user_id={{ $u->id }}" class="btn btn-primary btn-sm" style="display:inline-flex; align-items:center; gap:4px; font-weight:700; text-decoration:none; background:#2563eb;">
+                                💬 Chat
+                            </a>
+                            <form action="/admin/users/toggle" method="POST" style="display:inline;">
+                                @csrf
+                                <input type="hidden" name="id" value="{{ $u->id }}">
+                                <input type="hidden" name="is_active" value="{{ $u->is_active ? 0 : 1 }}">
+                                <button type="submit" class="btn btn-outline btn-sm" onclick="return confirm('Ubah status aktif akun ini?')">
+                                    {{ $u->is_active ? 'Nonaktifkan' : 'Aktifkan' }}
+                                </button>
+                            </form>
+                        </div>
                     </td>
                 </tr>
                 @empty

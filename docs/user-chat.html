@@ -1,0 +1,218 @@
+﻿<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tanya Admin - User Area - Rainpedia</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="stylesheet" href="assets/css/demo-toolbar.css">
+    <style>
+        html, body { max-width: 100vw; overflow-x: hidden; }
+        body { display: flex; flex-direction: column; min-height: 100vh; background-color: var(--bg-main); }
+        .navbar-user { background: var(--white); border-bottom: 2px solid var(--primary); padding: 0; box-shadow: 0 1px 3px rgba(0,0,0,0.05); }
+        .navbar-user-top { display: flex; justify-content: space-between; align-items: center; padding: 14px 0; }
+        .navbar-user .brand { font-size: 1.25rem; font-weight: 800; color: var(--primary); text-decoration: none; display: flex; align-items: center; gap: 10px; }
+        .navbar-user .brand img { height: 36px; width: auto; }
+        .navbar-user-icons { display: flex; gap: 20px; align-items: center; }
+        .navbar-user-icons a { color: var(--text-main); font-size: 0.9rem; font-weight: 600; text-decoration: none; }
+        .navbar-user-icons a.active { color: var(--primary); }
+        .navbar-user-bottom { border-top: 1px solid var(--border); display: flex; gap: 24px; padding: 0; overflow-x: auto; white-space: nowrap; }
+        .navbar-user-bottom a { color: var(--text-muted); font-weight: 600; font-size: 0.9rem; text-decoration: none; padding: 14px 0; border-bottom: 3px solid transparent; }
+        .navbar-user-bottom a.active { color: var(--primary); border-bottom-color: var(--primary); }
+        .badge-notif { background: var(--danger); color: white; font-size: 0.65rem; padding: 2px 6px; border-radius: 10px; font-weight: 700; margin-left: 4px; vertical-align: middle; }
+        .page-wrap { max-width: 860px; width: 100%; margin: 0 auto; padding: 32px 24px; flex: 1; }
+
+        @media (max-width: 768px) {
+            .navbar-user-top { flex-direction: column; gap: 12px; align-items: flex-start; }
+            .navbar-user-icons { width: 100%; justify-content: space-between; overflow-x: auto; font-size: 0.8rem; }
+            .navbar-user-bottom { gap: 14px; }
+            .page-wrap { padding: 16px 12px; }
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar-user">
+        <div class="container">
+            <div class="navbar-user-top">
+                <a href="user-dashboard.html" class="brand">
+                    <img src="assets/images/rainpedia.png" alt="Rainpedia" onerror="this.style.display='none'; this.nextElementSibling.style.display='inline';">
+                    <span style="display:none;">RAINPEDIA</span>
+                </a>
+                <div class="navbar-user-icons">
+                    <a href="user-catalog.html">📚 Katalog Buku</a>
+                    <a href="user-cart.html">🛒 Keranjang <span class="badge-notif" style="background:#2563eb;">1</span></a>
+                    <a href="user-profile.html">👤 Rain (User A)</a>
+                    <a href="index.html" style="color:var(--danger) !important; font-weight:700;">Logout</a>
+                </div>
+            </div>
+            <div class="navbar-user-bottom">
+                <a href="user-dashboard.html">Beranda</a>
+                <a href="user-catalog.html">Katalog Buku</a>
+                <a href="user-borrowings.html">Peminjaman Saya</a>
+                <a href="user-transactions.html">Riwayat Pembelian</a>
+                <a href="user-chat.html" class="active">💬 Tanya Admin <span class="badge-notif" style="background:#2563eb;">1</span></a>
+                <a href="user-profile.html">Pengaturan Profil</a>
+                <a href="user-notifications.html">Notifikasi <span class="badge-notif">3</span></a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="page-wrap">
+        <div class="flex-between mb-4" style="flex-wrap:wrap; gap:12px;">
+            <div>
+                <h1 style="margin-bottom:4px;">💬 Tanya Admin Rainpedia</h1>
+                <p class="text-muted" style="margin:0;">Layanan bantuan terkait peminjaman, pembelian, pengembalian, dan denda</p>
+            </div>
+            <!-- Anti-Spam Quota Indicator -->
+            <div id="quotaBadge" style="background:#eff6ff; border:1px solid #bfdbfe; border-radius:8px; padding:8px 14px; display:inline-flex; align-items:center; gap:8px;">
+                <span style="font-size:0.8rem; color:#1e40af; font-weight:700;">Sisa Kuota Pesan Anda:</span>
+                <span id="quotaCount" style="background:#2563eb; color:white; font-size:0.85rem; font-weight:800; padding:2px 8px; border-radius:6px;">3 / 3</span>
+            </div>
+        </div>
+
+        <!-- Banner Info Anti-Spam Limit -->
+        <div style="background:#f8fafc; border:1px solid #e2e8f0; border-radius:8px; padding:12px 16px; margin-bottom:16px; font-size:0.82rem; color:#475569; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px;">
+            <span>🛡️ <strong>Anti-Spam Protection:</strong> Maksimal 3 pesan berturut-turut. Kuota akan di-reset kembali ke 3 pesan setelah Admin membalas pesan Anda.</span>
+            <button type="button" class="btn btn-sm" style="background:#e0e7ff; color:#3730a3; font-size:0.75rem; font-weight:700; border:none;" onclick="simulateAdminReply()">⚡ Simulasi Admin Balas</button>
+        </div>
+
+        <!-- Chat Container -->
+        <div class="panel" style="padding:0; overflow:hidden; border:1px solid var(--border); display:flex; flex-direction:column; height:480px;">
+            <!-- Chat Header -->
+            <div style="padding:14px 20px; background:#f8fafc; border-bottom:1px solid var(--border); display:flex; justify-content:space-between; align-items:center;">
+                <div style="display:flex; align-items:center; gap:10px;">
+                    <div style="width:10px; height:10px; background:#10b981; border-radius:50%;"></div>
+                    <strong>Customer Service Rainpedia (Admin)</strong>
+                </div>
+                <span style="font-size:0.75rem; color:#16a34a; font-weight:700;">● Online</span>
+            </div>
+
+            <!-- Messages Area -->
+            <div id="userChatHistory" style="flex:1; padding:20px; overflow-y:auto; background:#fafafa; display:flex; flex-direction:column; gap:12px;">
+                <!-- Admin greeting -->
+                <div style="align-self: flex-start; max-width: 75%;">
+                    <div style="font-size: 0.72rem; color: #94a3b8; margin-bottom: 2px;">Admin Rainpedia • 14:00</div>
+                    <div style="background: white; border: 1px solid #e2e8f0; border-radius: 12px 12px 12px 2px; padding: 10px 14px; font-size: 0.88rem; color: #1e293b;">
+                        Halo kak Rain! Ada yang bisa kami bantu seputar peminjaman atau pembelian buku hari ini? 😊
+                    </div>
+                </div>
+
+                <!-- User message 1 -->
+                <div style="align-self: flex-end; max-width: 75%;">
+                    <div style="font-size: 0.72rem; color: #94a3b8; text-align: right; margin-bottom: 2px;">Rain • 14:30</div>
+                    <div style="background: #2563eb; color: white; border-radius: 12px 12px 2px 12px; padding: 10px 14px; font-size: 0.88rem;">
+                        Halo admin, saya mau konfirmasi pengembalian buku Sapiens.
+                    </div>
+                </div>
+
+                <!-- User message 2 -->
+                <div style="align-self: flex-end; max-width: 75%;">
+                    <div style="font-size: 0.72rem; color: #94a3b8; text-align: right; margin-bottom: 2px;">Rain • 14:32</div>
+                    <div style="background: #2563eb; color: white; border-radius: 12px 12px 2px 12px; padding: 10px 14px; font-size: 0.88rem;">
+                        Denda Rp 20.000 sudah saya bayar lunas tadi siang. Tolong di-ACC ya min pengembaliannya biar kuota pinjam saya kembali bisa dipakai. Terima kasih!
+                    </div>
+                </div>
+            </div>
+
+            <!-- Quick Questions -->
+            <div style="padding:8px 16px; background:#fff; border-top:1px solid #f1f5f9; display:flex; gap:6px; overflow-x:auto; white-space:nowrap;">
+                <button type="button" class="btn btn-sm" style="font-size:0.75rem; background:#f1f5f9; border:none; border-radius:100px; padding:4px 12px; color:#475569;" onclick="fillUserQuestion('Berapa lama batas waktu peminjaman buku gratis?')">⏱️ Batas waktu pinjam?</button>
+                <button type="button" class="btn btn-sm" style="font-size:0.75rem; background:#f1f5f9; border:none; border-radius:100px; padding:4px 12px; color:#475569;" onclick="fillUserQuestion('Bagaimana cara membayar denda keterlambatan buku?')">💰 Cara bayar denda?</button>
+                <button type="button" class="btn btn-sm" style="font-size:0.75rem; background:#f1f5f9; border:none; border-radius:100px; padding:4px 12px; color:#475569;" onclick="fillUserQuestion('Kapan pesanan buku saya dikirim oleh kurir?')">🚚 Status kirim pesanan?</button>
+            </div>
+
+            <!-- Input Form -->
+            <div style="padding:12px 16px; background:white; border-top:1px solid #e2e8f0; display:flex; gap:10px;">
+                <input type="text" id="userMsgInput" placeholder="Ketik pesan Anda untuk admin..." style="flex:1; border:1.5px solid #cbd5e1; border-radius:8px; padding:10px 14px; font-size:0.88rem; outline:none;" onkeydown="if(event.key==='Enter') sendUserMsg();">
+                <button type="button" id="userSendBtn" class="btn btn-primary" onclick="sendUserMsg()">Kirim</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="assets/js/script.js"></script>
+    <script src="assets/js/demo-toolbar.js"></script>
+    <script>
+        let remainingQuota = 3;
+
+        function updateQuotaUI() {
+            const countEl = document.getElementById('quotaCount');
+            const input = document.getElementById('userMsgInput');
+            const btn = document.getElementById('userSendBtn');
+            const badge = document.getElementById('quotaBadge');
+
+            countEl.innerText = remainingQuota + ' / 3';
+
+            if (remainingQuota <= 0) {
+                countEl.style.background = '#dc2626';
+                badge.style.background = '#fee2e2';
+                badge.style.borderColor = '#fecaca';
+                input.disabled = true;
+                btn.disabled = true;
+                input.placeholder = '⏳ Batas 3 pesan tercapai. Harap tunggu balasan admin...';
+            } else {
+                countEl.style.background = '#2563eb';
+                badge.style.background = '#eff6ff';
+                badge.style.borderColor = '#bfdbfe';
+                input.disabled = false;
+                btn.disabled = false;
+                input.placeholder = 'Ketik pesan Anda untuk admin...';
+            }
+        }
+
+        function fillUserQuestion(text) {
+            document.getElementById('userMsgInput').value = text;
+        }
+
+        function sendUserMsg() {
+            if (remainingQuota <= 0) {
+                alert('Batas maksimal 3 pesan tercapai. Mohon tunggu balasan dari Admin untuk mereset kuota pesan Anda.');
+                return;
+            }
+
+            const input = document.getElementById('userMsgInput');
+            const text = input.value.trim();
+            if (!text) return;
+
+            const chat = document.getElementById('userChatHistory');
+            const bubble = document.createElement('div');
+            bubble.style.cssText = 'align-self: flex-end; max-width: 75%;';
+            bubble.innerHTML = `
+                <div style="font-size: 0.72rem; color: #94a3b8; text-align: right; margin-bottom: 2px;">Rain • Baru saja</div>
+                <div style="background: #2563eb; color: white; border-radius: 12px 12px 2px 12px; padding: 10px 14px; font-size: 0.88rem;">
+                    ${text}
+                </div>
+            `;
+            chat.appendChild(bubble);
+            input.value = '';
+            chat.scrollTop = chat.scrollHeight;
+
+            remainingQuota--;
+            updateQuotaUI();
+        }
+
+        function simulateAdminReply() {
+            const chat = document.getElementById('userChatHistory');
+            const bubble = document.createElement('div');
+            bubble.style.cssText = 'align-self: flex-start; max-width: 75%;';
+            bubble.innerHTML = `
+                <div style="font-size: 0.72rem; color: #94a3b8; margin-bottom: 2px;">Admin Rainpedia • Baru saja</div>
+                <div style="background: white; border: 1px solid #e2e8f0; border-radius: 12px 12px 12px 2px; padding: 10px 14px; font-size: 0.88rem; color: #1e293b;">
+                    Halo kak Rain, pengembalian buku Sapiens telah kami cek dan disetujui (ACC). Kuota peminjaman Anda sudah kembali tersedia. Terima kasih banyak ya kak! 😊
+                </div>
+            `;
+            chat.appendChild(bubble);
+            chat.scrollTop = chat.scrollHeight;
+
+            // Reset quota
+            remainingQuota = 3;
+            updateQuotaUI();
+            alert('Admin telah membalas pesan! Kuota pesan Anda berhasil di-reset kembali ke 3/3.');
+        }
+
+        updateQuotaUI();
+    </script>
+</body>
+</html>

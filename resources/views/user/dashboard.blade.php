@@ -6,19 +6,21 @@
 <style>
     @media (max-width: 900px) {
         .dashboard-main-grid { grid-template-columns: 1fr !important; }
+        .dashboard-row-2col { grid-template-columns: 1fr !important; }
         .dashboard-status-grid { grid-template-columns: repeat(3, 1fr) !important; gap: 8px !important; }
     }
-    @media (max-width: 480px) {
+    @media (max-width: 540px) {
         .dashboard-status-grid { grid-template-columns: repeat(2, 1fr) !important; }
+        .dashboard-books-grid { grid-template-columns: 1fr !important; }
     }
 </style>
 
 <div class="flex-between mb-4" style="flex-wrap:wrap; gap:16px;">
     <div>
-        <h1 style="margin-bottom:4px;">Halo, {{ auth()->user()->name }}! 👋</h1>
-        <p class="text-muted" style="margin:0; font-size:0.95rem;">Selamat datang di Rainpedia • {{ date('l, d F Y') }}</p>
+        <h1 style="margin-bottom:4px; font-size:clamp(1.25rem, 4vw, 1.8rem);">Halo, {{ auth()->user()->name }}! 👋</h1>
+        <p class="text-muted" style="margin:0; font-size:0.9rem;">Selamat datang di Rainpedia • {{ date('l, d F Y') }}</p>
     </div>
-    <div style="display:flex; gap:10px;">
+    <div style="display:flex; gap:10px; flex-wrap:wrap;">
         <a href="/user/catalog" class="btn btn-primary btn-sm">📚 Jelajahi Katalog Buku</a>
         <a href="/user/borrowings" class="btn btn-outline btn-sm">📋 Peminjaman Saya</a>
     </div>
@@ -27,13 +29,13 @@
 <!-- ============ BANNER DENDA JIKA ADA ============ -->
 @if($totalUnpaidFineAmount > 0)
 <div class="alert alert-danger" style="margin-bottom:24px; padding:16px 20px; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px;">
-    <div>
+    <div style="flex:1; min-width:220px;">
         <strong>⚠️ Anda memiliki denda keterlambatan belum dibayar!</strong>
         <div style="font-size:0.85rem; margin-top:2px;">
             Total tagihan denda: <strong style="font-size:1rem;">Rp {{ number_format($totalUnpaidFineAmount, 0, ',', '.') }}</strong>. Lunasi segera agar dapat meminjam buku kembali.
         </div>
     </div>
-    <a href="/user/borrowings" class="btn btn-danger btn-sm">Bayar Denda Sekarang &rarr;</a>
+    <a href="/user/borrowings" class="btn btn-danger btn-sm" style="flex-shrink:0;">Bayar Denda Sekarang &rarr;</a>
 </div>
 @endif
 
@@ -41,7 +43,7 @@
 <div style="display:grid; grid-template-columns: 1fr 1fr; gap:20px; margin-bottom:24px;" class="dashboard-main-grid">
     <!-- STATUS PESANAN USER -->
     <div class="panel" style="margin:0;">
-        <div class="panel-header flex-between">
+        <div class="panel-header flex-between" style="flex-wrap:wrap; gap:8px;">
             <h3 class="panel-title">🛒 Riwayat Pembelian ({{ $totalOrders }} Pesanan)</h3>
             <a href="/user/transactions" class="btn btn-outline btn-sm">Semua Pesanan</a>
         </div>
@@ -75,7 +77,7 @@
 
     <!-- STATUS PEMINJAMAN USER -->
     <div class="panel" style="margin:0;">
-        <div class="panel-header flex-between">
+        <div class="panel-header flex-between" style="flex-wrap:wrap; gap:8px;">
             <h3 class="panel-title">📚 Status Peminjaman ({{ $totalBorrows }} Total)</h3>
             <a href="/user/borrowings" class="btn btn-outline btn-sm">Semua Pinjaman</a>
         </div>
@@ -110,7 +112,7 @@
 
 <!-- ============ BUKU YANG LAGI DIPINJAM (DENGAN COVER + TENGGAT WAKTU) ============ -->
 <div class="panel" style="margin-bottom:24px;">
-    <div class="panel-header flex-between">
+    <div class="panel-header flex-between" style="flex-wrap:wrap; gap:8px;">
         <div>
             <h3 class="panel-title" style="margin-bottom:2px;">📖 Buku yang Sedang Anda Pinjam (Aktif)</h3>
             <span class="text-muted" style="font-size:0.85rem;">Pastikan mengembalikan buku sebelum batas tenggat waktu.</span>
@@ -126,14 +128,14 @@
             <a href="/user/catalog" class="btn btn-primary btn-sm">Pinjam Buku Sekarang</a>
         </div>
     @else
-        <div style="display:grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap:16px;">
+        <div style="display:grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap:16px;" class="dashboard-books-grid">
             @foreach($activeBorrowings as $ab)
                 @php
                     $isOverdue = $ab->status === 'Overdue';
                     $bg = $isOverdue ? '#fff5f5' : '#ffffff';
                     $borderColor = $isOverdue ? 'var(--danger)' : 'var(--border)';
                 @endphp
-                <div style="background:{{ $bg }}; border:1.5px solid {{ $borderColor }}; border-radius:10px; padding:16px; display:flex; gap:14px; box-shadow:0 2px 8px rgba(0,0,0,0.04);">
+                <div style="background:{{ $bg }}; border:1.5px solid {{ $borderColor }}; border-radius:10px; padding:16px; display:flex; gap:14px; box-shadow:0 2px 8px rgba(0,0,0,0.04); min-width:0;">
                     <!-- Cover Buku -->
                     <div style="width:65px; height:92px; border-radius:6px; overflow:hidden; background:#eee; flex-shrink:0; border:1px solid var(--border);">
                         @if($ab->book && $ab->book->cover)
@@ -146,17 +148,17 @@
                     <div style="flex:1; min-width:0; display:flex; flex-direction:column; justify-content:space-between;">
                         <div>
                             <div style="display:flex; justify-content:space-between; align-items:flex-start; gap:8px;">
-                                <strong style="font-size:0.95rem; line-height:1.3; display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden;">
+                                <strong style="font-size:0.92rem; line-height:1.3; display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden; word-break:break-word;">
                                     {{ $ab->book->title ?? 'Buku Dihapus' }}
                                 </strong>
-                                <span class="status-badge {{ $isOverdue ? 'badge-overdue' : 'badge-borrowed' }}" style="font-size:0.7rem;">
+                                <span class="status-badge {{ $isOverdue ? 'badge-overdue' : 'badge-borrowed' }}" style="font-size:0.65rem; flex-shrink:0;">
                                     {{ $ab->status }}
                                 </span>
                             </div>
-                            <div style="font-size:0.8rem; color:var(--text-muted); margin-top:2px;">{{ $ab->book->author ?? '-' }}</div>
+                            <div style="font-size:0.75rem; color:var(--text-muted); margin-top:2px;">{{ $ab->book->author ?? '-' }}</div>
                         </div>
 
-                        <div style="margin-top:8px; padding-top:8px; border-top:1px dashed var(--border); font-size:0.8rem;">
+                        <div style="margin-top:8px; padding-top:8px; border-top:1px dashed var(--border); font-size:0.78rem;">
                             <div>📅 Mulai: <strong>{{ $ab->start_date ? date('d M Y', strtotime($ab->start_date)) : '-' }}</strong></div>
                             <div style="color: {{ $isOverdue ? 'var(--danger)' : 'var(--primary)' }}; font-weight:700; margin-top:2px;">
                                 ⏰ Tenggat: {{ $ab->due_date ? date('d M Y', strtotime($ab->due_date)) : '-' }}
@@ -170,10 +172,10 @@
 </div>
 
 <!-- ============ ROW 2: BUKU YANG SUDAH DIKEMBALIKAN & DAFTAR DENDA ============ -->
-<div style="display:grid; grid-template-columns: 1fr 1fr; gap:20px; margin-bottom:24px;">
+<div style="display:grid; grid-template-columns: 1fr 1fr; gap:20px; margin-bottom:24px;" class="dashboard-row-2col">
     <!-- BUKU YANG SUDAH DIKEMBALIKAN -->
     <div class="panel" style="margin:0;">
-        <div class="panel-header flex-between">
+        <div class="panel-header flex-between" style="flex-wrap:wrap; gap:8px;">
             <h3 class="panel-title">✅ Buku yang Sudah Dikembalikan</h3>
             <a href="/user/borrowings?status=Returned" style="font-size:0.85rem; font-weight:600;">Lihat Semua &rarr;</a>
         </div>
@@ -182,23 +184,23 @@
         @else
             <div style="display:flex; flex-direction:column; gap:10px;">
                 @foreach($returnedBooks as $rb)
-                    <div style="display:flex; align-items:center; gap:12px; padding:8px 0; border-bottom:1px solid var(--border);">
-                        <div style="width:36px; height:50px; border-radius:4px; overflow:hidden; background:#eee; flex-shrink:0;">
+                    <div style="display:flex; align-items:center; gap:12px; padding:10px 0; border-bottom:1px solid var(--border);">
+                        <div style="width:42px; height:58px; border-radius:4px; overflow:hidden; background:#eee; flex-shrink:0; border:1px solid var(--border);">
                             @if($rb->book && $rb->book->cover)
                                 <img src="{{ asset('uploads/covers/' . $rb->book->cover) }}" style="width:100%; height:100%; object-fit:cover;">
                             @else
-                                <div style="display:flex; align-items:center; justify-content:center; height:100%;">📖</div>
+                                <div style="display:flex; align-items:center; justify-content:center; height:100%; font-size:1.2rem;">📖</div>
                             @endif
                         </div>
                         <div style="flex:1; min-width:0;">
-                            <div style="font-weight:700; font-size:0.85rem; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">
+                            <div style="font-weight:700; font-size:0.88rem; line-height:1.3; margin-bottom:2px; word-break:break-word;">
                                 {{ $rb->book->title ?? 'Buku Dihapus' }}
                             </div>
                             <div style="font-size:0.75rem; color:var(--text-muted);">
                                 Dipinjam: {{ $rb->start_date ? date('d/m/y', strtotime($rb->start_date)) : '-' }} s/d {{ $rb->due_date ? date('d/m/y', strtotime($rb->due_date)) : '-' }}
                             </div>
                         </div>
-                        <span class="status-badge" style="background:#dcfce7; color:#166534; font-size:0.7rem;">Selesai</span>
+                        <span class="status-badge" style="background:#dcfce7; color:#166534; font-size:0.7rem; flex-shrink:0;">Selesai</span>
                     </div>
                 @endforeach
             </div>
@@ -207,7 +209,7 @@
 
     <!-- DAFTAR DENDA -->
     <div class="panel" style="margin:0;">
-        <div class="panel-header flex-between">
+        <div class="panel-header flex-between" style="flex-wrap:wrap; gap:8px;">
             <h3 class="panel-title">💰 Daftar Denda Keterlambatan</h3>
             <span style="font-size:0.85rem; font-weight:700; color:{{ $totalUnpaidFineAmount > 0 ? 'var(--danger)' : 'var(--success)' }}">
                 {{ $totalUnpaidFineAmount > 0 ? 'Total: Rp ' . number_format($totalUnpaidFineAmount, 0, ',', '.') : 'Bebas Denda 🎉' }}
@@ -222,23 +224,23 @@
         @else
             <div style="display:flex; flex-direction:column; gap:10px;">
                 @foreach($unpaidFines as $fn)
-                    <div style="background:#fff5f5; border:1px solid #fecaca; border-radius:8px; padding:10px 14px; display:flex; justify-content:space-between; align-items:center;">
-                        <div>
-                            <div style="font-weight:700; font-size:0.9rem; color:#991b1b;">
+                    <div style="background:#fff5f5; border:1px solid #fecaca; border-radius:8px; padding:12px 14px; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px;">
+                        <div style="flex:1; min-width:160px;">
+                            <div style="font-weight:700; font-size:0.88rem; color:#991b1b; word-break:break-word;">
                                 {{ $fn->borrowing->book->title ?? 'Peminjaman Buku' }}
                             </div>
                             <div style="font-size:0.75rem; color:var(--text-muted); margin-top:2px;">
                                 Keterlambatan: <strong>{{ $fn->borrowing->late_days ?? 0 }} Hari</strong>
                             </div>
                         </div>
-                        <div style="text-align:right;">
-                            <div style="font-weight:800; color:var(--danger); font-size:0.95rem;">
+                        <div style="display:flex; align-items:center; gap:10px; margin-left:auto;">
+                            <div style="font-weight:800; color:var(--danger); font-size:0.95rem; white-space:nowrap;">
                                 Rp {{ number_format($fn->amount, 0, ',', '.') }}
                             </div>
-                            <form action="/user/borrowings/pay-fine" method="POST" style="margin-top:4px;">
+                            <form action="/user/borrowings/pay-fine" method="POST" style="margin:0;">
                                 @csrf
                                 <input type="hidden" name="fine_id" value="{{ $fn->id }}">
-                                <button type="submit" class="btn btn-danger btn-sm" style="padding:3px 10px; font-size:0.75rem;" onclick="return confirm('Bayar denda ini sekarang?')">Bayar</button>
+                                <button type="submit" class="btn btn-danger btn-sm" style="padding:4px 12px; font-size:0.75rem; font-weight:700;" onclick="return confirm('Bayar denda ini sekarang?')">Bayar</button>
                             </form>
                         </div>
                     </div>
@@ -250,7 +252,7 @@
 
 <!-- ============ ROW 3: AKTIFITAS & NOTIFIKASI TERBARU ============ -->
 <div class="panel">
-    <div class="panel-header flex-between">
+    <div class="panel-header flex-between" style="flex-wrap:wrap; gap:8px;">
         <h3 class="panel-title">🔔 Notifikasi &amp; Aktifitas Terbaru</h3>
         <a href="/user/notifications" style="font-size:0.85rem; font-weight:600;">Lihat Semua Notifikasi &rarr;</a>
     </div>
@@ -259,12 +261,12 @@
     @else
         <div style="display:flex; flex-direction:column; gap:10px;">
             @foreach($recentNotifications as $notif)
-                <div style="padding:10px 14px; border-radius:8px; border:1px solid var(--border); {{ $notif->is_read ? 'background:#ffffff;' : 'background:#eff6ff; border-color:#bfdbfe;' }}; display:flex; justify-content:space-between; align-items:center;">
-                    <div>
+                <div style="padding:10px 14px; border-radius:8px; border:1px solid var(--border); {{ $notif->is_read ? 'background:#ffffff;' : 'background:#eff6ff; border-color:#bfdbfe;' }}; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px;">
+                    <div style="flex:1; min-width:200px;">
                         <strong style="color:var(--primary); font-size:0.9rem;">{{ $notif->title }}</strong>
-                        <p style="margin:2px 0 0; font-size:0.825rem; color:var(--text-main);">{{ $notif->message }}</p>
+                        <p style="margin:2px 0 0; font-size:0.825rem; color:var(--text-main); word-break:break-word;">{{ $notif->message }}</p>
                     </div>
-                    <div style="text-align:right; font-size:0.75rem; color:var(--text-muted); white-space:nowrap; margin-left:16px;">
+                    <div style="font-size:0.75rem; color:var(--text-muted); white-space:nowrap;">
                         {{ date('d M, H:i', strtotime($notif->created_at)) }}
                     </div>
                 </div>

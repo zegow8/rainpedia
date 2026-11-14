@@ -167,6 +167,24 @@ class BookController extends Controller
     public function destroy($id)
     {
         $book = Book::findOrFail($id);
+
+        // Proteksi: Cek apakah buku sedang dipinjam secara aktif
+        $activeBorrowCount = \App\Models\Borrowing::where('book_id', $id)
+            ->whereIn('status', ['Pending', 'Borrowed', 'Overdue', 'Return Requested'])
+            ->count();
+        if ($activeBorrowCount > 0) {
+            return back()->with('error', "Buku '{$book->title}' tidak dapat dihapus karena sedang dalam proses peminjaman aktif oleh {$activeBorrowCount} anggota perpustakaan.");
+        }
+
+        // Proteksi: Cek apakah ada pesanan yang sedang berjalan
+        $activeOrderCount = \App\Models\OrderDetail::where('book_id', $id)
+            ->whereHas('order', function($q) {
+                $q->whereIn('status', ['Waiting Confirmation', 'Processing', 'Shipped']);
+            })->count();
+        if ($activeOrderCount > 0) {
+            return back()->with('error', "Buku '{$book->title}' tidak dapat dihapus karena masih ada pesanan berjalan yang belum selesai.");
+        }
+
         if ($book->cover && file_exists(public_path('uploads/covers/' . $book->cover))) {
             @unlink(public_path('uploads/covers/' . $book->cover));
         }

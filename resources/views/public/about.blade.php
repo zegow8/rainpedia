@@ -15,7 +15,7 @@
         <p>Rainpedia adalah platform buku independen yang didirikan dengan satu tujuan: membuat buku lebih mudah diakses oleh semua orang. Kami percaya bahwa membaca adalah jendela dunia, dan setiap orang berhak mendapatkan akses ke pengetahuan tanpa hambatan biaya.</p>
     </div>
 
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-bottom:24px;">
+    <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap:20px; margin-bottom:24px;">
         <div class="panel" style="margin-bottom:0;border-top:4px solid var(--primary);">
             <div style="font-size:2rem;margin-bottom:12px;">🛒</div>
             <h3 style="font-size:1.1rem;margin-bottom:8px;">Beli Buku</h3>

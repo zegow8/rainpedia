@@ -1,0 +1,252 @@
+﻿<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Laporan Peminjaman Buku - Rainpedia</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="assets/css/demo-toolbar.css">
+    <style>
+        * { box-sizing: border-box; }
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            margin: 0;
+            padding: 30px;
+            color: #1e293b;
+            background: #fff;
+            font-size: 11px;
+            line-height: 1.5;
+        }
+        .header {
+            border-bottom: 2.5px solid #0f172a;
+            padding-bottom: 12px;
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+        }
+        .brand-title {
+            font-size: 20px;
+            font-weight: 800;
+            color: #1e40af;
+            letter-spacing: 0.05em;
+            margin: 0 0 4px 0;
+        }
+        .brand-sub {
+            font-size: 11px;
+            color: #64748b;
+            margin: 0;
+        }
+        .doc-title {
+            text-align: right;
+        }
+        .doc-title h2 {
+            margin: 0 0 4px 0;
+            font-size: 16px;
+            font-weight: 800;
+            color: #0f172a;
+            text-transform: uppercase;
+        }
+        .meta-box {
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 6px;
+            padding: 12px 16px;
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: space-between;
+            gap: 20px;
+        }
+        .meta-item {
+            font-size: 11px;
+        }
+        .meta-label {
+            color: #64748b;
+            text-transform: uppercase;
+            font-size: 9px;
+            font-weight: 700;
+            letter-spacing: 0.05em;
+        }
+        .meta-value {
+            font-weight: 700;
+            color: #0f172a;
+            margin-top: 2px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 24px;
+        }
+        th, td {
+            border: 1px solid #cbd5e1;
+            padding: 8px 10px;
+            text-align: left;
+            vertical-align: top;
+        }
+        th {
+            background: #0f172a;
+            color: #fff;
+            font-weight: 700;
+            font-size: 10px;
+            text-transform: uppercase;
+            letter-spacing: 0.03em;
+        }
+        tr:nth-child(even) td {
+            background: #f8fafc;
+        }
+        .print-btn-bar {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: #0f172a;
+            padding: 10px 16px;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            display: flex;
+            gap: 10px;
+            z-index: 999;
+        }
+        .print-btn {
+            background: #2563eb;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 6px;
+            font-weight: 700;
+            font-size: 12px;
+            cursor: pointer;
+            font-family: inherit;
+        }
+        .print-btn-outline {
+            background: transparent;
+            color: white;
+            border: 1px solid rgba(255,255,255,0.3);
+            padding: 8px 14px;
+            border-radius: 6px;
+            font-weight: 600;
+            font-size: 12px;
+            cursor: pointer;
+            text-decoration: none;
+            font-family: inherit;
+        }
+        @media print {
+            .print-btn-bar, .demo-top-bar, .demo-toggle-btn {
+                display: none !important;
+            }
+            body {
+                padding: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="print-btn-bar">
+        <a href="admin-borrowings.html" class="print-btn-outline">&larr; Kembali ke Data Pinjaman</a>
+        <button onclick="window.print()" class="print-btn">🖨️ Cetak Dokumen</button>
+    </div>
+
+    <div class="header">
+        <div>
+            <div class="brand-title">RAINPEDIA PERPUSTAKAAN</div>
+            <p class="brand-sub">Platform Toko &amp; Perpustakaan Digital Indonesia • Jl. Merdeka No. 45, Jakarta Pusat</p>
+        </div>
+        <div class="doc-title">
+            <h2>Laporan Peminjaman Buku</h2>
+            <div style="font-size: 10px; color: #64748b;">Dicetak: 14 Nov 2026 15:00 WIB</div>
+        </div>
+    </div>
+
+    <div class="meta-box">
+        <div class="meta-item">
+            <div class="meta-label">Total Data</div>
+            <div class="meta-value">13 Peminjaman</div>
+        </div>
+        <div class="meta-item">
+            <div class="meta-label">Sedang Dipinjam</div>
+            <div class="meta-value">1 Buku</div>
+        </div>
+        <div class="meta-item">
+            <div class="meta-label">Terlambat (Denda Aktif)</div>
+            <div class="meta-value" style="color: #dc2626;">2 Buku</div>
+        </div>
+        <div class="meta-item">
+            <div class="meta-label">Total Peminjam</div>
+            <div class="meta-value">Rain (User A)</div>
+        </div>
+    </div>
+
+    <table>
+        <thead>
+            <tr>
+                <th style="width: 30px; text-align: center;">No</th>
+                <th>Judul Buku</th>
+                <th>Peminjam</th>
+                <th>Tgl Mulai</th>
+                <th>Tenggat</th>
+                <th>Status</th>
+                <th>Denda</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td style="text-align: center;">1</td>
+                <td><strong>Sapiens: Riwayat Singkat Umat Manusia</strong><br><small style="color: #64748b;">Yuval Noah Harari</small></td>
+                <td>Rain (rain@gmail.com)</td>
+                <td>05 Nov 2026</td>
+                <td>12 Nov 2026</td>
+                <td>Pengajuan Kembali</td>
+                <td>Rp 20.000 (Paid)</td>
+            </tr>
+            <tr>
+                <td style="text-align: center;">2</td>
+                <td><strong>Cantik Itu Luka</strong><br><small style="color: #64748b;">Eka Kurniawan</small></td>
+                <td>Rain (rain@gmail.com)</td>
+                <td>06 Nov 2026</td>
+                <td>13 Nov 2026</td>
+                <td>Pengajuan Kembali</td>
+                <td style="color: #dc2626; font-weight: 700;">Rp 10.000 (Unpaid)</td>
+            </tr>
+            <tr>
+                <td style="text-align: center;">3</td>
+                <td><strong>Laut Bercerita</strong><br><small style="color: #64748b;">Leila S. Chudori</small></td>
+                <td>Rain (rain@gmail.com)</td>
+                <td>11 Nov 2026</td>
+                <td>14 Nov 2026</td>
+                <td>Pengajuan Kembali</td>
+                <td style="color: #166534;">Bebas Denda</td>
+            </tr>
+            <tr>
+                <td style="text-align: center;">4</td>
+                <td><strong>Bumi Manusia</strong><br><small style="color: #64748b;">Pramoedya Ananta Toer</small></td>
+                <td>Rain (rain@gmail.com)</td>
+                <td>10 Nov 2026</td>
+                <td>17 Nov 2026</td>
+                <td>Sedang Dipinjam</td>
+                <td>-</td>
+            </tr>
+            <tr>
+                <td style="text-align: center;">5</td>
+                <td><strong>Filosofi Teras</strong><br><small style="color: #64748b;">Henry Manampiring</small></td>
+                <td>Rain (rain@gmail.com)</td>
+                <td>03 Nov 2026</td>
+                <td>10 Nov 2026</td>
+                <td style="color: #dc2626; font-weight: 700;">Terlambat</td>
+                <td style="color: #dc2626; font-weight: 700;">Rp 40.000 (Unpaid)</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <div style="display: flex; justify-content: space-between; margin-top: 40px;">
+        <div style="text-align: center; width: 200px;">
+            <div style="margin-bottom: 50px;">Mengetahui,<br><strong>Kepala Perpustakaan Rainpedia</strong></div>
+            <div style="border-top: 1px solid #94a3b8; padding-top: 4px;"><strong>( ..................................... )</strong></div>
+        </div>
+        <div style="text-align: center; width: 200px;">
+            <div style="margin-bottom: 50px;">Jakarta, 14 Nov 2026<br><strong>Administrator Sistem</strong></div>
+            <div style="border-top: 1px solid #94a3b8; padding-top: 4px;"><strong>Administrator Rainpedia</strong></div>
+        </div>
+    </div>
+
+    <script src="assets/js/demo-toolbar.js"></script>
+</body>
+</html>

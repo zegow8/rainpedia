@@ -1,0 +1,193 @@
+﻿<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chat Pelanggan - Admin Rainpedia</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="stylesheet" href="assets/css/demo-toolbar.css">
+    <style>
+        html, body { max-width: 100vw; overflow-x: hidden; }
+        .admin-layout { display: flex; min-height: 100vh; background: #f8fafc; max-width: 100vw; overflow-x: hidden; }
+        .sidebar { width: 260px; background: white; border-right: 1px solid #e2e8f0; flex-shrink: 0; display: flex; flex-direction: column; }
+        .sidebar-brand { padding: 24px; font-weight: 800; font-size: 1.15rem; color: var(--primary); border-bottom: 1px solid #e2e8f0; letter-spacing: 0.05em; }
+        .sidebar-menu { list-style: none; padding: 0; margin: 0; flex: 1; overflow-y: auto; }
+        .sidebar-menu a { display: block; padding: 11px 24px; color: #475569; font-weight: 600; font-size: 0.9rem; text-decoration: none; border-left: 4px solid transparent; transition: all 0.2s; }
+        .sidebar-menu a:hover, .sidebar-menu a.active { background: #eff6ff; color: var(--primary); border-left-color: var(--primary); }
+        .menu-header { padding: 18px 24px 6px; font-size: 0.7rem; font-weight: 800; color: #94a3b8; text-transform: uppercase; letter-spacing: 0.08em; }
+        .main-content { flex: 1; display: flex; flex-direction: column; min-width: 0; }
+        .topbar { background: white; padding: 16px 32px; border-bottom: 1px solid #e2e8f0; display: flex; justify-content: space-between; align-items: center; }
+        .content-wrapper { padding: 32px; flex: 1; overflow-y: auto; }
+
+        @media (max-width: 868px) {
+            .admin-chat-layout { grid-template-columns: 1fr !important; height: auto !important; }
+            .admin-chat-sidebar { max-height: 280px !important; }
+            .admin-chat-main { height: 520px !important; }
+            .admin-layout { flex-direction: column; }
+            .sidebar { width: 100%; border-right: none; border-bottom: 1px solid #e2e8f0; }
+            .sidebar-menu { display: flex; overflow-x: auto; white-space: nowrap; -webkit-overflow-scrolling: touch; padding: 4px 0; }
+            .sidebar-menu a { border-left: none; border-bottom: 3px solid transparent; padding: 12px 14px; font-size: 0.85rem; }
+            .sidebar-menu a.active { border-left: none; border-bottom-color: var(--primary); }
+            .menu-header { display: none; }
+            .topbar { padding: 12px 16px; }
+            .content-wrapper { padding: 16px 12px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="admin-layout">
+        <div class="sidebar">
+            <div class="sidebar-brand">RAINPEDIA ADMIN</div>
+            <ul class="sidebar-menu">
+                <li class="menu-header">Utama</li>
+                <li><a href="admin-dashboard.html">Dashboard</a></li>
+                <li class="menu-header">Manajemen Buku</li>
+                <li><a href="admin-books.html">Data Buku</a></li>
+                <li><a href="admin-categories.html">Kategori Buku</a></li>
+                <li class="menu-header">Transaksi</li>
+                <li><a href="admin-orders.html">Data Pembelian</a></li>
+                <li><a href="admin-borrowings.html">Data Peminjaman</a></li>
+                <li><a href="admin-returns.html">Pengembalian</a></li>
+                <li><a href="admin-payments.html">Pendapatan &amp; Denda</a></li>
+                <li class="menu-header">Layanan Pelanggan</li>
+                <li><a href="admin-chats.html" class="active">💬 Chat Pelanggan</a></li>
+                <li class="menu-header">Sistem</li>
+                <li><a href="admin-users.html">Data User</a></li>
+                <li><a href="admin-profile.html">Profil Admin</a></li>
+                <li style="padding: 24px;">
+                    <a href="index.html" style="color: #ef4444; font-weight: 700;">Logout</a>
+                </li>
+            </ul>
+        </div>
+
+        <div class="main-content">
+            <div class="topbar">
+                <strong style="color: var(--text-main);">Halo, Administrator</strong>
+                <a href="index.html" target="_blank" class="btn btn-outline btn-sm">Lihat Website</a>
+            </div>
+
+            <div class="content-wrapper">
+                <div style="margin-bottom: 20px;">
+                    <h1 style="font-size: 1.5rem; font-weight: 800; color: #1e293b; margin: 0 0 4px 0;">💬 Layanan Chat Pelanggan</h1>
+                    <p style="color: #64748b; font-size: 0.9rem; margin: 0;">Kelola pesan masuk dari pengguna dan kirim balasan dengan cepat.</p>
+                </div>
+
+                <div style="display: grid; grid-template-columns: 340px 1fr; gap: 20px; height: calc(100vh - 200px); min-height: 560px;" class="admin-chat-layout">
+                    <!-- KOLOM KIRI: DAFTAR USER & STATUS TABS -->
+                    <div style="background: white; border: 1px solid #e2e8f0; border-radius: 12px; display: flex; flex-direction: column; overflow: hidden;" class="admin-chat-sidebar">
+                        <div style="padding: 16px; border-bottom: 1px solid #e2e8f0; background: #fafafa;">
+                            <div style="margin-bottom: 12px;">
+                                <select style="width: 100%; border: 1.5px solid #3b82f6; border-radius: 8px; padding: 7px 10px; font-size: 0.82rem; font-weight: 700; color: #1e40af; background: #eff6ff;">
+                                    <option value="rain">👤 Rain (rain@gmail.com)</option>
+                                    <option value="zeg">👤 Zeg (zeg@gmail.com)</option>
+                                    <option value="lyta">👤 Lyta (lyta@gmail.com)</option>
+                                </select>
+                            </div>
+
+                            <div style="display: flex; gap: 4px; background: #f1f5f9; padding: 4px; border-radius: 8px;">
+                                <button type="button" class="btn btn-sm" style="flex:1; background:white; font-size:0.75rem; font-weight:700; color:var(--primary); border:none; box-shadow:0 1px 2px rgba(0,0,0,0.05);">Semua</button>
+                                <button type="button" class="btn btn-sm" style="flex:1; background:transparent; font-size:0.75rem; font-weight:600; color:#64748b; border:none;">Belum Dibalas (1)</button>
+                                <button type="button" class="btn btn-sm" style="flex:1; background:transparent; font-size:0.75rem; font-weight:600; color:#64748b; border:none;">Sudah Dibalas</button>
+                            </div>
+                        </div>
+
+                        <!-- User Item List -->
+                        <div style="flex: 1; overflow-y: auto;">
+                            <!-- Rain (Active) -->
+                            <div style="padding: 14px 16px; border-bottom: 1px solid #f1f5f9; background: #eff6ff; border-left: 4px solid #2563eb; cursor: pointer;">
+                                <div class="flex-between">
+                                    <strong style="color: #1e293b; font-size: 0.92rem;">Rain</strong>
+                                    <span style="font-size: 0.72rem; color: #94a3b8;">14:32</span>
+                                </div>
+                                <div style="font-size: 0.8rem; color: #475569; margin-top: 4px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
+                                    Halo min, denda buku Sapiens sudah saya bayar ya...
+                                </div>
+                                <div style="margin-top: 4px;">
+                                    <span style="background: #ef4444; color: white; font-size: 0.65rem; font-weight: 800; padding: 1px 6px; border-radius: 10px;">1 Pesan Baru</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- KOLOM KANAN: KOTAK PERCAKAPAN -->
+                    <div style="background: white; border: 1px solid #e2e8f0; border-radius: 12px; display: flex; flex-direction: column; overflow: hidden;" class="admin-chat-main">
+                        <!-- Header Chat -->
+                        <div style="padding: 14px 20px; border-bottom: 1px solid #e2e8f0; background: #f8fafc; display: flex; justify-content: space-between; align-items: center;">
+                            <div>
+                                <strong style="font-size: 1rem; color: #1e293b;">Rain (User A)</strong>
+                                <div style="font-size: 0.78rem; color: #64748b;">rain@gmail.com • WhatsApp: 081298765432</div>
+                            </div>
+                            <div>
+                                <a href="admin-borrowings.html?q=rain" class="btn btn-outline btn-sm" style="font-size:0.75rem;">📋 Cek Pinjaman Rain</a>
+                            </div>
+                        </div>
+
+                        <!-- Chat Messages Container -->
+                        <div id="chatHistory" style="flex: 1; padding: 20px; overflow-y: auto; background: #f8fafc; display: flex; flex-direction: column; gap: 12px;">
+                            <!-- User message -->
+                            <div style="align-self: flex-start; max-width: 75%;">
+                                <div style="font-size: 0.72rem; color: #94a3b8; margin-bottom: 2px;">Rain • 14:30</div>
+                                <div style="background: white; border: 1px solid #e2e8f0; border-radius: 12px 12px 12px 2px; padding: 10px 14px; font-size: 0.88rem; color: #1e293b; box-shadow: 0 1px 2px rgba(0,0,0,0.03);">
+                                    Halo admin, saya mau konfirmasi pengembalian buku Sapiens.
+                                </div>
+                            </div>
+
+                            <!-- User message 2 -->
+                            <div style="align-self: flex-start; max-width: 75%;">
+                                <div style="font-size: 0.72rem; color: #94a3b8; margin-bottom: 2px;">Rain • 14:32</div>
+                                <div style="background: white; border: 1px solid #e2e8f0; border-radius: 12px 12px 12px 2px; padding: 10px 14px; font-size: 0.88rem; color: #1e293b; box-shadow: 0 1px 2px rgba(0,0,0,0.03);">
+                                    Denda Rp 20.000 sudah saya bayar lunas tadi siang. Tolong di-ACC ya min pengembaliannya biar kuota pinjam saya kembali bisa dipakai. Terima kasih!
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Preset Quick Replies -->
+                        <div style="padding: 8px 16px; background: #fafafa; border-top: 1px solid #f1f5f9; display: flex; gap: 6px; overflow-x: auto; white-space: nowrap;">
+                            <span style="font-size: 0.72rem; color: #94a3b8; align-self: center; font-weight: 700;">Template Balasan:</span>
+                            <button type="button" class="btn btn-sm" style="font-size: 0.75rem; background: white; border: 1px solid #cbd5e1; border-radius: 100px; padding: 2px 10px;" onclick="setTemplate('Baik kak Rain, pengembalian buku sudah kami cek dan telah di-ACC!')">✅ Sudah di-ACC</button>
+                            <button type="button" class="btn btn-sm" style="font-size: 0.75rem; background: white; border: 1px solid #cbd5e1; border-radius: 100px; padding: 2px 10px;" onclick="setTemplate('Terima kasih kak, bukti pembayaran denda sudah diverifikasi.')">💰 Denda Lunas</button>
+                            <button type="button" class="btn btn-sm" style="font-size: 0.75rem; background: white; border: 1px solid #cbd5e1; border-radius: 100px; padding: 2px 10px;" onclick="setTemplate('Mohon tunggu sebentar ya kak, sedang kami proses.')">⏳ Sedang Diproses</button>
+                        </div>
+
+                        <!-- Input Area -->
+                        <div style="padding: 12px 16px; border-top: 1px solid #e2e8f0; background: white; display: flex; gap: 10px;">
+                            <input type="text" id="adminReplyInput" placeholder="Ketik balasan untuk Rain..." style="flex: 1; border: 1.5px solid #cbd5e1; border-radius: 8px; padding: 10px 14px; font-size: 0.88rem; outline: none;" onkeydown="if(event.key==='Enter') sendAdminReply();">
+                            <button type="button" class="btn btn-primary" onclick="sendAdminReply()">Kirim Pesan</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="assets/js/script.js"></script>
+    <script src="assets/js/demo-toolbar.js"></script>
+    <script>
+        function setTemplate(text) {
+            document.getElementById('adminReplyInput').value = text;
+        }
+
+        function sendAdminReply() {
+            const input = document.getElementById('adminReplyInput');
+            const val = input.value.trim();
+            if (!val) return;
+
+            const chatHistory = document.getElementById('chatHistory');
+            const bubble = document.createElement('div');
+            bubble.style.cssText = 'align-self: flex-end; max-width: 75%;';
+            bubble.innerHTML = `
+                <div style="font-size: 0.72rem; color: #94a3b8; text-align: right; margin-bottom: 2px;">Administrator • Baru saja</div>
+                <div style="background: #2563eb; color: white; border-radius: 12px 12px 2px 12px; padding: 10px 14px; font-size: 0.88rem; box-shadow: 0 1px 2px rgba(0,0,0,0.05);">
+                    ${val}
+                </div>
+            `;
+            chatHistory.appendChild(bubble);
+            input.value = '';
+            chatHistory.scrollTop = chatHistory.scrollHeight;
+        }
+    </script>
+</body>
+</html>

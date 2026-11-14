@@ -1,0 +1,177 @@
+﻿<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pendapatan & Denda - Admin Rainpedia</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="stylesheet" href="assets/css/demo-toolbar.css">
+    <style>
+        html, body { max-width: 100vw; overflow-x: hidden; }
+        .admin-layout { display: flex; min-height: 100vh; background: #f8fafc; max-width: 100vw; overflow-x: hidden; }
+        .sidebar { width: 260px; background: white; border-right: 1px solid #e2e8f0; flex-shrink: 0; display: flex; flex-direction: column; }
+        .sidebar-brand { padding: 24px; font-weight: 800; font-size: 1.15rem; color: var(--primary); border-bottom: 1px solid #e2e8f0; letter-spacing: 0.05em; }
+        .sidebar-menu { list-style: none; padding: 0; margin: 0; flex: 1; overflow-y: auto; }
+        .sidebar-menu a { display: block; padding: 11px 24px; color: #475569; font-weight: 600; font-size: 0.9rem; text-decoration: none; border-left: 4px solid transparent; transition: all 0.2s; }
+        .sidebar-menu a:hover, .sidebar-menu a.active { background: #eff6ff; color: var(--primary); border-left-color: var(--primary); }
+        .menu-header { padding: 18px 24px 6px; font-size: 0.7rem; font-weight: 800; color: #94a3b8; text-transform: uppercase; letter-spacing: 0.08em; }
+        .main-content { flex: 1; display: flex; flex-direction: column; min-width: 0; }
+        .topbar { background: white; padding: 16px 32px; border-bottom: 1px solid #e2e8f0; display: flex; justify-content: space-between; align-items: center; }
+        .content-wrapper { padding: 32px; flex: 1; overflow-y: auto; }
+        .status-tabs { display: flex; gap: 8px; margin-bottom: 16px; flex-wrap: wrap; }
+        .status-tab { padding: 8px 16px; border-radius: 100px; font-size: 0.85rem; font-weight: 600; text-decoration: none; border: 1.5px solid var(--border-dark); color: var(--text-muted); background: var(--white); transition: all 0.2s; cursor: pointer; }
+        .status-tab:hover { border-color: var(--primary); color: var(--primary); text-decoration: none; }
+        .status-tab.active { background: var(--primary); color: white; border-color: var(--primary); }
+
+        @media (max-width: 768px) {
+            .admin-layout { flex-direction: column; }
+            .sidebar { width: 100%; border-right: none; border-bottom: 1px solid #e2e8f0; }
+            .sidebar-menu { display: flex; overflow-x: auto; white-space: nowrap; -webkit-overflow-scrolling: touch; padding: 4px 0; }
+            .sidebar-menu a { border-left: none; border-bottom: 3px solid transparent; padding: 12px 14px; font-size: 0.85rem; }
+            .sidebar-menu a.active { border-left: none; border-bottom-color: var(--primary); }
+            .menu-header { display: none; }
+            .topbar { padding: 12px 16px; }
+            .content-wrapper { padding: 16px 12px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="admin-layout">
+        <div class="sidebar">
+            <div class="sidebar-brand">RAINPEDIA ADMIN</div>
+            <ul class="sidebar-menu">
+                <li class="menu-header">Utama</li>
+                <li><a href="admin-dashboard.html">Dashboard</a></li>
+                <li class="menu-header">Manajemen Buku</li>
+                <li><a href="admin-books.html">Data Buku</a></li>
+                <li><a href="admin-categories.html">Kategori Buku</a></li>
+                <li class="menu-header">Transaksi</li>
+                <li><a href="admin-orders.html">Data Pembelian</a></li>
+                <li><a href="admin-borrowings.html">Data Peminjaman</a></li>
+                <li><a href="admin-returns.html">Pengembalian</a></li>
+                <li><a href="admin-payments.html" class="active">Pendapatan &amp; Denda</a></li>
+                <li class="menu-header">Layanan Pelanggan</li>
+                <li><a href="admin-chats.html">💬 Chat Pelanggan</a></li>
+                <li class="menu-header">Sistem</li>
+                <li><a href="admin-users.html">Data User</a></li>
+                <li><a href="admin-profile.html">Profil Admin</a></li>
+                <li style="padding: 24px;">
+                    <a href="index.html" style="color: #ef4444; font-weight: 700;">Logout</a>
+                </li>
+            </ul>
+        </div>
+
+        <div class="main-content">
+            <div class="topbar">
+                <strong style="color: var(--text-main);">Halo, Administrator</strong>
+                <a href="index.html" target="_blank" class="btn btn-outline btn-sm">Lihat Website</a>
+            </div>
+
+            <div class="content-wrapper">
+                <div class="flex-between mb-4" style="flex-wrap:wrap; gap:16px;">
+                    <div>
+                        <h1 style="margin-bottom:4px;">Pendapatan &amp; Denda</h1>
+                        <p class="text-muted" style="margin:0;">Laporan pemasukan dari transaksi pembelian buku dan pembayaran denda</p>
+                    </div>
+                    <div style="display:flex; align-items:center; gap:20px;">
+                        <div style="text-align:right;">
+                            <div style="font-size:0.85rem; color:var(--text-muted); font-weight:600;">Total Pemasukan:</div>
+                            <div style="font-size:1.8rem; font-weight:800; color:var(--success);">Rp 2.450.000</div>
+                        </div>
+                        <a href="print-payments.html" target="_blank" class="btn btn-primary" style="display:inline-flex; align-items:center; gap:8px; font-weight:700; padding:10px 18px; background:#2563eb;">
+                            🖨️ Cetak Laporan
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Tabs Sumber -->
+                <div class="status-tabs">
+                    <a href="javascript:void(0)" class="status-tab active" data-status="all">
+                        Semua Sumber (Rp 2.450.000)
+                    </a>
+                    <a href="javascript:void(0)" class="status-tab" data-status="order">
+                        📦 Pembelian Buku (Rp 2.370.000)
+                    </a>
+                    <a href="javascript:void(0)" class="status-tab" data-status="fine">
+                        💰 Denda Peminjaman (Rp 80.000)
+                    </a>
+                </div>
+
+                <!-- Filter Panel -->
+                <div class="panel" style="margin-bottom:20px; padding:16px 20px;">
+                    <div style="display:flex; gap:12px; flex-wrap:wrap; align-items:flex-end;">
+                        <div style="flex:1; min-width:180px;">
+                            <label style="display:block; font-size:0.8rem; font-weight:700; margin-bottom:4px; color:var(--text-muted);">Mulai Tanggal</label>
+                            <input type="date" class="form-control">
+                        </div>
+                        <div style="flex:1; min-width:180px;">
+                            <label style="display:block; font-size:0.8rem; font-weight:700; margin-bottom:4px; color:var(--text-muted);">Sampai Tanggal</label>
+                            <input type="date" class="form-control">
+                        </div>
+                        <div style="flex:1.5; min-width:200px;">
+                            <label style="display:block; font-size:0.8rem; font-weight:700; margin-bottom:4px; color:var(--text-muted);">Cari Invoice / Nama / Judul</label>
+                            <input type="text" class="form-control" placeholder="No. invoice atau nama...">
+                        </div>
+                        <div>
+                            <button type="button" class="btn btn-primary" style="font-weight:700;">🔍 Filter</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tabel Data Pendapatan -->
+                <div class="panel" style="padding:0; overflow:hidden;">
+                    <div style="overflow-x:auto;">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Tanggal</th>
+                                    <th>Sumber</th>
+                                    <th>No. Ref / Judul Buku</th>
+                                    <th>Pengguna (User A)</th>
+                                    <th style="text-align:right;">Nominal Pemasukan</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr data-item-status="order">
+                                    <td>10 Nov 2026</td>
+                                    <td><span class="status-badge" style="background:#eff6ff; color:#2563eb;">📦 Pembelian</span></td>
+                                    <td><code>RP-20261110-7C2E19</code> (Bumi Manusia)</td>
+                                    <td><strong>Rain</strong></td>
+                                    <td style="text-align:right; font-weight:800; color:var(--success);">+ Rp 155.000</td>
+                                </tr>
+                                <tr data-item-status="fine">
+                                    <td>08 Nov 2026</td>
+                                    <td><span class="status-badge" style="background:#fef3c7; color:#92400e;">💰 Denda Pinjam</span></td>
+                                    <td>Denda Keterlambatan 2 Hari (Sapiens)</td>
+                                    <td><strong>Rain</strong></td>
+                                    <td style="text-align:right; font-weight:800; color:var(--success);">+ Rp 20.000</td>
+                                </tr>
+                                <tr data-item-status="order">
+                                    <td>08 Nov 2026</td>
+                                    <td><span class="status-badge" style="background:#eff6ff; color:#2563eb;">📦 Pembelian</span></td>
+                                    <td><code>RP-20261108-1B4F33</code> (Sapiens)</td>
+                                    <td><strong>Rain</strong></td>
+                                    <td style="text-align:right; font-weight:800; color:var(--success);">+ Rp 145.000</td>
+                                </tr>
+                                <tr data-item-status="order">
+                                    <td>05 Nov 2026</td>
+                                    <td><span class="status-badge" style="background:#eff6ff; color:#2563eb;">📦 Pembelian</span></td>
+                                    <td><code>RP-20261105-9D2A77</code> (Pulang)</td>
+                                    <td><strong>Rain</strong></td>
+                                    <td style="text-align:right; font-weight:800; color:var(--success);">+ Rp 135.000</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="assets/js/script.js"></script>
+    <script src="assets/js/demo-toolbar.js"></script>
+</body>
+</html>

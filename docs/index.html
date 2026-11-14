@@ -1,0 +1,238 @@
+﻿<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Beranda - Rainpedia</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="stylesheet" href="assets/css/demo-toolbar.css">
+    <style>
+        html, body { max-width: 100vw; overflow-x: hidden; }
+    </style>
+</head>
+<body>
+    <!-- NAVBAR PUBLIC -->
+    <nav class="navbar">
+        <div class="container navbar-inner">
+            <a href="index.html" class="navbar-brand">
+                <img src="assets/images/rainpedia.png" alt="Rainpedia" onerror="this.style.display='none'; this.nextElementSibling.style.display='inline';">
+                <span style="display:none;">RAINPEDIA</span>
+            </a>
+            <ul class="navbar-nav">
+                <li><a href="index.html" class="active">Beranda</a></li>
+                <li><a href="catalog.html">Katalog Buku</a></li>
+                <li><a href="about.html">Tentang Kami</a></li>
+            </ul>
+            <div class="navbar-actions">
+                <a href="login.html" class="btn btn-outline btn-sm">Login</a>
+                <a href="register.html" class="btn btn-primary btn-sm">Daftar</a>
+                <button class="navbar-hamburger" id="navbar-hamburger" aria-label="Menu" aria-expanded="false">
+                    <span></span><span></span><span></span>
+                </button>
+            </div>
+        </div>
+        <!-- Mobile Menu -->
+        <div class="navbar-mobile-menu" id="navbar-mobile-menu">
+            <a href="index.html">Beranda</a>
+            <a href="catalog.html">Katalog Buku</a>
+            <a href="about.html">Tentang Kami</a>
+            <a href="login.html">Login</a>
+            <a href="register.html" style="color:var(--primary);">Daftar Gratis</a>
+            <hr style="margin: 8px 0; border: none; border-top: 1px solid #e2e8f0;">
+            <a href="user-dashboard.html" style="color:#2563eb; font-weight:700;">👤 Masuk sbg User (Rain)</a>
+            <a href="admin-dashboard.html" style="color:#7c3aed; font-weight:700;">🛡️ Masuk sbg Admin</a>
+        </div>
+    </nav>
+
+    <main class="main-content">
+        <div class="container">
+            <!-- HERO -->
+            <section class="hero">
+                <div class="hero-content">
+                    <div class="hero-eyebrow">📚 Toko &amp; Perpustakaan Digital</div>
+                    <h1 class="hero-title">Temukan Dunia Baru<br>Lewat Membaca.</h1>
+                    <p class="hero-desc">Beli buku favoritmu atau pinjam secara <strong>gratis</strong>. Rainpedia adalah tempatnya bagi para pembaca sejati untuk menjelajahi ribuan cerita dan ilmu.</p>
+                    <div class="hero-actions">
+                        <a href="catalog.html" class="btn btn-primary btn-lg">Jelajahi Katalog</a>
+                        <a href="register.html" class="btn btn-outline btn-lg">Daftar Gratis</a>
+                    </div>
+                    <div class="hero-features">
+                        <div class="hero-feature-item">✅ Peminjaman Gratis</div>
+                        <div class="hero-feature-item">✅ Koleksi Lengkap</div>
+                        <div class="hero-feature-item">✅ Daftar Mudah</div>
+                    </div>
+                </div>
+                <div class="hero-image-wrapper">
+                    <img src="assets/images/perpusrain.jpg" alt="Perpustakaan Rainpedia" onerror="this.src='https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=500&q=80'">
+                </div>
+            </section>
+
+            <!-- STATISTIK -->
+            <section class="stats-section">
+                <div class="stats-grid">
+                    <div class="stat-item">
+                        <div class="stat-number">12+</div>
+                        <div class="stat-label">Judul Buku</div>
+                    </div>
+                    <div class="stat-divider"></div>
+                    <div class="stat-item">
+                        <div class="stat-number">25+</div>
+                        <div class="stat-label">Pengguna Aktif</div>
+                    </div>
+                    <div class="stat-divider"></div>
+                    <div class="stat-item">
+                        <div class="stat-number">13+</div>
+                        <div class="stat-label">Buku Dipinjamkan</div>
+                    </div>
+                    <div class="stat-divider"></div>
+                    <div class="stat-item">
+                        <div class="stat-number">100%</div>
+                        <div class="stat-label">Pinjam Gratis</div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- BUKU TERBARU -->
+            <section style="padding: 56px 0 24px;">
+                <div class="flex-between mb-4">
+                    <div>
+                        <h2 style="margin-bottom:4px;">Buku Terbaru</h2>
+                        <p class="text-muted" style="font-size:0.9rem;margin:0;">Koleksi buku yang baru ditambahkan</p>
+                    </div>
+                    <a href="catalog.html" style="font-weight:600;white-space:nowrap;">Lihat Semua &rarr;</a>
+                </div>
+
+                <div class="book-grid">
+                    <!-- Buku 1: Sapiens -->
+                    <div class="book-card">
+                        <a href="book-detail.html" class="book-cover">
+                            <img src="assets/covers/sapiens.jpg" alt="Sapiens">
+                            <span class="book-borrow-badge">Gratis Pinjam</span>
+                        </a>
+                        <div style="margin-bottom:4px;">
+                            <span class="book-badge">Non-Fiksi</span>
+                        </div>
+                        <a href="book-detail.html" class="book-title">Sapiens: Riwayat Singkat Umat Manusia</a>
+                        <div class="book-author">Yuval Noah Harari</div>
+                        <div class="book-price">Rp 125.000</div>
+                    </div>
+
+                    <!-- Buku 2: Cantik Itu Luka -->
+                    <div class="book-card">
+                        <a href="book-detail.html" class="book-cover">
+                            <img src="assets/covers/cantik_itu_luka.jpg" alt="Cantik Itu Luka">
+                            <span class="book-borrow-badge">Gratis Pinjam</span>
+                        </a>
+                        <div style="margin-bottom:4px;">
+                            <span class="book-badge">Fiksi Sastra</span>
+                        </div>
+                        <a href="book-detail.html" class="book-title">Cantik Itu Luka</a>
+                        <div class="book-author">Eka Kurniawan</div>
+                        <div class="book-price">Rp 98.000</div>
+                    </div>
+
+                    <!-- Buku 3: Laut Bercerita -->
+                    <div class="book-card">
+                        <a href="book-detail.html" class="book-cover">
+                            <img src="assets/covers/laut_bercerita.jpg" alt="Laut Bercerita">
+                            <span class="book-borrow-badge">Gratis Pinjam</span>
+                        </a>
+                        <div style="margin-bottom:4px;">
+                            <span class="book-badge">Novel</span>
+                        </div>
+                        <a href="book-detail.html" class="book-title">Laut Bercerita</a>
+                        <div class="book-author">Leila S. Chudori</div>
+                        <div class="book-price">Rp 105.000</div>
+                    </div>
+
+                    <!-- Buku 4: Bumi Manusia -->
+                    <div class="book-card">
+                        <a href="book-detail.html" class="book-cover">
+                            <img src="assets/covers/bumi_manusia.jpg" alt="Bumi Manusia">
+                            <span class="book-borrow-badge">Gratis Pinjam</span>
+                        </a>
+                        <div style="margin-bottom:4px;">
+                            <span class="book-badge">Sejarah</span>
+                        </div>
+                        <a href="book-detail.html" class="book-title">Bumi Manusia</a>
+                        <div class="book-author">Pramoedya Ananta Toer</div>
+                        <div class="book-price">Rp 135.000</div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- PINJAM GRATIS BANNER -->
+            <section style="padding: 32px 0 56px;">
+                <div class="free-borrow-banner">
+                    <div class="free-borrow-info">
+                        <div class="free-borrow-eyebrow">🎉 Layanan Gratis</div>
+                        <h2 style="color:white;margin-bottom:8px;">Pinjam Buku Gratis Sekarang</h2>
+                        <p style="color:rgba(255,255,255,0.85);margin-bottom:0;">Tidak perlu bayar apapun. Pinjam buku hingga 7 hari, cukup kembalikan tepat waktu.</p>
+                    </div>
+                    <div class="free-borrow-books">
+                        <a href="book-detail.html" class="free-borrow-book-thumb">
+                            <img src="assets/covers/sapiens.jpg" alt="Sapiens">
+                        </a>
+                        <a href="book-detail.html" class="free-borrow-book-thumb">
+                            <img src="assets/covers/laut_bercerita.jpg" alt="Laut Bercerita">
+                        </a>
+                        <a href="book-detail.html" class="free-borrow-book-thumb">
+                            <img src="assets/covers/cantik_itu_luka.jpg" alt="Cantik Itu Luka">
+                        </a>
+                    </div>
+                    <a href="catalog.html" class="btn btn-primary" style="background:white; color:var(--primary); font-weight:700;">Mulai Pinjam &rarr;</a>
+                </div>
+            </section>
+
+            <!-- CARA KERJA -->
+            <section style="padding: 32px 0 72px;">
+                <div class="text-center" style="margin-bottom:40px;">
+                    <h2>Cara Kerja Rainpedia</h2>
+                    <p class="text-muted">Mudah, cepat, dan gratis untuk peminjaman</p>
+                </div>
+                <div class="how-grid">
+                    <div class="how-step">
+                        <div class="how-step-num">1</div>
+                        <h3 class="how-step-title">Daftar Akun</h3>
+                        <p class="how-step-desc">Buat akun gratis dengan email kamu. Proses hanya butuh 1 menit.</p>
+                    </div>
+                    <div class="how-arrow">&#8594;</div>
+                    <div class="how-step">
+                        <div class="how-step-num">2</div>
+                        <h3 class="how-step-title">Pilih Buku</h3>
+                        <p class="how-step-desc">Jelajahi ribuan koleksi buku dari berbagai genre dan kategori.</p>
+                    </div>
+                    <div class="how-arrow">&#8594;</div>
+                    <div class="how-step">
+                        <div class="how-step-num">3</div>
+                        <h3 class="how-step-title">Pinjam atau Beli</h3>
+                        <p class="how-step-desc">Ajukan peminjaman gratis atau beli buku fisik untuk dimiliki.</p>
+                    </div>
+                    <div class="how-arrow">&#8594;</div>
+                    <div class="how-step">
+                        <div class="how-step-num">4</div>
+                        <h3 class="how-step-title">Nikmati!</h3>
+                        <p class="how-step-desc">Baca dan nikmati buku pilihanmu. Kembalikan tepat waktu untuk pinjaman.</p>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <div class="container footer-bottom" style="border-top:1px solid #e2e8f0; padding-top:20px; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px;">
+            <div>&copy; 2026 <strong>Rainpedia</strong>. Toko Buku &amp; Perpustakaan Digital. All rights reserved.</div>
+            <div style="display:flex; gap:16px;">
+                <a href="user-dashboard.html" style="color:var(--primary); font-weight:600;">POV Pengguna</a>
+                <a href="admin-dashboard.html" style="color:var(--primary); font-weight:600;">POV Admin</a>
+            </div>
+        </div>
+    </footer>
+
+    <script src="assets/js/script.js"></script>
+    <script src="assets/js/demo-toolbar.js"></script>
+</body>
+</html>

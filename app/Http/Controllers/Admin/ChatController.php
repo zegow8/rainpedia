@@ -16,8 +16,14 @@ class ChatController extends Controller
         $statusFilter = $request->get('status', 'all');
         $search = $request->get('q');
 
-        // Ambil semua user_id unik yang pernah chat
-        $userIds = Chat::select('user_id')->distinct()->pluck('user_id');
+        // Ambil semua user_id unik yang pernah ada riwayat chat
+        $userIds = Chat::select('user_id')->distinct()->pluck('user_id')->toArray();
+
+        // Jika admin membuka chat ke user tertentu lewat parameter ?user_id=X, pastikan user_id tersebut masuk ke list
+        if ($request->filled('user_id')) {
+            $userIds[] = (int)$request->user_id;
+            $userIds = array_values(array_unique($userIds));
+        }
 
         $usersQuery = User::whereIn('id', $userIds);
 
@@ -34,7 +40,7 @@ class ChatController extends Controller
         $conversations = $allUsers->map(function($u) {
             $latestChat = Chat::where('user_id', $u->id)->orderBy('created_at', 'desc')->first();
             $unreadCount = Chat::where('user_id', $u->id)->where('sender', 'user')->where('is_read', 0)->count();
-            $isUnreplied = $latestChat && $latestChat->sender === 'user';
+            $isUnreplied = $latestChat ? ($latestChat->sender === 'user') : false;
 
             return (object)[
                 'user' => $u,
@@ -81,6 +87,9 @@ class ChatController extends Controller
             }
         }
 
+        // Ambil daftar seluruh user (role: user) untuk opsi "Mulai Chat Baru"
+        $allUserOptions = User::where('role', 'user')->orderBy('name')->get();
+
         // Template balasan cepat admin
         $adminTemplates = [
             'Halo kak! Pesanan akan dikirim di hari yang sama jika checkout sebelum jam 15.00 WIB.',
@@ -98,7 +107,8 @@ class ChatController extends Controller
             'totalAll', 
             'totalUnreplied', 
             'totalReplied', 
-            'adminTemplates'
+            'adminTemplates',
+            'allUserOptions'
         ));
     }
 
@@ -109,21 +119,21 @@ class ChatController extends Controller
             'message' => 'required|string|max:1000'
         ]);
 
-        $chat = Chat::create([
+        Chat::create([
             'user_id' => $request->user_id,
             'sender' => 'admin',
             'message' => trim($request->message),
             'is_read' => 0
         ]);
 
-        // Kirim Notifikasi ke User
+        // Kirim Notifikasi ke User bahwa Admin membalas pesan
         Notification::create([
             'user_id' => $request->user_id,
             'title' => 'Pesan Baru dari Admin 💬',
-            'message' => substr(trim($request->message), 0, 75) . (strlen($request->message) > 75 ? '...' : ''),
+            'message' => 'Admin telah membalas pesan Anda: "' . \Illuminate\Support\Str::limit($request->message, 50) . '"',
             'link' => '/user/chat'
         ]);
 
-        return redirect('/admin/chats?user_id=' . $request->user_id)->with('success', 'Balasan berhasil dikirim ke user.');
+        return redirect('/admin/chats?user_id=' . $request->user_id)->with('success', 'Pesan berhasil dikirim ke pelanggan.');
     }
 }

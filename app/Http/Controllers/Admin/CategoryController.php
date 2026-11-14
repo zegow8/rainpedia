@@ -23,7 +23,14 @@ class CategoryController extends Controller
 
     public function destroy($id)
     {
-        Category::findOrFail($id)->delete();
-        return back()->with('success', 'Kategori dihapus.');
+        $category = Category::findOrFail($id);
+        
+        $bookCount = \App\Models\Book::where('category_id', $id)->count();
+        if ($bookCount > 0) {
+            return back()->with('error', "Kategori '{$category->name}' tidak dapat dihapus karena masih digunakan oleh {$bookCount} buku.");
+        }
+
+        $category->delete();
+        return back()->with('success', 'Kategori berhasil dihapus.');
     }
 }

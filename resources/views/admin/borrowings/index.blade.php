@@ -8,36 +8,73 @@
 .status-tab.active { background:var(--primary); color:white; border-color:var(--primary); }
 </style>
 
-<div class="flex-between mb-4">
+<div class="flex-between mb-4" style="flex-wrap:wrap; gap:16px;">
     <div>
         <h1 style="margin-bottom:4px;">Data Peminjaman Buku</h1>
         <p class="text-muted" style="margin:0;">Kelola permohonan pinjam, tenggat waktu, dan status peminjaman buku</p>
+    </div>
+    <div>
+        <a href="{{ url('/admin/borrowings/print') }}?status={{ request('status') }}&start_date={{ request('start_date') }}&end_date={{ request('end_date') }}&q={{ request('q') }}" 
+           target="_blank" 
+           class="btn btn-primary" 
+           style="display:inline-flex; align-items:center; gap:8px; font-weight:700; padding:10px 18px; background:#2563eb;">
+            🖨️ Cetak Laporan Peminjaman
+        </a>
     </div>
 </div>
 
 <!-- ============ TABS STATUS ============ -->
 <div class="status-tabs">
-    <a href="/admin/borrowings" class="status-tab {{ !request('status') ? 'active' : '' }}">
+    <a href="{{ request()->fullUrlWithQuery(['status' => '']) }}" class="status-tab {{ !request('status') ? 'active' : '' }}">
         Semua ({{ $counts['all'] }})
     </a>
-    <a href="/admin/borrowings?status=Pending" class="status-tab {{ request('status') === 'Pending' ? 'active' : '' }}">
+    <a href="{{ request()->fullUrlWithQuery(['status' => 'Pending']) }}" class="status-tab {{ request('status') === 'Pending' ? 'active' : '' }}">
         Pending ({{ $counts['Pending'] }})
     </a>
-    <a href="/admin/borrowings?status=Borrowed" class="status-tab {{ request('status') === 'Borrowed' ? 'active' : '' }}">
+    <a href="{{ request()->fullUrlWithQuery(['status' => 'Borrowed']) }}" class="status-tab {{ request('status') === 'Borrowed' ? 'active' : '' }}">
         Sedang Dipinjam ({{ $counts['Borrowed'] }})
     </a>
-    <a href="/admin/borrowings?status=Overdue" class="status-tab {{ request('status') === 'Overdue' ? 'active' : '' }}">
+    <a href="{{ request()->fullUrlWithQuery(['status' => 'Overdue']) }}" class="status-tab {{ request('status') === 'Overdue' ? 'active' : '' }}">
         Terlambat ({{ $counts['Overdue'] }})
     </a>
-    <a href="/admin/borrowings?status=Return Requested" class="status-tab {{ request('status') === 'Return Requested' ? 'active' : '' }}">
+    <a href="{{ request()->fullUrlWithQuery(['status' => 'Return Requested']) }}" class="status-tab {{ request('status') === 'Return Requested' ? 'active' : '' }}">
         Minta Kembali ({{ $counts['Return Requested'] }})
     </a>
-    <a href="/admin/borrowings?status=Returned" class="status-tab {{ request('status') === 'Returned' ? 'active' : '' }}">
+    <a href="{{ request()->fullUrlWithQuery(['status' => 'Returned']) }}" class="status-tab {{ request('status') === 'Returned' ? 'active' : '' }}">
         Sudah Kembali ({{ $counts['Returned'] }})
     </a>
-    <a href="/admin/borrowings?status=Rejected" class="status-tab {{ request('status') === 'Rejected' ? 'active' : '' }}">
+    <a href="{{ request()->fullUrlWithQuery(['status' => 'Rejected']) }}" class="status-tab {{ request('status') === 'Rejected' ? 'active' : '' }}">
         Ditolak ({{ $counts['Rejected'] }})
     </a>
+</div>
+
+<!-- ============ FILTER TANGGAL & PENCARIAN ============ -->
+<div class="panel" style="margin-bottom:20px; padding:16px 20px;">
+    <form method="GET" action="/admin/borrowings">
+        @if(request('status'))
+            <input type="hidden" name="status" value="{{ request('status') }}">
+        @endif
+        <div style="display:flex; gap:12px; flex-wrap:wrap; align-items:flex-end;">
+            <div style="flex:1; min-width:180px;">
+                <label style="display:block; font-size:0.8rem; font-weight:700; margin-bottom:4px; color:var(--text-muted);">Mulai Tanggal</label>
+                <input type="date" name="start_date" class="form-control" value="{{ request('start_date') }}">
+            </div>
+            <div style="flex:1; min-width:180px;">
+                <label style="display:block; font-size:0.8rem; font-weight:700; margin-bottom:4px; color:var(--text-muted);">Sampai Tanggal</label>
+                <input type="date" name="end_date" class="form-control" value="{{ request('end_date') }}">
+            </div>
+            <div style="flex:1.5; min-width:200px;">
+                <label style="display:block; font-size:0.8rem; font-weight:700; margin-bottom:4px; color:var(--text-muted);">Cari Nama Peminjam / Judul Buku</label>
+                <input type="text" name="q" class="form-control" placeholder="Nama, email, atau judul buku..." value="{{ request('q') }}">
+            </div>
+            <div style="display:flex; gap:8px;">
+                <button type="submit" class="btn btn-primary" style="font-weight:700;">🔍 Filter</button>
+                @if(request('start_date') || request('end_date') || request('q'))
+                    <a href="/admin/borrowings{{ request('status') ? '?status=' . request('status') : '' }}" class="btn btn-outline">Reset</a>
+                @endif
+            </div>
+        </div>
+    </form>
 </div>
 
 <!-- ============ TABEL DATA PEMINJAMAN ============ -->
@@ -83,6 +120,13 @@
                         <strong>{{ $b->user->name ?? 'User Terhapus' }}</strong>
                         <div style="font-size:0.8rem; color:var(--text-muted);">{{ $b->user->email ?? '-' }}</div>
                         <div style="font-size:0.75rem; color:var(--text-muted);">HP: {{ $b->user->phone ?? '-' }}</div>
+                        @if($b->user)
+                            <div style="margin-top:6px;">
+                                <a href="/admin/chats?user_id={{ $b->user_id }}" class="btn btn-outline btn-sm" style="padding:2px 8px; font-size:0.72rem; text-decoration:none; display:inline-flex; align-items:center; gap:4px; font-weight:600;">
+                                    💬 Chat User
+                                </a>
+                            </div>
+                        @endif
                     </td>
 
                     <!-- Periode Waktu Peminjaman: Dari Kapan - Sampai Kapan -->
@@ -138,7 +182,7 @@
                                     @csrf
                                     <input type="hidden" name="borrowing_id" value="{{ $b->id }}">
                                     <input type="hidden" name="action" value="approve">
-                                    <button class="btn btn-primary btn-sm" onclick="return confirm('Setujui peminjaman buku ini?')">ACC</button>
+                                    <button class="btn btn-primary btn-sm" onclick="return confirm('Setujui peminjaman buku ini?')">ACC Pinjam</button>
                                 </form>
                                 <form action="/admin/borrowings/action" method="POST" style="display:inline;">
                                     @csrf
@@ -147,6 +191,32 @@
                                     <button class="btn btn-danger btn-sm" onclick="return confirm('Tolak peminjaman buku ini?')">Tolak</button>
                                 </form>
                             </div>
+                        @elseif($b->status === 'Return Requested')
+                            @php
+                                $hasUnpaid = $b->fine && $b->fine->status === 'Unpaid';
+                            @endphp
+                            @if($hasUnpaid)
+                                <div style="display:inline-flex; flex-direction:column; align-items:flex-end; gap:4px;">
+                                    <button type="button" class="btn btn-sm" disabled style="background:#fee2e2; color:#991b1b; border:1px solid #fecaca; font-weight:700; cursor:not-allowed; opacity:0.85; padding:6px 10px;">
+                                        ⚠️ Denda Belum Lunas
+                                    </button>
+                                    <div style="font-size:0.72rem; color:#dc2626;">Harus bayar denda dulu</div>
+                                </div>
+                            @else
+                                <form action="/admin/returns/action" method="POST" style="display:inline;">
+                                    @csrf
+                                    <input type="hidden" name="borrowing_id" value="{{ $b->id }}">
+                                    <button type="submit" class="btn btn-sm" style="background:#10b981; color:white; border:none; font-weight:700; padding:7px 14px; border-radius:6px; cursor:pointer;" onclick="return confirm('ACC penerimaan pengembalian buku ini dan kembalikan stok?')">
+                                        ✓ ACC Terima Buku
+                                    </button>
+                                </form>
+                            @endif
+                        @elseif(in_array($b->status, ['Borrowed', 'Overdue']))
+                            <span class="text-muted" style="font-size:0.8rem;">Menunggu Pengembalian User</span>
+                        @elseif($b->status === 'Returned')
+                            <span style="font-size:0.8rem; color:#166534; font-weight:700;">✓ Selesai Dikembalikan</span>
+                        @elseif($b->status === 'Rejected')
+                            <span class="text-muted" style="font-size:0.8rem;">Peminjaman Ditolak</span>
                         @else
                             <span class="text-muted" style="font-size:0.8rem;">Selesai diproses</span>
                         @endif

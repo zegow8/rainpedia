@@ -35,12 +35,12 @@
         <div style="flex:1; min-width:0; width:100%;">
             
             <!-- HEADER PILIH SEMUA -->
-            <div style="background:white; border:1px solid var(--border); border-radius:8px; padding:12px 16px; margin-bottom:14px; display:flex; align-items:center; justify-content:space-between;">
+            <div style="background:white; border:1px solid var(--border); border-radius:8px; padding:12px 16px; margin-bottom:14px; display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:8px;">
                 <label style="display:flex; align-items:center; gap:10px; cursor:pointer; font-weight:700; font-size:0.9rem; margin:0;">
                     <input type="checkbox" id="select-all-checkbox" style="width:18px; height:18px; cursor:pointer;" checked>
                     <span>Pilih Semua Buku Tersedia (<span id="available-count">{{ $inStockItems->count() }}</span>)</span>
                 </label>
-                <span class="text-muted" style="font-size:0.8rem;">Hanya buku dengan stok tersedia yang dapat dipilih</span>
+                <span class="text-muted" style="font-size:0.78rem;">Hanya buku ready yang dapat dicheckout</span>
             </div>
 
             <!-- LIST ITEM KERANJANG -->

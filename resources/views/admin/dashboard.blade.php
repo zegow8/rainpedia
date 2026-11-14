@@ -121,7 +121,7 @@
 </div>
 
 <!-- ============ LISTS ROW 1: Pinjam Pending & Kembali Pending (DENGAN COVER) ============ -->
-<div style="display:grid; grid-template-columns: 1fr 1fr; gap:20px; margin-bottom:24px;">
+<div style="display:grid; grid-template-columns: 1fr 1fr; gap:20px; margin-bottom:24px;" class="admin-dashboard-grid">
     <!-- PINJAM PENDING -->
     <div class="panel" style="margin:0;">
         <div class="panel-header flex-between">
@@ -149,7 +149,7 @@
                                 Peminjam: <strong>{{ $bp->user->name }}</strong> • {{ $bp->duration_days }} Hari
                             </div>
                         </div>
-                        <a href="/admin/borrowings?status=Pending" class="btn btn-outline btn-sm">Review</a>
+                        <a href="/admin/borrowings?status=Pending" class="btn btn-outline btn-sm" style="flex-shrink:0;">Review</a>
                     </div>
                 @endforeach
             </div>
@@ -183,7 +183,7 @@
                                 Dari: <strong>{{ $rp->borrowing->user->name ?? '-' }}</strong>
                             </div>
                         </div>
-                        <a href="/admin/returns" class="btn btn-outline btn-sm">ACC</a>
+                        <a href="/admin/returns" class="btn btn-outline btn-sm" style="flex-shrink:0;">ACC</a>
                     </div>
                 @endforeach
             </div>
@@ -192,7 +192,7 @@
 </div>
 
 <!-- ============ LISTS ROW 2: Pesanan Terbaru & Daftar User Terbaru ============ -->
-<div style="display:grid; grid-template-columns: 1fr 1fr; gap:20px; margin-bottom:24px;">
+<div style="display:grid; grid-template-columns: 1fr 1fr; gap:20px; margin-bottom:24px;" class="admin-dashboard-grid">
     <!-- PESANAN TERBARU -->
     <div class="panel" style="margin:0;">
         <div class="panel-header flex-between">
@@ -212,15 +212,15 @@
                         @endif
                     </div>
                     <div style="flex:1; min-width:0;">
-                        <div style="display:flex; justify-content:space-between; align-items:center;">
-                            <span style="font-weight:700; font-size:0.85rem;">{{ $o->invoice_code }}</span>
-                            <span class="status-badge" style="background:#e0e7ff; color:#3730a3;">{{ $o->status }}</span>
+                        <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:4px;">
+                            <span style="font-weight:700; font-size:0.85rem; word-break:break-all;">{{ $o->invoice_code }}</span>
+                            <span class="status-badge" style="background:#e0e7ff; color:#3730a3; font-size:0.7rem; white-space:nowrap;">{{ $o->status }}</span>
                         </div>
-                        <div style="font-size:0.8rem; color:var(--text-muted); margin-top:2px;">
-                            {{ $o->user->name }} • <strong>Rp {{ number_format($o->total, 0, ',', '.') }}</strong>
+                        <div style="font-size:0.78rem; color:var(--text-muted); margin-top:2px;">
+                            {{ $o->user->name ?? 'User' }} • <strong>Rp {{ number_format($o->total, 0, ',', '.') }}</strong>
                         </div>
                     </div>
-                    <a href="/admin/orders/{{ $o->id }}" class="btn btn-outline btn-sm">Detail</a>
+                    <a href="/admin/orders/{{ $o->id }}" class="btn btn-outline btn-sm" style="flex-shrink:0;">Detail</a>
                 </div>
             @endforeach
         </div>

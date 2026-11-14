@@ -92,12 +92,14 @@ Route::middleware(['admin'])->group(function () {
     Route::post('/orders/update/{id}', [App\Http\Controllers\Admin\OrderController::class, 'update']);
 
     Route::get('/borrowings', [App\Http\Controllers\Admin\BorrowController::class, 'index']);
+    Route::get('/borrowings/print', [App\Http\Controllers\Admin\BorrowController::class, 'print']);
     Route::post('/borrowings/action', [App\Http\Controllers\Admin\BorrowController::class, 'action']);
     Route::get('/returns', [App\Http\Controllers\Admin\BorrowController::class, 'returns']);
     Route::post('/returns/action', [App\Http\Controllers\Admin\BorrowController::class, 'returnAction']);
 
     // Pendapatan (Report)
     Route::get('/payments', [App\Http\Controllers\Admin\ReportController::class, 'index']);
+    Route::get('/payments/print', [App\Http\Controllers\Admin\ReportController::class, 'print']);
     
     // Data User
     Route::get('/users', [App\Http\Controllers\Admin\UserController::class, 'index']);
@@ -106,5 +108,6 @@ Route::middleware(['admin'])->group(function () {
     // Profil Admin
     Route::get('/profile', [App\Http\Controllers\Admin\ProfileController::class, 'index']);
     Route::post('/profile', [App\Http\Controllers\Admin\ProfileController::class, 'update']);
+    Route::post('/profile/password', [App\Http\Controllers\Admin\ProfileController::class, 'changePassword']);
     });
 });

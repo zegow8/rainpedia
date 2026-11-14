@@ -1,0 +1,94 @@
+﻿<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pengaturan Profil - User Area - Rainpedia</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="stylesheet" href="assets/css/demo-toolbar.css">
+    <style>
+        html, body { max-width: 100vw; overflow-x: hidden; }
+        body { display: flex; flex-direction: column; min-height: 100vh; background-color: var(--bg-main); }
+        .navbar-user { background: var(--white); border-bottom: 2px solid var(--primary); padding: 0; }
+        .navbar-user-top { display: flex; justify-content: space-between; align-items: center; padding: 14px 0; }
+        .navbar-user .brand { font-size: 1.25rem; font-weight: 800; color: var(--primary); text-decoration: none; display: flex; align-items: center; gap: 10px; }
+        .navbar-user .brand img { height: 36px !important; width: auto !important; max-height: 40px !important; }
+        .navbar-user-icons { display: flex; gap: 20px; align-items: center; }
+        .navbar-user-bottom { border-top: 1px solid var(--border); display: flex; gap: 24px; padding: 0; overflow-x: auto; white-space: nowrap; }
+        .navbar-user-bottom a { color: var(--text-muted); font-weight: 600; font-size: 0.9rem; text-decoration: none; padding: 14px 0; border-bottom: 3px solid transparent; }
+        .navbar-user-bottom a.active { color: var(--primary); border-bottom-color: var(--primary); }
+        .page-wrap { max-width: 700px; width: 100%; margin: 0 auto; padding: 32px 24px; flex: 1; }
+        @media (max-width: 768px) {
+            .navbar-user-top { flex-direction: column; gap: 12px; align-items: flex-start; }
+            .navbar-user-icons { width: 100%; justify-content: space-between; overflow-x: auto; font-size: 0.8rem; }
+            .navbar-user-bottom { gap: 14px; }
+            .page-wrap { padding: 16px 12px; }
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar-user">
+        <div class="container">
+            <div class="navbar-user-top">
+                <a href="user-dashboard.html" class="brand">
+                    <img src="assets/images/rainpedia.png" alt="Rainpedia" onerror="this.style.display='none'; this.nextElementSibling.style.display='inline';">
+                    <span style="display:none;">RAINPEDIA</span>
+                </a>
+                <div class="navbar-user-icons">
+                    <a href="user-catalog.html">📚 Katalog Buku</a>
+                    <a href="user-cart.html">🛒 Keranjang</a>
+                    <a href="user-profile.html" class="active">👤 Rain (User A)</a>
+                    <a href="index.html" style="color:var(--danger) !important; font-weight:700;">Logout</a>
+                </div>
+            </div>
+            <div class="navbar-user-bottom">
+                <a href="user-dashboard.html">Beranda</a>
+                <a href="user-catalog.html">Katalog Buku</a>
+                <a href="user-borrowings.html">Peminjaman Saya</a>
+                <a href="user-transactions.html">Riwayat Pembelian</a>
+                <a href="user-chat.html">💬 Tanya Admin</a>
+                <a href="user-profile.html" class="active">Pengaturan Profil</a>
+                <a href="user-notifications.html">Notifikasi</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="page-wrap">
+        <h1 style="margin-bottom: 4px;">Pengaturan Profil</h1>
+        <p class="text-muted" style="margin-bottom: 24px;">Perbarui data identitas diri, kontak, dan alamat pengiriman Anda</p>
+
+        <div class="panel">
+            <form onsubmit="event.preventDefault(); alert('Profil berhasil diperbarui!');">
+                <div class="form-group">
+                    <label class="form-label">Nama Lengkap</label>
+                    <input type="text" class="form-control" value="Rain (User A)" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Alamat Email</label>
+                    <input type="email" class="form-control" value="rain@gmail.com" required readonly style="background:#f8fafc;">
+                    <small class="text-muted">Email terdaftar sebagai identitas utama akun.</small>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Nomor WhatsApp / HP</label>
+                    <input type="text" class="form-control" value="081298765432" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Alamat Pengiriman Utama</label>
+                    <textarea class="form-control" rows="3" required>Jl. Kebon Sirih Barat No. 45, Menteng, Jakarta Pusat, DKI Jakarta, 10340</textarea>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Password Baru (Opsional)</label>
+                    <input type="password" class="form-control" placeholder="Kosongkan jika tidak ingin mengubah password">
+                </div>
+                <button type="submit" class="btn btn-primary btn-block">Simpan Perubahan Profil</button>
+            </form>
+        </div>
+    </div>
+
+    <script src="assets/js/script.js"></script>
+    <script src="assets/js/demo-toolbar.js"></script>
+</body>
+</html>

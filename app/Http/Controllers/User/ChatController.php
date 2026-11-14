@@ -23,6 +23,23 @@ class ChatController extends Controller
             ->orderBy('created_at', 'asc')
             ->get();
 
+        // Hitung pesan berturut-turut yang dikirim user sejak balasan terakhir dari admin
+        $latestAdminMsg = Chat::where('user_id', $userId)
+            ->where('sender', 'admin')
+            ->orderBy('created_at', 'desc')
+            ->first();
+
+        $consecutiveUserMsgs = Chat::where('user_id', $userId)
+            ->where('sender', 'user')
+            ->when($latestAdminMsg, function($q) use ($latestAdminMsg) {
+                $q->where('id', '>', $latestAdminMsg->id);
+            })
+            ->count();
+
+        $maxConsecutive = 3;
+        $isLimitReached = $consecutiveUserMsgs >= $maxConsecutive;
+        $remainingQuota = max(0, $maxConsecutive - $consecutiveUserMsgs);
+
         // Template pertanyaan cepat untuk user
         $templates = [
             'Apakah pesanan buku bisa dikirim hari ini?',
@@ -32,7 +49,14 @@ class ChatController extends Controller
             'Apakah saya bisa request judul buku baru untuk perpustakaan?'
         ];
 
-        return view('user.chat', compact('messages', 'templates'));
+        return view('user.chat', compact(
+            'messages', 
+            'templates', 
+            'consecutiveUserMsgs', 
+            'maxConsecutive', 
+            'isLimitReached', 
+            'remainingQuota'
+        ));
     }
 
     public function send(Request $request)
@@ -41,8 +65,27 @@ class ChatController extends Controller
             'message' => 'required|string|max:1000'
         ]);
 
+        $userId = Auth::id();
+
+        // Validasi Anti-Spam: Cek apakah user sudah mengirim 3 pesan berturut-turut tanpa balasan admin
+        $latestAdminMsg = Chat::where('user_id', $userId)
+            ->where('sender', 'admin')
+            ->orderBy('created_at', 'desc')
+            ->first();
+
+        $consecutiveUserMsgs = Chat::where('user_id', $userId)
+            ->where('sender', 'user')
+            ->when($latestAdminMsg, function($q) use ($latestAdminMsg) {
+                $q->where('id', '>', $latestAdminMsg->id);
+            })
+            ->count();
+
+        if ($consecutiveUserMsgs >= 3) {
+            return back()->with('error', 'Anda telah mencapai batas maksimal 3 pesan berturut-turut. Harap tunggu tanggapan dari Administrator sebelum mengirim pesan baru.');
+        }
+
         Chat::create([
-            'user_id' => Auth::id(),
+            'user_id' => $userId,
             'sender' => 'user',
             'message' => trim($request->message),
             'is_read' => 0

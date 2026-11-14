@@ -124,13 +124,25 @@
                     <!-- Aksi -->
                     <td style="vertical-align:top; text-align:right;">
                         @if($r->status === 'Pending')
-                            <form action="/admin/returns/action" method="POST" style="display:inline;">
-                                @csrf
-                                <input type="hidden" name="return_id" value="{{ $r->id }}">
-                                <button class="btn btn-primary btn-sm" onclick="return confirm('ACC penerimaan pengembalian buku ini dan kembalikan stok pinjam?')">
-                                    ✓ ACC Terima Buku
-                                </button>
-                            </form>
+                            @php
+                                $hasUnpaidFine = $bw && $bw->fine && $bw->fine->status === 'Unpaid';
+                            @endphp
+                            @if($hasUnpaidFine)
+                                <div style="display:inline-flex; flex-direction:column; align-items:flex-end; gap:4px;">
+                                    <button type="button" class="btn btn-sm" disabled style="background:#fee2e2; color:#991b1b; border:1px solid #fecaca; font-weight:700; cursor:not-allowed; opacity:0.85; padding:6px 10px;">
+                                        ⚠️ Denda Belum Lunas
+                                    </button>
+                                    <div style="font-size:0.72rem; color:#dc2626;">Harus bayar denda dulu</div>
+                                </div>
+                            @else
+                                <form action="/admin/returns/action" method="POST" style="display:inline;">
+                                    @csrf
+                                    <input type="hidden" name="return_id" value="{{ $r->id }}">
+                                    <button class="btn btn-sm" style="background:#10b981; color:white; border:none; font-weight:700; padding:7px 14px; border-radius:6px; cursor:pointer;" onclick="return confirm('ACC penerimaan pengembalian buku ini dan kembalikan stok pinjam?')">
+                                        ✓ ACC Terima Buku
+                                    </button>
+                                </form>
+                            @endif
                         @else
                             <span class="text-muted" style="font-size:0.8rem;">Buku Telah Diterima</span>
                         @endif
